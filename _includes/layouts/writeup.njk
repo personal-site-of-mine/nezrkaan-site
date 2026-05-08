@@ -1,0 +1,60 @@
+---
+layout: layouts/base.njk
+ogType: article
+showProgress: true
+showFieldNotesNav: true
+headerMark: "NK / Field Notes"
+headerHomeHref: "/writeups/"
+footerBackHref: "/writeups/"
+footerBackLabel: "← Back to field notes"
+extraStyles:
+  - /css/article.css
+---
+
+<main>
+  <article class="container">
+
+    <header class="article-header prose">
+      {% if kicker %}<p class="article-kicker">{{ kicker }}</p>{% endif %}
+      <h1 class="article-title">{{ articleTitle or title }}</h1>
+      {% if dek %}<p class="article-dek">{{ dek }}</p>{% endif %}
+      <div class="article-meta">
+        {% if tag %}<span class="tag">{{ tag }}</span><span class="sep"></span>{% endif %}
+        {% if type %}<span>{{ type }}</span><span class="sep"></span>{% endif %}
+        <span>{{ date | longDate }}</span>
+        {% if readtime %}<span class="sep"></span><span>{{ readtime }}</span>{% endif %}
+      </div>
+    </header>
+
+    <div class="body prose">
+      {{ content | safe }}
+    </div>
+
+  </article>
+</main>
+
+<script>
+(function() {
+  var progress = document.getElementById('progress');
+  function updateProgress() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    var pct = height > 0 ? (scrolled / height) * 100 : 0;
+    if (progress) progress.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  var finding = document.getElementById('finding');
+  var revealBtn = document.getElementById('findingReveal');
+  var answer = document.getElementById('findingAnswer');
+  if (revealBtn && finding) {
+    revealBtn.addEventListener('click', function() {
+      finding.classList.add('revealed');
+      revealBtn.setAttribute('aria-expanded', 'true');
+      if (answer) answer.setAttribute('aria-hidden', 'false');
+    });
+  }
+})();
+</script>

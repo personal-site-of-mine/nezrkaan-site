@@ -9,5 +9,65 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
+  <script>
+    // Load fonts and site CSS into the preview pane so the editor preview
+    // shows what the published page will actually look like.
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap");
+    CMS.registerPreviewStyle("/css/base.css");
+    CMS.registerPreviewStyle("/css/article.css");
+
+    // Decap exposes h (createElement) and createClass on window.
+    var h = window.h;
+    var createClass = window.createClass;
+
+    // Custom preview template for the writeups collection.
+    // Renders a simplified version of the writeup layout so the preview
+    // mirrors the published page (kicker, title, dek, meta, body).
+    if (h && createClass) {
+      var WriteupPreview = createClass({
+        render: function() {
+          var entry = this.props.entry;
+          var data = entry.get("data");
+          var body = this.props.widgetFor("body");
+          var dateRaw = data.get("date");
+          var dateLabel = dateRaw
+            ? new Date(dateRaw).toLocaleDateString("en-GB", {
+                day: "numeric", month: "long", year: "numeric"
+              })
+            : "";
+
+          return h("main", {},
+            h("article", { className: "container" },
+              h("header", { className: "article-header prose" },
+                data.get("kicker")
+                  ? h("p", { className: "article-kicker" }, data.get("kicker"))
+                  : null,
+                h("h1", { className: "article-title" },
+                  data.get("articleTitle") || data.get("title") || "Untitled"
+                ),
+                data.get("dek")
+                  ? h("p", { className: "article-dek" }, data.get("dek"))
+                  : null,
+                h("div", { className: "article-meta" },
+                  data.get("tag")
+                    ? h("span", { className: "tag" }, data.get("tag"))
+                    : null,
+                  data.get("tag") ? h("span", { className: "sep" }) : null,
+                  data.get("type") ? h("span", {}, data.get("type")) : null,
+                  data.get("type") ? h("span", { className: "sep" }) : null,
+                  h("span", {}, dateLabel),
+                  data.get("readtime") ? h("span", { className: "sep" }) : null,
+                  data.get("readtime") ? h("span", {}, data.get("readtime")) : null
+                )
+              ),
+              h("div", { className: "body prose" }, body)
+            )
+          );
+        }
+      });
+
+      CMS.registerPreviewTemplate("writeups", WriteupPreview);
+    }
+  </script>
 </body>
 </html>

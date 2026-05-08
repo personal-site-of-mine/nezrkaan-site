@@ -1,89 +1,25 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>Field Notes — Nezr Kaan</title>
-<meta name="description" content="OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology.">
-<meta name="author" content="Nezr Kaan">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#EDE6D0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1D1A15" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="https://nezrkaan.com/writeups">
-
-<meta property="og:url" content="https://nezrkaan.com/writeups">
-<meta property="og:image" content="https://nezrkaan.com/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Nezr Kaan — OSINT Researcher">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Field Notes — Nezr Kaan">
-<meta name="twitter:description" content="OSINT CTF writeups and open-source investigation notes.">
-<meta name="twitter:image" content="https://nezrkaan.com/og-image.png">
-
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="Field Notes — Nezr Kaan">
-<meta property="og:description" content="OSINT CTF writeups and open-source investigation notes.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" as="style">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/archive.css">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Field Notes",
-  "description": "OSINT CTF writeups and open-source investigation notes by Nezr Kaan.",
-  "url": "https://nezrkaan.com/writeups",
-  "author": {
-    "@type": "Person",
-    "name": "Nezr Kaan",
-    "url": "https://nezrkaan.com"
-  }
-}
-</script>
-
-<script>
-(function(){
-  try {
-    var s = localStorage.getItem('theme');
-    var d = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', s || (d ? 'dark' : 'light'));
-  } catch(e) {}
-})();
-</script>
-</head>
-<body>
-
-<header class="site-header">
-  <div class="header-inner">
-    <a href="index.html" class="site-mark">NK</a>
-    <div class="header-nav">
-      <a href="writeups.html" class="nav-link active">Field Notes</a>
-      <button class="theme-toggle" aria-label="Toggle light/dark theme" id="themeToggle">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
-        </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</header>
+---
+layout: layouts/base.njk
+title: "Field Notes — Nezr Kaan"
+ogTitle: "Field Notes — Nezr Kaan"
+ogDescription: "OSINT CTF writeups and open-source investigation notes."
+description: "OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology."
+permalink: /writeups.html
+showFieldNotesNav: true
+isArchive: true
+extraStyles:
+  - /css/archive.css
+jsonLd:
+  "@context": "https://schema.org"
+  "@type": "Blog"
+  name: "Field Notes"
+  description: "OSINT CTF writeups and open-source investigation notes by Nezr Kaan."
+  url: "https://nezrkaan.com/writeups"
+  author:
+    "@type": "Person"
+    name: "Nezr Kaan"
+    url: "https://nezrkaan.com"
+---
 
 <main>
 
@@ -96,141 +32,71 @@
       first time.
     </p>
 
+    {%- set total = collections.writeups | length -%}
+    {%- set ctfCount = 0 -%}
+    {%- set bellingcatCount = 0 -%}
+    {%- set investigationCount = 0 -%}
+    {%- set blogCount = 0 -%}
+    {%- set newsCount = 0 -%}
+    {%- for w in collections.writeups -%}
+      {%- if w.data.tags_for_filter -%}
+        {%- if 'CTF' in w.data.tags_for_filter -%}{%- set ctfCount = ctfCount + 1 -%}{%- endif -%}
+        {%- if 'Bellingcat' in w.data.tags_for_filter -%}{%- set bellingcatCount = bellingcatCount + 1 -%}{%- endif -%}
+        {%- if 'Investigation' in w.data.tags_for_filter -%}{%- set investigationCount = investigationCount + 1 -%}{%- endif -%}
+        {%- if 'Blog' in w.data.tags_for_filter -%}{%- set blogCount = blogCount + 1 -%}{%- endif -%}
+        {%- if 'News' in w.data.tags_for_filter -%}{%- set newsCount = newsCount + 1 -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
     <div class="filters" role="group" aria-label="Filter writeups by category">
       <span class="filters-label">Filter by</span>
       <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all" type="button">All <span class="count">4</span></button>
-        <button class="chip" data-filter="CTF" type="button">CTF <span class="count">4</span></button>
-        <button class="chip" data-filter="Bellingcat" type="button">Bellingcat <span class="count">4</span></button>
-        <button class="chip" data-filter="Investigation" type="button">Investigation <span class="count">0</span></button>
-        <button class="chip" data-filter="Blog" type="button">Blog <span class="count">0</span></button>
-        <button class="chip" data-filter="News" type="button">News <span class="count">0</span></button>
+        <button class="chip active" data-filter="all" type="button">All <span class="count">{{ total }}</span></button>
+        <button class="chip" data-filter="CTF" type="button">CTF <span class="count">{{ ctfCount }}</span></button>
+        <button class="chip" data-filter="Bellingcat" type="button">Bellingcat <span class="count">{{ bellingcatCount }}</span></button>
+        <button class="chip" data-filter="Investigation" type="button">Investigation <span class="count">{{ investigationCount }}</span></button>
+        <button class="chip" data-filter="Blog" type="button">Blog <span class="count">{{ blogCount }}</span></button>
+        <button class="chip" data-filter="News" type="button">News <span class="count">{{ newsCount }}</span></button>
       </div>
     </div>
   </section>
 
   <section class="archive container">
 
-    <div class="year-group" data-year="2026">
-      <h2 class="year-marker"><em>2026</em></h2>
+    {% for group in collections.writeupsByYear %}
+    <div class="year-group" data-year="{{ group.year }}">
+      <h2 class="year-marker"><em>{{ group.year }}</em></h2>
 
-      <a href="writeups/window-seat.html" class="entry" data-tags="CTF,Bellingcat,Aviation OSINT">
+      {% for w in group.items %}
+      <a href="/writeups/{{ w.fileSlug }}" class="entry" data-tags="{{ w.data.tags_for_filter | join(',') }}">
         <div class="entry-meta">
-          <span class="num">№ 004</span>
+          <span class="num">№ {{ w.data.number }}</span>
           <span class="sep"></span>
-          <span class="entry-cat" data-cat="CTF">CTF · Bellingcat</span>
+          <span class="entry-cat" data-cat="{{ w.data.tag }}">{{ w.data.tag | replace('Bellingcat CTF', 'CTF · Bellingcat') }}</span>
           <span class="sep"></span>
-          <span>Aviation OSINT</span>
+          <span>{{ w.data.category }}</span>
           <span class="sep"></span>
-          <span>7 May 2026</span>
+          <span>{{ w.data.date | readableDate }}</span>
           <span class="sep"></span>
-          <span>5 min read</span>
+          <span>{{ w.data.readtime }}</span>
         </div>
-        <h2>Window Seat: A jet engine over many snowy mountains</h2>
-        <p class="entry-excerpt">
-          Solving Bellingcat's window-seat geolocation challenge. Yellow engine cowls cut the
-          airline pool to three; FlightRadar24 playback narrowed it to two
-          flights over the Alps; a valley silhouette did the rest.
-        </p>
+        <h2>{{ w.data.archive_title or w.data.articleTitle }}</h2>
+        <p class="entry-excerpt">{{ w.data.excerpt }}</p>
         <span class="entry-read">Read the writeup →</span>
       </a>
-
-      <a href="writeups/touching-tarmac.html" class="entry" data-tags="CTF,Bellingcat,Geolocation">
-        <div class="entry-meta">
-          <span class="num">№ 003</span>
-          <span class="sep"></span>
-          <span class="entry-cat" data-cat="CTF">CTF · Bellingcat</span>
-          <span class="sep"></span>
-          <span>Image OSINT</span>
-          <span class="sep"></span>
-          <span>4 May 2026</span>
-          <span class="sep"></span>
-          <span>5 min read</span>
-        </div>
-        <h2>Touching Tarmac: A taxiing photo and an ICAO code</h2>
-        <p class="entry-excerpt">
-          Solving Bellingcat's geolocation challenge from a single photo of
-          parked aircraft. Reading the livery, walking through the airline's
-          route map, and confirming a control tower against historical
-          satellite imagery.
-        </p>
-        <span class="entry-read">Read the writeup →</span>
-      </a>
-
-      <a href="writeups/rapid-fire.html" class="entry" data-tags="CTF,Bellingcat,Audio OSINT">
-        <div class="entry-meta">
-          <span class="num">№ 002</span>
-          <span class="sep"></span>
-          <span class="entry-cat" data-cat="CTF">CTF · Bellingcat</span>
-          <span class="sep"></span>
-          <span>Audio OSINT</span>
-          <span class="sep"></span>
-          <span>15 Apr 2026</span>
-          <span class="sep"></span>
-          <span>5 min read</span>
-        </div>
-        <h2>Rapid Fire: A burst that wasn't gunfire</h2>
-        <p class="entry-excerpt">
-          Solving Bellingcat's audio-only challenge with three minutes of
-          recording and no metadata. A Google dork that landed on the answer.
-        </p>
-        <span class="entry-read">Read the writeup →</span>
-      </a>
-
-      <a href="writeups/urban-symphony.html" class="entry" data-tags="CTF,Bellingcat,Audio OSINT">
-        <div class="entry-meta">
-          <span class="num">№ 001</span>
-          <span class="sep"></span>
-          <span class="entry-cat" data-cat="CTF">CTF · Bellingcat</span>
-          <span class="sep"></span>
-          <span>Audio OSINT</span>
-          <span class="sep"></span>
-          <span>7 Apr 2026</span>
-          <span class="sep"></span>
-          <span>8 min read</span>
-        </div>
-        <h2>Urban Symphony: An audio fingerprint of a city</h2>
-        <p class="entry-excerpt">
-          Solving Bellingcat's audio-only challenge with three minutes of
-          recording and no metadata. Working backwards from a pickpocket
-          announcement, bicycle traffic, a Google dork on a travelator
-          phrase and a carillon run to pinpoint a single tower in Amsterdam.
-        </p>
-        <span class="entry-read">Read the writeup →</span>
-      </a>
+      {% endfor %}
     </div>
+    {% endfor %}
 
     <p class="empty-state" id="emptyState">No entries in this category yet — check back soon.</p>
 
   </section>
 </main>
 
-<footer class="container">
-  <span>Nezr Kaan — OSINT Researcher</span>
-  <span><a href="index.html">← Back to home</a></span>
-</footer>
-
 <script>
 (function() {
-  var root = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-
-  toggle.addEventListener('click', function() {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch(e) {}
-  });
-
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    try {
-      if (!localStorage.getItem('theme')) {
-        root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-      }
-    } catch(err) {}
-  });
-
-  // Filter chips
   var chipsRow = document.getElementById('filterChips');
+  if (!chipsRow) return;
   var chips = chipsRow.querySelectorAll('.chip');
   var entries = document.querySelectorAll('.entry');
   var yearGroups = document.querySelectorAll('.year-group');
@@ -260,6 +126,3 @@
   });
 })();
 </script>
-
-</body>
-</html>
