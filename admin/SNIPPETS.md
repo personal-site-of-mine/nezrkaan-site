@@ -1,23 +1,23 @@
-# Snippet Kütüphanesi — Field Note bileşenleri
+# Snippet Library — Field Note Components
 
-Yeni yazı yazarken **Body HTML** alanına şu blokları kopyala-yapıştır.
-AI metni düz yazı olarak verirse, sen sadece özel bileşenleri sarmalarsın.
+When writing a new note, copy and paste these blocks into the **Body HTML** field.
+If your prose comes from AI, just paste the prose and wrap special components with these snippets.
 
 ---
 
-## 1. Lead paragraf (drop cap)
-İlk paragrafa kullan — büyük harfle başlar.
+## 1. Lead paragraph (drop cap)
+Use for the first paragraph — starts with a large drop-cap letter.
 
 ```html
 <p class="lead">
-  İlk paragraf metni buraya gelir.
+  Your opening paragraph goes here.
 </p>
 ```
 
 ---
 
-## 2. Try it kutusu
-Her yazıda ikinci blok genelde bu olur.
+## 2. Try-it callout
+Usually the second block in every writeup.
 
 ```html
 <div class="try-callout">
@@ -30,65 +30,65 @@ Her yazıda ikinci blok genelde bu olur.
 
 ---
 
-## 3. Bölüm başlığı (Part header)
-Yazıyı bölümlere ayırır. `01 / 03`, `02 / 03` gibi numaralandır.
+## 3. Part header
+Splits the writeup into sections. Number them `01 / 03`, `02 / 03`, etc.
 
 ```html
 <div class="part-header">
   <span class="part-label">Part <span class="part-num">01</span> / 03</span>
-  <h2>Bölüm başlığı</h2>
+  <h2>Section title</h2>
 </div>
 ```
 
 ---
 
-## 4. Görsel (figure)
-Tek görsel, alt açıklamayla. Görseli Decap'tan yükleyince URL'i `<img src=...>`'e koy.
+## 4. Figure (image)
+Single image with optional caption. After uploading via Decap, paste the URL into `src`.
 
 ```html
 <figure class="article-figure">
-  <img src="/images/uploads/dosya.jpg" alt="Görselin açıklaması">
-  <figcaption>Caption metni — küçük mono yazıyla görünür</figcaption>
+  <img src="/images/uploads/file.jpg" alt="Description of the image">
+  <figcaption>Caption text — appears in small mono type</figcaption>
 </figure>
 ```
 
-**Küçük görsel** (örn. UI butonu screenshot):
+**Small image** (e.g. UI screenshot of a button):
 ```html
 <figure class="article-figure is-small">
-  <img src="/images/uploads/buton.png" alt="Açıklama">
+  <img src="/images/uploads/button.png" alt="Description">
 </figure>
 ```
 
-**Yan yana iki görsel** (karşılaştırma):
+**Side-by-side pair** (comparison):
 ```html
 <figure class="article-figure is-pair">
   <div class="figure-pair">
-    <img src="/images/uploads/sol.jpg" alt="Sol görsel">
-    <img src="/images/uploads/sag.jpg" alt="Sağ görsel">
+    <img src="/images/uploads/left.jpg" alt="Left image">
+    <img src="/images/uploads/right.jpg" alt="Right image">
   </div>
-  <figcaption>İki görselin yan yana karşılaştırması</figcaption>
+  <figcaption>Side-by-side comparison caption</figcaption>
 </figure>
 ```
 
 ---
 
-## 5. Kanıt listesi (evidence)
-Madde madde gözlem/kanıt.
+## 5. Evidence list
+Bullet observations or evidence points.
 
 ```html
 <ul class="evidence">
-  <li>İlk gözlem — <em>vurgulamak istediğin kelime</em> italik olur.</li>
-  <li>İkinci gözlem.</li>
-  <li>Üçüncü gözlem.</li>
+  <li>First observation — <em>highlighted phrase</em> renders in italic.</li>
+  <li>Second observation.</li>
+  <li>Third observation.</li>
 </ul>
 ```
 
 ---
 
-## 6. Kaynak kartı (evidence-link)
-Dış bağlantı kartı. **İki türü var:**
+## 6. Evidence link card
+External link card. **Two variants:**
 
-**Video/Audio** (oynat ikonu):
+**Video / audio source** (play icon):
 ```html
 <a href="https://youtube.com/..." target="_blank" rel="noopener" class="evidence-link">
   <span class="play-icon" aria-hidden="true">
@@ -96,13 +96,13 @@ Dış bağlantı kartı. **İki türü var:**
   </span>
   <span class="evidence-link-text">
     <span class="evidence-link-kicker">Evidence — YouTube</span>
-    <span class="evidence-link-title">Kaynağın başlığı</span>
+    <span class="evidence-link-title">Title of the source</span>
   </span>
   <span class="evidence-link-arrow" aria-hidden="true">↗</span>
 </a>
 ```
 
-**Yazılı kaynak** (Wikipedia, makale vs):
+**Written reference** (Wikipedia, articles, papers):
 ```html
 <a href="https://wikipedia.org/..." target="_blank" rel="noopener" class="evidence-link is-reference">
   <span class="source-icon" aria-hidden="true">
@@ -110,7 +110,7 @@ Dış bağlantı kartı. **İki türü var:**
   </span>
   <span class="evidence-link-text">
     <span class="evidence-link-kicker">Reference — Wikipedia</span>
-    <span class="evidence-link-title">Kaynağın başlığı</span>
+    <span class="evidence-link-title">Title of the source</span>
   </span>
   <span class="evidence-link-arrow" aria-hidden="true">↗</span>
 </a>
@@ -118,43 +118,43 @@ Dış bağlantı kartı. **İki türü var:**
 
 ---
 
-## 7. Pull quote (alıntı)
-Vurgulanan italik alıntı. Tek satır, etkileyici cümle için.
+## 7. Pullquote
+Standout italic quote. One impactful sentence.
 
 ```html
 <div class="pullquote">
-  Vurgulamak istediğin cümle buraya gelir.
+  Your standout sentence goes here.
 </div>
 ```
 
 ---
 
-## 8. Inline kod / arama sorgusu (dork)
-Satır içi kod tarzı kutu — Google sorgusu, terminal komutu, dosya adı.
+## 8. Inline code / search query (dork)
+Inline code-style box — Google query, terminal command, filename.
 
 ```html
 <span class="dork">"South Sudan" animal sounds like gunshot</span>
 ```
 
-Kendi paragrafı olarak büyük göstermek için:
+As its own paragraph block:
 ```html
-<p><span class="dork">"sorgu metni"</span></p>
+<p><span class="dork">"query string"</span></p>
 ```
 
 ---
 
-## 9. Method dropdown (açılır metod kutusu)
-Detaylı yan açıklamalar — okuyucuyu ana akıştan koparmadan açıklama.
+## 9. Method dropdown
+Collapsible side detail — keeps tangents from breaking flow.
 
 ```html
 <details class="method-detail">
-  <summary>Methodu göster</summary>
+  <summary>Show the method</summary>
   <div class="method-detail-body">
-    <p>Açıklama metni buraya.</p>
+    <p>Explanation goes here.</p>
     <ol>
-      <li>Adım bir.</li>
-      <li>Adım iki.</li>
-      <li>Adım üç.</li>
+      <li>Step one.</li>
+      <li>Step two.</li>
+      <li>Step three.</li>
     </ol>
   </div>
 </details>
@@ -162,13 +162,13 @@ Detaylı yan açıklamalar — okuyucuyu ana akıştan koparmadan açıklama.
 
 ---
 
-## 10. Finding (blurlanmış cevap)
-Yazının sonunda blurlanmış cevap kutusu. Sadece bir tane olmalı.
+## 10. Finding (blurred answer)
+The blurred answer block at the end of the writeup. Use only one per page.
 
 ```html
 <div class="finding" id="finding">
   <span class="finding-label">The source</span>
-  <span class="finding-answer" id="findingAnswer" aria-hidden="true">CEVAP</span>
+  <span class="finding-answer" id="findingAnswer" aria-hidden="true">ANSWER</span>
   <button class="finding-reveal" id="findingReveal" type="button" aria-controls="findingAnswer" aria-expanded="false">
     → Reveal the answer
   </button>
@@ -178,13 +178,13 @@ Yazının sonunda blurlanmış cevap kutusu. Sadece bir tane olmalı.
 
 ---
 
-## 11. Acknowledgement (teşekkür)
-Yazının en sonunda.
+## 11. Acknowledgement
+At the very end of the writeup.
 
 ```html
 <div class="acknowledgement">
   <span class="ack-label">Thanks</span>
-  <p>Teşekkür metni — italik gösterilir.</p>
+  <p>Your acknowledgement text — renders in italic.</p>
 </div>
 
 <div class="end-mark">✦ ✦ ✦</div>
@@ -192,23 +192,23 @@ Yazının en sonunda.
 
 ---
 
-## Body HTML — sıralama önerisi
+## Body HTML — recommended order
 
-Genelde şu sırayla yazıyorsun:
+A typical writeup follows this order:
 
-1. `<p class="lead">` — açılış paragrafı (drop cap)
-2. `<div class="try-callout">` — challenge linki
-3. `<div class="part-header">` Part 01 — `<p>`paragraflar
-4. `<div class="part-header">` Part 02 — `<p>` + figure'lar
-5. `<div class="part-header">` Part 03 — kanıtlar, evidence-link'ler
-6. `<div class="finding">` — cevap kutusu
-7. Kapanış paragrafı
+1. `<p class="lead">` — opening paragraph (drop cap)
+2. `<div class="try-callout">` — challenge link
+3. `<div class="part-header">` Part 01 — `<p>` paragraphs
+4. `<div class="part-header">` Part 02 — `<p>` + figures
+5. `<div class="part-header">` Part 03 — evidence, evidence-link cards
+6. `<div class="finding">` — answer block
+7. Closing paragraph
 8. `<div class="acknowledgement">` + `<div class="end-mark">`
 
 ---
 
-## AI'ya prompt verirken
+## Prompting AI
 
-> "Bu yazıyı `<p class="lead">`, `<div class="part-header">`, `<p>`, `<figure class="article-figure">`, `<ul class="evidence">` bileşenlerini kullanarak HTML olarak yaz. Bölüm başlıklarını numaralandır. Görselleri `/images/uploads/<slug>/` yoluyla referansla."
+> "Write the body of this writeup as raw HTML using these components: `<p class="lead">`, `<div class="part-header">`, `<p>`, `<figure class="article-figure">`, `<ul class="evidence">`. Number the part headers. Reference images via `/images/uploads/<slug>/`."
 
-şeklinde söylersen, AI doğrudan kullanılabilir HTML üretir, sen sadece kopyala-yapıştır.
+That way AI returns ready-to-paste HTML and you only swap in the right image URLs.

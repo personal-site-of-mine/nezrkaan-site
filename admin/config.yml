@@ -14,7 +14,7 @@ collections:
   - name: "writeups"
     label: "Field Notes"
     label_singular: "Field Note"
-    description: "Mevcut yazıları düzenle. Görsel yüklemek için body içinde 'Add component' kullan."
+    description: "Edit existing writeups. Use the image button in the toolbar to upload new images."
     files:
       - file: "writeups/window-seat.html"
         label: "Window Seat"
@@ -39,26 +39,26 @@ collections:
 
   # ─── PAGES — home + archive ───
   - name: "pages"
-    label: "Sayfalar"
+    label: "Pages"
     files:
       - file: "index.html"
-        label: "Anasayfa"
+        label: "Home"
         name: "home"
         fields:
           - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
       - file: "writeups.html"
-        label: "Arşiv"
+        label: "Archive"
         name: "archive"
         fields:
           - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
 
-  # ─── MEDIA — for image upload reference ───
-  - name: "media"
-    label: "📁 Görseller"
-    description: "Görselleri buradan yükle. Yüklenince /images/uploads/ altına gider, URL'ini snippet'a yapıştır."
+  # ─── REFERENCE — snippet library ───
+  - name: "reference"
+    label: "Reference"
+    description: "Snippet library for components. Copy-paste into the HTML body when writing a new note."
     files:
       - file: "admin/SNIPPETS.md"
-        label: "Snippet kütüphanesi"
+        label: "Snippet library"
         name: "snippets"
         fields:
-          - { label: "Markdown", name: "body", widget: "markdown" }
+          - { label: "Content", name: "body", widget: "markdown" }
