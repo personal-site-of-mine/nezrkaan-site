@@ -14,40 +14,51 @@ collections:
   - name: "writeups"
     label: "Field Notes"
     label_singular: "Field Note"
-    description: "Mevcut yazıları düzenle. HTML kaynağını doğrudan görürsün."
+    description: "Mevcut yazıları düzenle. Görsel yüklemek için body içinde 'Add component' kullan."
     files:
       - file: "writeups/window-seat.html"
         label: "Window Seat"
         name: "window-seat"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
       - file: "writeups/touching-tarmac.html"
         label: "Touching Tarmac"
         name: "touching-tarmac"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
       - file: "writeups/rapid-fire.html"
         label: "Rapid Fire"
         name: "rapid-fire"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
       - file: "writeups/urban-symphony.html"
         label: "Urban Symphony"
         name: "urban-symphony"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
 
   # ─── PAGES — home + archive ───
   - name: "pages"
-    label: "Pages"
+    label: "Sayfalar"
     files:
       - file: "index.html"
-        label: "Home"
+        label: "Anasayfa"
         name: "home"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
       - file: "writeups.html"
-        label: "Archive"
+        label: "Arşiv"
         name: "archive"
         fields:
-          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "HTML", name: "body", widget: "code", default_language: "html", output_code_only: true }
+
+  # ─── MEDIA — for image upload reference ───
+  - name: "media"
+    label: "📁 Görseller"
+    description: "Görselleri buradan yükle. Yüklenince /images/uploads/ altına gider, URL'ini snippet'a yapıştır."
+    files:
+      - file: "admin/SNIPPETS.md"
+        label: "Snippet kütüphanesi"
+        name: "snippets"
+        fields:
+          - { label: "Markdown", name: "body", widget: "markdown" }
