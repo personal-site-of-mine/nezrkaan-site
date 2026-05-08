@@ -74,7 +74,7 @@ jsonLd:
         <span class="sep"></span>
         <span>{{ latest.data.date | readableDate }}</span>
         <span class="sep"></span>
-        <span>{{ latest.data.readtime }}</span>
+        <span>{{ latest.data.readtime or (latest.templateContent | readtime) }}</span>
       </span>
       <span class="latest-read">Read the writeup →</span>
     </a>

@@ -22,7 +22,7 @@ extraStyles:
         {% if tag %}<span class="tag">{{ tag }}</span><span class="sep"></span>{% endif %}
         {% if type %}<span>{{ type }}</span><span class="sep"></span>{% endif %}
         <span>{{ date | longDate }}</span>
-        {% if readtime %}<span class="sep"></span><span>{{ readtime }}</span>{% endif %}
+        <span class="sep"></span><span>{{ readtime or (content | readtime) }}</span>
       </div>
     </header>
 

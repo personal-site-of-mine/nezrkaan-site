@@ -79,7 +79,7 @@ jsonLd:
           <span class="sep"></span>
           <span>{{ w.data.date | readableDate }}</span>
           <span class="sep"></span>
-          <span>{{ w.data.readtime }}</span>
+          <span>{{ w.data.readtime or (w.templateContent | readtime) }}</span>
         </div>
         <h2>{{ w.data.archive_title or w.data.articleTitle }}</h2>
         <p class="entry-excerpt">{{ w.data.excerpt }}</p>
