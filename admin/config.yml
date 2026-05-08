@@ -1,0 +1,53 @@
+backend:
+  name: github
+  repo: personal-site-of-mine/nezrkaan-site
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+site_url: https://nezrkaan.com
+display_url: https://nezrkaan.com
+
+collections:
+  # ─── EXISTING WRITEUPS — edit raw HTML ───
+  - name: "writeups"
+    label: "Field Notes"
+    label_singular: "Field Note"
+    description: "Mevcut yazıları düzenle. HTML kaynağını doğrudan görürsün."
+    files:
+      - file: "writeups/window-seat.html"
+        label: "Window Seat"
+        name: "window-seat"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+      - file: "writeups/touching-tarmac.html"
+        label: "Touching Tarmac"
+        name: "touching-tarmac"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+      - file: "writeups/rapid-fire.html"
+        label: "Rapid Fire"
+        name: "rapid-fire"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+      - file: "writeups/urban-symphony.html"
+        label: "Urban Symphony"
+        name: "urban-symphony"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+
+  # ─── PAGES — home + archive ───
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "index.html"
+        label: "Home"
+        name: "home"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
+      - file: "writeups.html"
+        label: "Archive"
+        name: "archive"
+        fields:
+          - { label: "HTML kaynak", name: "body", widget: "code", default_language: "html", output_code_only: true }
