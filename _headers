@@ -1,0 +1,28 @@
+# HTML — always revalidate so updates reach users immediately
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS — 1 week; update by bumping ?v= query string when you change styles
+/css/*
+  Cache-Control: public, max-age=604800
+
+# Images — 1 year; these never change once published
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Favicons and touch icons — 1 year
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# Sitemap and robots — short cache
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+
+/robots.txt
+  Cache-Control: public, max-age=86400

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Urban Symphony — Field Notes by Nezr Kaan</title>
+<meta name="description" content="Solving Bellingcat's Urban Symphony audio OSINT challenge — identifying a city and its carillon from three minutes of sound and no metadata.">
+<meta name="author" content="Nezr Kaan">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#EDE6D0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1A15" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://nezrkaan.com/writeups/urban-symphony">
+
+<meta property="og:url" content="https://nezrkaan.com/writeups/urban-symphony">
+<meta property="og:image" content="https://nezrkaan.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nezr Kaan — OSINT Researcher">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Urban Symphony — An Audio Fingerprint of a City">
+<meta name="twitter:description" content="Solving Bellingcat's audio OSINT challenge with three minutes of sound and no metadata.">
+<meta name="twitter:image" content="https://nezrkaan.com/og-image.png">
+
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" type="image/png" href="../favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="../favicon-16x16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" sizes="180x180">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Urban Symphony — An Audio Fingerprint of a City">
+<meta property="og:description" content="Solving Bellingcat's audio OSINT challenge with three minutes of sound and no metadata.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/article.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Urban Symphony: An Audio Fingerprint of a City",
+  "description": "Solving Bellingcat's audio OSINT challenge with three minutes of sound and no metadata.",
+  "datePublished": "2026-04-07",
+  "dateModified": "2026-04-07",
+  "author": {
+    "@type": "Person",
+    "name": "Nezr Kaan",
+    "url": "https://nezrkaan.com"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Nezr Kaan",
+    "url": "https://nezrkaan.com"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nezrkaan.com/writeups/urban-symphony"
+  },
+  "keywords": "OSINT, audio forensics, Bellingcat CTF, Munttoren, Amsterdam, carillon"
+}
+</script>
+
+<script>
+(function(){
+  try {
+    var s = localStorage.getItem('theme');
+    var d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', s || (d ? 'dark' : 'light'));
+  } catch(e) {}
+})();
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../writeups.html" class="site-mark"> NK / Field Notes </a>
+    <button class="theme-toggle" aria-label="Toggle light/dark theme" id="themeToggle">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <article class="container">
+
+    <header class="article-header prose">
+      <p class="article-kicker">Field Note № 001 — Audio OSINT</p>
+      <h1 class="article-title">Urban Symphony</h1>
+      <p class="article-dek">An audio fingerprint of a city, and the carillon that gave it away.</p>
+      <div class="article-meta">
+        <span class="tag">Bellingcat CTF</span>
+        <span class="sep"></span>
+        <span>Audio forensics</span>
+        <span class="sep"></span>
+        <span>7 April 2026</span>
+        <span class="sep"></span>
+        <span>8 min read</span>
+      </div>
+    </header>
+
+    <div class="body prose">
+
+      <p class="lead">
+        Bellingcat's challenge has a single instruction and an audio file: <em>the sounds in this clip might sound strange, but together they form an audio fingerprint of a city. Use them to identify the city and the name of the ringing tower.</em> Three minutes of recording. No EXIF. No image.
+      </p>
+
+      <div class="try-callout">
+        <span class="try-callout-icon">↪ Try it</span>
+        <p>
+          <strong>This writeup contains the solution.</strong> If you want to try the challenge yourself first, it is available at <a href="https://challenge.bellingcat.com/" target="_blank" rel="noopener">challenge.bellingcat.com</a>.
+        </p>
+      </div>
+
+      <p>
+        When there is no technical metadata, there is no shortcut. You have to work out the environment by yourself. And that's what I did. This is how I broke the three minutes down.
+      </p>
+
+      <div class="part-header">
+        <span class="part-label">Part <span class="part-num">01</span> / 03</span>
+        <h2>Mapping the timeline</h2>
+      </div>
+
+      <p>
+        The first step in audio analysis is to strip away imagination and rely strictly on what we hear. I listened to it twice and mapped out the events chronologically.</p>
+
+      <ul class="evidence">
+        <li><span><em>The door closed with a hiss.</em> The specific sound of a bus or tram door. The vehicle pulls away.</span></li>
+        <li><span><em>A public announcement:</em> "Be aware of pickpockets at this station."</span></li>
+        <li><span><em>Church chimes begin.</em> Not a single strike, but a full melodic run.</span></li>
+        <li><span><em>A second announcement:</em> "Caution, you are reaching the end of the travelator." Footsteps are audible underneath it.</span></li>
+        <li><span><em>A sharp, repeated beep.</em> The tone a bus or tram gives when a wheelchair ramp deploys.</span></li>
+      </ul>
+
+      <p>
+        Here is a rule I come back to on every investigation: <strong>when you cannot work out what something is, ask what it is not.</strong> The pickpocket announcement is in English, but the accent is clearly not native. That alone ruled out the UK. A non-native English announcement in a transit hub usually means a major continental European station with enough international traffic that English has become the working language for public safety.
+      </p>
+
+      <div class="pullquote">
+        When you cannot work out what something <em>is</em>, ask what it <em>is not</em>.
+      </div>
+
+      <div class="part-header">
+        <span class="part-label">Part <span class="part-num">02</span> / 03</span>
+        <h2>What the tape isn't saying</h2>
+      </div>
+
+      <p>
+      There is a constant soft sound of bicycle traffic. No motorbikes or cars close enough to be heard. This told me two things: the location is pedestrianised or very close to it, and it is away from a main road. This helped me narrow down exactly where to look when investigating on the map.
+      </p>
+
+      <p>
+        Heavy bicycle traffic points to a small group of countries. The Netherlands and Denmark are the most obvious. Copenhagen was my first guess, but Copenhagen Central plays its announcements in <a href="https://youtu.be/gtla_DufYgs?si=THns_2cvX-VL-Yob&t=88" target="_blank" rel="noopener">Danish as well as English,</a> and there is no Danish on the clip. There is no German either, which rules out much of Belgium and the German border stations. That left the Netherlands. Most likely Amsterdam or Utrecht.
+      </p>
+
+      <p>
+        To decide between the two, I ran a Google dork on the travelator line. Searching for the exact phrase <em>"Caution, you are reaching the end of the travelator"</em> returned a <a href="https://www.reddit.com/r/Amsterdam/comments/14xi2mw/why_did_they_do_this/" target="_blank" rel="noopener">Reddit thread in r/Amsterdam</a> where users were discussing the same announcement. That was enough to begin the carillon search with Amsterdam instead of Utrecht.
+      </p>
+
+      <div class="part-header">
+        <span class="part-label">Part <span class="part-num">03</span> / 03</span>
+        <h2>Pinpointing the tower</h2>
+      </div>
+
+      <p>
+        The chimes themselves were the main clue. A full melodic phrase, and not a simple quarter-hour strike, meant I was listening to a <strong>carillon</strong>. A carillon is a tuned set of bells played as an instrument, not an ordinary clock.
+      </p>
+
+      <p>
+        A search for Dutch carillons led me to <a href="https://www.towerbells.org/" target="_blank" rel="noopener">towerbells.org</a>, a database of bell towers worldwide. I filtered the Netherlands entries first by "Chimes". Nothing matched. I then switched to "Traditional carillons" and <a href="https://www.towerbells.org/data/atlas/GRegionalMap.html?XMNLTR" target="_blank" rel="noopener"> opened the map view.</a>
+      </p>
+
+      <p>
+        I needed a place that fit the acoustic profile. Close to a bus or tram stop. Pedestrianised. Heavy foot and bicycle traffic. No main road within earshot. Zooming into Amsterdam, one pin stood out. The environment around it matched every condition the tape had set.
+      </p>
+
+      <p>
+        Before committing to an answer, I wanted to hear it. I spent the next hour on YouTube, playing recordings of each candidate carillon alongside the Bellingcat clip. I compared the tempo, the interval pattern, and the weight and timbre of each set of bells. One recording matched the challenge clip. That was when I was certain.
+      </p>
+
+      <a href="https://www.youtube.com/watch?v=OZ3kBuPnbVA" target="_blank" rel="noopener" class="evidence-link">
+        <span class="play-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="evidence-link-text">
+          <span class="evidence-link-kicker">Evidence — YouTube</span>
+          <span class="evidence-link-title">Reference recording of the carillon, matched against the Bellingcat clip</span>
+        </span>
+        <span class="evidence-link-arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <div class="finding" id="finding">
+        <span class="finding-label">The tower</span>
+        <span class="finding-answer" id="findingAnswer" aria-hidden="true">Munttoren</span>
+        <button class="finding-reveal" id="findingReveal" type="button" aria-controls="findingAnswer" aria-expanded="false">
+          → Reveal the answer
+        </button>
+        <span class="finding-hint">Solve it first at challenge.bellingcat.com</span>
+      </div>
+
+      <p style="margin-top: 2rem;">
+        No photo. No EXIF. Just three minutes of background noise and enough acoustics to figure out where we were.
+      </p>
+
+      <div class="acknowledgement">
+        <span class="ack-label">Thanks</span>
+        <p>To the Bellingcat team for designing this challenge. Audio-only CTFs are rare, and this one was carefully put together. Looking forward to the next.</p>
+      </div>
+
+      <div class="end-mark">✦ ✦ ✦</div>
+
+    </div>
+  </article>
+</main>
+
+<footer class="container">
+  <span>Nezr Kaan — OSINT Researcher</span>
+  <span><a href="../writeups.html">← Back to field notes</a></span>
+</footer>
+
+<script>
+(function() {
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+
+  toggle.addEventListener('click', function() {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch(e) {}
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    try {
+      if (!localStorage.getItem('theme')) {
+        root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    } catch(err) {}
+  });
+
+  // Reading progress
+  var progress = document.getElementById('progress');
+  function updateProgress() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    var pct = height > 0 ? (scrolled / height) * 100 : 0;
+    if (progress) progress.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Reveal answer
+  var finding = document.getElementById('finding');
+  var revealBtn = document.getElementById('findingReveal');
+  var answer = document.getElementById('findingAnswer');
+
+  if (revealBtn && finding) {
+    revealBtn.addEventListener('click', function() {
+      finding.classList.add('revealed');
+      revealBtn.setAttribute('aria-expanded', 'true');
+      if (answer) answer.setAttribute('aria-hidden', 'false');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

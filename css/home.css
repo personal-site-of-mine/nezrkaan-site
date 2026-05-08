@@ -1,0 +1,183 @@
+/* ──────────────────────────────────────────────
+   Nezr Kaan — home.css
+   Used only on index.html · loaded AFTER base.css
+   ────────────────────────────────────────────── */
+
+/* ─── HERO ─── */
+.hero {
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  margin-bottom: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.hero-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent-orange);
+  flex-shrink: 0;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 9vw, 5.2rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.8rem;
+  font-variation-settings: "opsz" 72;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.75;
+}
+
+/* ─── SECTION ─── */
+section.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border);
+}
+section.section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  margin-bottom: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent-orange);
+  flex-shrink: 0;
+}
+
+.bio {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 58ch;
+  margin-bottom: 1rem;
+}
+.bio strong {
+  color: var(--text);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.focus-list {
+  list-style: none;
+  margin: 2rem 0 0;
+}
+.focus-list li {
+  padding: 0.5rem 0 0.5rem 1.75rem;
+  position: relative;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: 58ch;
+}
+.focus-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent-orange);
+  font-family: var(--mono);
+}
+
+.arrow-link {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-strong);
+  transition: color var(--t), border-color var(--t), gap var(--t);
+  margin-top: 0.75rem;
+}
+.arrow-link:hover {
+  color: var(--accent-purple);
+  border-color: var(--accent-purple);
+  gap: 0.8rem;
+}
+
+.contact-links {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.contact-link {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: color var(--t);
+  padding: 0.5rem 0;
+}
+.contact-link:hover { color: var(--accent-purple); }
+.contact-link svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 600px) {
+  .hero { padding-top: 4rem; padding-bottom: 2.75rem; }
+  section.section { padding-top: 3rem; padding-bottom: 3rem; }
+  .bio { font-size: 1rem; }
+  .hero-description { font-size: 1.02rem; }
+  .focus-list li { font-size: 0.96rem; }
+}
+
+@media (max-width: 380px) {
+  .hero h1 { font-size: 2.85rem; }
+}
+
+/* ─── LOAD ANIMATION ─── */
+.hero > *, section.section {
+  animation: fadeUp 0.7s ease both;
+}
+.hero-label { animation-delay: 0.05s; }
+.hero h1 { animation-delay: 0.15s; }
+.hero-description { animation-delay: 0.25s; }
+section.section:nth-of-type(1) { animation-delay: 0.35s; }
+section.section:nth-of-type(2) { animation-delay: 0.45s; }
+section.section:nth-of-type(3) { animation-delay: 0.55s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero > *, section.section { animation: none; }
+}
