@@ -88,6 +88,9 @@
 
 <footer class="container">
   <span>{{ site.author.name }} — {{ site.tagline }}</span>
+  {% if site.author.kofi %}
+  <span><a href="{{ site.author.kofi }}" target="_blank" rel="noopener" class="footer-support">Support →</a></span>
+  {% endif %}
   {% if footerBackHref %}
   <span><a href="{{ footerBackHref }}">{{ footerBackLabel or '← Back' }}</a></span>
   {% else %}
