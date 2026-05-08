@@ -62,7 +62,25 @@ jsonLd:
     <p class="bio">
       I publish write-ups on CTF challenges, OSINT lessons and investigations. My goal is to break down the methodology, showing you how to build a case and how to use the right tools.
     </p>
-    <a href="/writeups/" class="arrow-link">Read the archive →</a>
+
+    {% set latest = collections.writeups[0] %}
+    {% if latest %}
+    <a href="/writeups/{{ latest.fileSlug }}" class="latest-card">
+      <span class="latest-kicker">Latest field note · № {{ latest.data.number }}</span>
+      <h3 class="latest-title">{{ latest.data.archive_title or latest.data.articleTitle }}</h3>
+      <p class="latest-excerpt">{{ latest.data.excerpt }}</p>
+      <span class="latest-meta">
+        <span>{{ latest.data.category }}</span>
+        <span class="sep"></span>
+        <span>{{ latest.data.date | readableDate }}</span>
+        <span class="sep"></span>
+        <span>{{ latest.data.readtime }}</span>
+      </span>
+      <span class="latest-read">Read the writeup →</span>
+    </a>
+    {% endif %}
+
+    <a href="/writeups/" class="arrow-link">Read the full archive →</a>
   </section>
 
   <section class="section container">

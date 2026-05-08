@@ -1,0 +1,26 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }} — Field Notes</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link href="{{ site.url }}/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/"/>
+  <updated>{% if collections.writeups[0] %}{{ collections.writeups[0].data.date | isoDate }}T00:00:00Z{% endif %}</updated>
+  <id>{{ site.url }}/</id>
+  <author>
+    <name>{{ site.author.name }}</name>
+    <uri>{{ site.url }}</uri>
+  </author>
+  {%- for w in collections.writeups %}
+  <entry>
+    <title>{{ w.data.archive_title or w.data.articleTitle }}</title>
+    <link href="{{ site.url }}/writeups/{{ w.fileSlug }}"/>
+    <updated>{{ w.data.date | isoDate }}T00:00:00Z</updated>
+    <id>{{ site.url }}/writeups/{{ w.fileSlug }}</id>
+    <summary>{{ w.data.excerpt or w.data.description }}</summary>
+  </entry>
+  {%- endfor %}
+</feed>
