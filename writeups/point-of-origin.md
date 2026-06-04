@@ -26,6 +26,10 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
   This month's Bellingcat challenges have all been about blast analysis and they have been fun to work through. The challenge gave one photo of a crater in a Ukrainian street. Two questions. What street is this and from which direction was the munition fired?
 </p>
 
+<figure class="article-figure">
+  <img src="/images/point-of-origin/blast-photo.jpg">
+</figure>
+
 <div class="try-callout">
   <span class="try-callout-icon">↪ Try it</span>
   <p>
@@ -46,12 +50,9 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
   The search returned a few photos of the same church but none of them named it directly. However, I discovered <a href="https://catholicvirginian.org/news/global/greek-catholic-bishop-in-ukraine-only-37-parishes-remain-active/" target="_blank" rel="noopener">an article </a> that identified the church's general location. This led me to search the town of Orikhiv in Ukraine's Zaporizhzhia region on Google Maps. There are only two churches in the area and the one matching our image is the <strong>Svyato-Pokrovskyy Khram</strong> (Свято-Покровський храм).
 </p>
 
-<figure class="article-figure is-pair">
-  <div class="figure-pair">
-    <img src="/images/point-of-origin/maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the exact location marked.">
-    <img src="/images/point-of-origin/blast-photo.jpg" alt="The original challenge photograph: a crater in a damaged road with the church visible behind trees in the background.">
-  </div>
-  <figcaption>Left is the exact location on Google Maps. Right is the original challenge photo with the church visible behind the trees.</figcaption>
+<figure class="article-figure">
+  <img src="/images/point-of-origin/maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the exact location marked.">
+  <figcaption>The exact location on Google Maps, with the church and surrounding streets visible.</figcaption>
 </figure>
 
 <p>
