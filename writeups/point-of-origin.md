@@ -16,14 +16,14 @@ tags_for_filter:
   - Bellingcat
   - Geolocation
   - Munition Analysis
-description: Solving Bellingcat's Point of Origin challenge — geolocating a crater photo to Pokrovska Street in Orikhiv, Ukraine, and determining the munition's direction of fire from blast pattern analysis.
-keywords: OSINT, geolocation, crater analysis, blast pattern, munition direction, Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
-ogTitle: Point of Origin — A Crater, a Church, a Direction
+description: Solving Bellingcat's Point of Origin challenge. Geolocating a crater photo to Pokrovska Street in Orikhiv, Ukraine and working out the munition's direction of fire from the blast pattern.
+keywords: OSINT, geolocation, munition analysis, crater analysis, blast pattern, Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
+ogTitle: "Point of Origin: A Crater, a Church, a Direction"
 ogDescription: "One photo of a crater in a Ukrainian street. Two questions: where, and from which direction."
 ---
 
 <p class="lead">
-  Bellingcat's brief was short: <em>a photo taken somewhere in Ukraine shows a crater in the road. What street was the photo taken on — and from which direction was the munition fired?</em> One photo. Two questions.
+  This month's Bellingcat challenges have all been about blast analysis and they have been fun to work through. The challenge gave one photo of a crater in a Ukrainian street. Two questions. What street is this and from which direction was the munition fired?
 </p>
 
 <div class="try-callout">
@@ -39,11 +39,11 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </div>
 
 <p>
-  The first step was identifying the street. I used Google Reverse Image Search, but instead of running the full photo I cropped it tightly on the church in the background. The architecture is iconic enough to search on its own.
+  The first step was identifying the street. I used Google Reverse Image Search. Instead of running the whole photo I cropped it tight on the church in the background. The church has a distinctive shape and that is usually enough on its own.
 </p>
 
 <p>
-  I found several photos of the church but none of them named it directly. One result led further than the others — an article on catholicvirginian.org covering Greek Catholic parishes in Ukraine placed a similar-looking church in the region. That was enough to open Google Maps and search the town of <strong>Orikhiv</strong> in Ukraine's Zaporizhzhia region. There are only two churches in the area. The one matching the photo is <strong>Svyato-Pokrovskyy Khram</strong> (Свято-Покровський храм).
+  The search returned a few photos of the same church but none of them named it directly. However, I discovered <a href="https://catholicvirginian.org/news/global/greek-catholic-bishop-in-ukraine-only-37-parishes-remain-active/" target="_blank" rel="noopener">an article </a> that identified the church's general location. This led me to search the town of Orikhiv in Ukraine's Zaporizhzhia region on Google Maps. There are only two churches in the area and the one matching our image is the <strong>Svyato-Pokrovskyy Khram</strong> (Свято-Покровський храм).
 </p>
 
 <figure class="article-figure is-pair">
@@ -55,7 +55,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </figure>
 
 <p>
-  By analysing the surroundings, there is only one specific angle and line of sight that places the white building and the church behind the trees in the same frame. The exact coordinates are <span class="dork">47.575376, 35.785224</span>. This confirms the photo was taken on <strong>Pokrovska Street</strong> (Покровська).
+  There is only one angle in the area where the white building and the church behind the trees line up the way they do in the photo. That gave me the exact spot. The coordinates are <span class="dork">47.575376, 35.785224</span>. The street is <strong>Pokrovska</strong> (Покровська).
 </p>
 
 <div class="part-header">
@@ -64,27 +64,23 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </div>
 
 <p>
-  The second question was about direction. To find the point of origin I needed to look closely at the edges of the crater.
+  The second question was about direction. To work out where the munition came from I needed to look closely at the edges of the crater, then match that to a compass bearing on Google Earth.
 </p>
 
-<figure class="article-figure">
-  <img src="/images/point-of-origin/blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
+<figure class="article-figure is-pair">
+  <div class="figure-pair">
+    <img src="/images/point-of-origin/blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
+    <img src="/images/point-of-origin/north-aligned-map.png" alt="Google Earth view of the location aligned to true North using the compass icon in the bottom right corner.">
+  </div>
+  <figcaption>Left is the close-up of the crater edge. Right is the Google Earth view aligned to true North using the compass icon in the bottom right corner.</figcaption>
 </figure>
 
 <p>
-  The uplifted and fractured edge of the asphalt is facing toward the camera. This fragmentation pattern tells you which way the munition was moving. It displaced material in the direction it was travelling, so it came from the background of the photo toward the foreground.
+  The uplifted, fractured edge of the asphalt is facing the camera. This tells you which way the munition was moving. The blast pushes material in the same direction the munition was travelling. So the munition came from the background of the photo and moved toward the foreground.
 </p>
 
 <p>
-  To turn that into a compass bearing, I went back to Google Earth and clicked the compass icon in the bottom right corner to align the map exactly to North.
-</p>
-
-<figure class="article-figure">
-  <img src="/images/point-of-origin/north-aligned-map.png" alt="Google Earth view of the location aligned to true North, used to determine the bearing of the displaced asphalt edge.">
-</figure>
-
-<p>
-  Comparing the North-aligned map view against the photo, the uplifted edge of the asphalt is pointing toward the South. For the kinetic energy of the impact to tilt the asphalt in that direction, the munition must have come from the opposite side. The point of origin is <strong>North</strong>.
+  Lining up the North-aligned map with the photo, the uplifted edge of the asphalt is pointing south. The asphalt was pushed south, which means the munition came from the north. That is the point of origin.
 </p>
 
 <div class="finding" id="finding">
@@ -97,12 +93,12 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </div>
 
 <p style="margin-top: 2rem;">
-  One photo, two questions. The church named the street. The crater's fractured edge named the direction.
+  One photo, two questions. The church gave me the street. The crater edge gave me the direction.
 </p>
 
 <div class="acknowledgement">
   <span class="ack-label">Thanks</span>
-  <p>To the Bellingcat team for this one. The crater analysis especially rewards slowing down and looking carefully at what the physics of the impact actually left behind.</p>
+  <p>Thanks to the Bellingcat team for this one. The crater analysis was the best part. It made me slow down and look closely at what the blast actually left on the road.</p>
 </div>
 
 <div class="end-mark">✦ ✦ ✦</div>
