@@ -94,7 +94,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </div>
 
 <p style="margin-top: 2rem;">
-  One photo, two questions. The church gave me the street. The crater edge gave me the direction.
+  The church gave us the street. The crater edge gave us the direction.
 </p>
 
 <div class="acknowledgement">
