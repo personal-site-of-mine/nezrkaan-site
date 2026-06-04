@@ -23,7 +23,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 ---
 
 <p class="lead">
-  This month's Bellingcat challenges have all been about blast analysis and they have been fun to work through. The challenge gave one photo of a crater in a Ukrainian street. Two questions. What street is this and from which direction was the munition fired?
+  This month's Bellingcat challenges have all been about blast analysis and they have been fun to work through. This challenge gave one photo of a crater in a Ukrainian street. Two questions. What street is this and from which direction was the munition fired?
 </p>
 
 <figure class="article-figure">
