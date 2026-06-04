@@ -110,12 +110,6 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
 </figure>
 
-<div class="pullquote">
-
-  The asphalt tells you where the force went. The origin is always the opposite end.
-
-</div>
-
 <div class="finding" id="finding">
 
   <span class="finding-label">Street · Direction</span>
@@ -124,9 +118,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
   <button class="finding-reveal" id="findingReveal" type="button" aria-controls="findingAnswer" aria-expanded="false">
 
-\    → Reveal the answer</button>
-
-  <span class="finding-hint">Solve it first at challenge.bellingcat.com</span>
+→ Reveal the answer</button> <span class="finding-hint">Solve it first at challenge.bellingcat.com</span>
 
 </div>
 
