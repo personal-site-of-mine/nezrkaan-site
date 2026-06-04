@@ -54,7 +54,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
 <figure class="article-figure">
 
-  <img src="/images/uploads/point-of-origin/maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the church and surrounding streets visible.">
+  <img src="/images/point-of-origin/maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the church and surrounding streets visible.">
 
 </figure>
 
@@ -66,7 +66,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
 <figure class="article-figure">
 
-  <img src="/images/uploads/point-of-origin/blast-photo.jpg" alt="The original challenge photograph: a crater in a damaged asphalt road, with a church visible behind trees in the background.">
+  <img src="/images/point-of-origin/blast-photo.jpg" alt="The original challenge photograph: a crater in a damaged asphalt road, with a church visible behind trees in the background.">
 
 </figure>
 
@@ -94,7 +94,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
 <figure class="article-figure">
 
-  <img src="/images/uploads/point-of-origin/blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
+  <img src="/images/point-of-origin/blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
 
 </figure>
 
@@ -106,7 +106,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
 
 <figure class="article-figure">
 
-  <img src="/images/uploads/point-of-origin/north-aligned-map.png" alt="Google Earth view of the location aligned to true North, used to determine the bearing of the crater's displaced edge.">
+  <img src="/images/point-of-origin/north-aligned-map.png" alt="Google Earth view of the location aligned to true North, used to determine the bearing of the crater's displaced edge.">
 
 </figure>
 
