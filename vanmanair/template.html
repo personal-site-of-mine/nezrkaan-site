@@ -47,7 +47,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:74px}
 .hero{position:relative;padding:78px 0 70px;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(820px 480px at 78% 8%,rgba(255,106,44,.16),transparent 60%),radial-gradient(620px 520px at 10% 90%,rgba(255,147,32,.08),transparent 60%);pointer-events:none}
 .grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:54px 54px;opacity:.16;-webkit-mask-image:radial-gradient(circle at 70% 30%,#000,transparent 72%);mask-image:radial-gradient(circle at 70% 30%,#000,transparent 72%)}
-.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+.hero-grid{position:relative;max-width:780px}
 .hero h1{font-size:clamp(40px,6.4vw,76px);font-weight:800;margin:18px 0 20px}
 .hero h1 .hl{color:var(--orange);white-space:nowrap}
 .hero p.lead{font-size:19px;color:var(--cream-dim);max-width:520px;margin-bottom:30px}
@@ -370,26 +370,6 @@ footer a:hover{color:var(--orange)}
           </div>
           <div class="trust-divider"></div>
           <div class="mini-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>No hidden fees</div>
-        </div>
-      </div>
-      <div class="hero-art reveal d3">
-        <div class="qcard">
-          <div class="qcard-top">
-            <span class="vmalogo" style="width:120px;height:34px"></span>
-            <div style="margin-left:auto;text-align:right"><b>Instant quote</b><small>live estimate</small></div>
-          </div>
-          <div class="qroute">
-            <div class="pin"><span class="dot"></span><span class="ln"></span><span class="dot fill"></span></div>
-            <div style="flex:1">
-              <div class="addr" style="margin-bottom:18px"><b>Pickup</b><small>SE10 &middot; Greenwich</small></div>
-              <div class="addr"><b>Delivery</b><small>E14 &middot; Canary Wharf</small></div>
-            </div>
-          </div>
-          <div class="qrow"><span>Distance</span><span>6.4 miles</span></div>
-          <div class="qrow"><span>Medium van &middot; 1 man &middot; 2.5 hrs</span><span>£99.50</span></div>
-          <div class="qrow"><span>Stairs &amp; charges</span><span>£21.40</span></div>
-          <div class="qtotal"><div><div class="lbl">Estimated total</div><div class="amt">£120.90</div></div></div>
-          <div class="qdep"><div class="l">Deposit to book<b>£40.00</b></div><span class="btn btn-primary" style="padding:11px 18px;font-size:13px">Book now &rarr;</span></div>
         </div>
       </div>
     </div>
