@@ -58,9 +58,9 @@ collections:
         name: "tags_for_filter"
         widget: "select"
         multiple: true
-        options: ["CTF", "Bellingcat", "Investigation", "Blog", "News"]
+        options: ["CTF", "Bellingcat", "Investigation", "Academic", "Blog", "News"]
         default: ["CTF", "Bellingcat"]
-        hint: "Arşiv sayfasındaki filtre çipleri bunlara göre çalışır."
+        hint: "Arşiv sayfasındaki filtre çipleri bunlara göre otomatik oluşur — akademik yazılar için 'Academic' seç."
       - label: "Gövde"
         name: "body"
         widget: "markdown"
@@ -70,16 +70,21 @@ collections:
           basıp bileşen seç.
         editor_components:
           - "lead"
+          - "abstract"
           - "try-callout"
           - "part-header"
           - "image"
           - "figure"
           - "figure-pair"
+          - "article-quote"
+          - "keypoint"
           - "evidence-list"
           - "evidence-link"
           - "pullquote"
           - "dork"
+          - "data-table"
           - "method-detail"
+          - "references"
           - "finding"
           - "acknowledgement"
           - "end-mark"

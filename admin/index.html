@@ -316,6 +316,149 @@
     });
 
     // ─────────────────────────────────────────────────────────────────
+    // Academic components — abstract, quote, key point, references,
+    // data table. For long-form / academic articles.
+    // ─────────────────────────────────────────────────────────────────
+
+    // 14. Abstract
+    CMS.registerEditorComponent({
+      id: "abstract",
+      label: "Abstract / Özet kutusu",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "Abstract" },
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<div class="abstract">\s*<span class="abstract-label">([\s\S]*?)<\/span>\s*<p>([\s\S]*?)<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], text: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="abstract">\n  <span class="abstract-label">' + esc(d.label) + '</span>\n  <p>' + esc(d.text) + '</p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="abstract"><span class="abstract-label">' + esc(d.label) + '</span><p>' + esc(d.text) + '</p></div>';
+      }
+    });
+
+    // 15. Academic quote with attribution
+    CMS.registerEditorComponent({
+      id: "article-quote",
+      label: "Alıntı (kaynaklı)",
+      fields: [
+        { name: "quote", label: "Alıntı", widget: "text" },
+        { name: "source", label: "Kaynak / kişi", widget: "string", required: false, hint: "ör. 'Bellingcat, 2024' veya 'C. Wardle — First Draft'" }
+      ],
+      pattern: /^<blockquote class="article-quote">\s*<p>([\s\S]*?)<\/p>\s*(?:<cite>([\s\S]*?)<\/cite>\s*)?<\/blockquote>$/,
+      fromBlock: function(m) { return { quote: m[1], source: m[2] || "" }; },
+      toBlock: function(d) {
+        var out = '<blockquote class="article-quote">\n  <p>' + esc(d.quote) + '</p>';
+        if (d.source) out += '\n  <cite>' + esc(d.source) + '</cite>';
+        return out + '\n</blockquote>';
+      },
+      toPreview: function(d) {
+        return '<blockquote class="article-quote"><p>' + esc(d.quote) + '</p>' +
+          (d.source ? '<cite>' + esc(d.source) + '</cite>' : '') + '</blockquote>';
+      }
+    });
+
+    // 16. Key point / highlight box
+    CMS.registerEditorComponent({
+      id: "keypoint",
+      label: "Önemli nokta kutusu",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "Key point", hint: "ör. 'Key point', 'Tanım', 'Hipotez', 'Sonuç'" },
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<div class="keypoint">\s*<span class="keypoint-label">([\s\S]*?)<\/span>\s*<p>([\s\S]*?)<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], text: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="keypoint">\n  <span class="keypoint-label">' + esc(d.label) + '</span>\n  <p>' + esc(d.text) + '</p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="keypoint"><span class="keypoint-label">' + esc(d.label) + '</span><p>' + esc(d.text) + '</p></div>';
+      }
+    });
+
+    // 17. References / bibliography (numbered [1], [2], ...)
+    CMS.registerEditorComponent({
+      id: "references",
+      label: "Kaynakça (numaralı)",
+      fields: [
+        { name: "items", label: "Kaynaklar", widget: "list",
+          hint: "Sıra numarası otomatik verilir: [1], [2]... Metin içinde <sup>1</sup> ile atıf yapabilirsin. HTML kullanılabilir.",
+          field: { name: "item", label: "Kaynak", widget: "string" } }
+      ],
+      pattern: /^<ol class="references">\s*([\s\S]*?)\s*<\/ol>$/,
+      fromBlock: function(m) {
+        var items = [];
+        var re = /<li>([\s\S]*?)<\/li>/g, x;
+        while ((x = re.exec(m[1]))) items.push(x[1].trim());
+        return { items: items };
+      },
+      toBlock: function(d) {
+        var items = d.items || [];
+        if (items.toJS) items = items.toJS();
+        return '<ol class="references">\n' + items.map(function(i) {
+          return '  <li>' + esc(i) + '</li>';
+        }).join('\n') + '\n</ol>';
+      },
+      toPreview: function(d) {
+        var items = d.items || [];
+        if (items.toJS) items = items.toJS();
+        return '<ol class="references">' + items.map(function(i) {
+          return '<li>' + esc(i) + '</li>';
+        }).join('') + '</ol>';
+      }
+    });
+
+    // 18. Data table — one row per line, cells separated with |
+    function tableRows(d) {
+      var rows = d.rows || [];
+      if (rows.toJS) rows = rows.toJS();
+      return rows;
+    }
+    function splitCells(row) {
+      return String(row).split('|').map(function(c) { return c.trim(); });
+    }
+    CMS.registerEditorComponent({
+      id: "data-table",
+      label: "Tablo",
+      fields: [
+        { name: "header", label: "Başlık satırı", widget: "string", hint: "Sütunları | ile ayır. ör. 'Yıl | Olay | Kaynak'" },
+        { name: "rows", label: "Satırlar", widget: "list",
+          hint: "Her satırda hücreleri | ile ayır.",
+          field: { name: "row", label: "Satır", widget: "string" } }
+      ],
+      pattern: /^<div class="table-wrap"><table class="data-table">\s*<thead><tr>([\s\S]*?)<\/tr><\/thead>\s*<tbody>\s*([\s\S]*?)\s*<\/tbody>\s*<\/table><\/div>$/,
+      fromBlock: function(m) {
+        var header = [];
+        var re = /<th>([\s\S]*?)<\/th>/g, x;
+        while ((x = re.exec(m[1]))) header.push(x[1].trim());
+        var rows = [];
+        var rowRe = /<tr>([\s\S]*?)<\/tr>/g, r;
+        while ((r = rowRe.exec(m[2]))) {
+          var cells = [];
+          var cellRe = /<td>([\s\S]*?)<\/td>/g, c;
+          while ((c = cellRe.exec(r[1]))) cells.push(c[1].trim());
+          rows.push(cells.join(' | '));
+        }
+        return { header: header.join(' | '), rows: rows };
+      },
+      toBlock: function(d) {
+        var head = splitCells(d.header).map(function(c) { return '<th>' + c + '</th>'; }).join('');
+        var body = tableRows(d).map(function(row) {
+          return '  <tr>' + splitCells(row).map(function(c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+        }).join('\n');
+        return '<div class="table-wrap"><table class="data-table">\n  <thead><tr>' + head + '</tr></thead>\n  <tbody>\n' + body + '\n  </tbody>\n</table></div>';
+      },
+      toPreview: function(d) {
+        var head = splitCells(d.header).map(function(c) { return '<th>' + c + '</th>'; }).join('');
+        var body = tableRows(d).map(function(row) {
+          return '<tr>' + splitCells(row).map(function(c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+        }).join('');
+        return '<div class="table-wrap"><table class="data-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>';
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────────
     // Preview template for writeups — mirrors the published layout and
     // applies the same automatic fallbacks the site build uses.
     // ─────────────────────────────────────────────────────────────────

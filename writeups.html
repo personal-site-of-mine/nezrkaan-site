@@ -16,31 +16,13 @@ emptyStateText: "No entries in this category yet — check back soon."
     <h1>{{ heroTitle | safe }}</h1>
     <p class="hero-description">{{ heroDescription }}</p>
 
-    {%- set total = collections.writeups | length -%}
-    {%- set ctfCount = 0 -%}
-    {%- set bellingcatCount = 0 -%}
-    {%- set investigationCount = 0 -%}
-    {%- set blogCount = 0 -%}
-    {%- set newsCount = 0 -%}
-    {%- for w in collections.writeups -%}
-      {%- if w.data.tags_for_filter -%}
-        {%- if 'CTF' in w.data.tags_for_filter -%}{%- set ctfCount = ctfCount + 1 -%}{%- endif -%}
-        {%- if 'Bellingcat' in w.data.tags_for_filter -%}{%- set bellingcatCount = bellingcatCount + 1 -%}{%- endif -%}
-        {%- if 'Investigation' in w.data.tags_for_filter -%}{%- set investigationCount = investigationCount + 1 -%}{%- endif -%}
-        {%- if 'Blog' in w.data.tags_for_filter -%}{%- set blogCount = blogCount + 1 -%}{%- endif -%}
-        {%- if 'News' in w.data.tags_for_filter -%}{%- set newsCount = newsCount + 1 -%}{%- endif -%}
-      {%- endif -%}
-    {%- endfor -%}
-
     <div class="filters" role="group" aria-label="Filter writeups by category">
       <span class="filters-label">Filter by</span>
       <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all" type="button">All <span class="count">{{ total }}</span></button>
-        <button class="chip" data-filter="CTF" type="button">CTF <span class="count">{{ ctfCount }}</span></button>
-        <button class="chip" data-filter="Bellingcat" type="button">Bellingcat <span class="count">{{ bellingcatCount }}</span></button>
-        <button class="chip" data-filter="Investigation" type="button">Investigation <span class="count">{{ investigationCount }}</span></button>
-        <button class="chip" data-filter="Blog" type="button">Blog <span class="count">{{ blogCount }}</span></button>
-        <button class="chip" data-filter="News" type="button">News <span class="count">{{ newsCount }}</span></button>
+        <button class="chip active" data-filter="all" type="button">All <span class="count">{{ collections.writeups | length }}</span></button>
+        {%- for t in collections.writeupTags %}
+        <button class="chip" data-filter="{{ t.tag }}" type="button">{{ t.tag }} <span class="count">{{ t.count }}</span></button>
+        {%- endfor %}
       </div>
     </div>
   </section>
