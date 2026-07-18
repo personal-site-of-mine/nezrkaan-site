@@ -1,20 +1,24 @@
 ---
-title: "Rapid Fire — Field Notes by Nezr Kaan"
-ogTitle: "Rapid Fire — A Burst That Wasn't Gunfire"
-ogDescription: "A short audio clip, a framing built to mislead, and the bird behind the sound."
-description: "Solving Bellingcat's Rapid Fire audio OSINT challenge. A misleading prompt, a ruled-out woodpecker, and a single Google dork that led to the Shoebill."
-keywords: "OSINT, audio forensics, Bellingcat CTF, Shoebill, South Sudan, bird identification"
-date: 2026-04-15
-kicker: "Field Note № 002 — Audio OSINT"
-articleTitle: "Rapid Fire"
-dek: "A short burst and the bird behind it."
-tag: "Bellingcat CTF"
-type: "Audio forensics"
-number: "002"
-category: "Audio OSINT"
-excerpt: "Solving Bellingcat's audio-only challenge with three minutes of recording and no metadata. A Google dork that landed on the answer."
-tags_for_filter: ["CTF", "Bellingcat", "Audio OSINT"]
-archive_title: "Rapid Fire: A burst that wasn't gunfire"
+articleTitle: Rapid Fire
+date: 2026-04-15T00:00:00.000Z
+excerpt: Solving Bellingcat's audio-only challenge with three minutes of recording and no metadata. A Google dork that landed on the answer.
+tags_for_filter:
+  - CTF
+  - Bellingcat
+  - Audio OSINT
+advanced:
+  dek: A short burst and the bird behind it.
+  category: Audio OSINT
+  type: Audio forensics
+  tag: Bellingcat CTF
+  number: "002"
+  kicker: Field Note № 002 — Audio OSINT
+  archive_title: "Rapid Fire: A burst that wasn't gunfire"
+  title: Rapid Fire — Field Notes by Nezr Kaan
+  description: Solving Bellingcat's Rapid Fire audio OSINT challenge. A misleading prompt, a ruled-out woodpecker, and a single Google dork that led to the Shoebill.
+  keywords: OSINT, audio forensics, Bellingcat CTF, Shoebill, South Sudan, bird identification
+  ogTitle: Rapid Fire — A Burst That Wasn't Gunfire
+  ogDescription: A short audio clip, a framing built to mislead, and the bird behind the sound.
 ---
 
 <p class="lead">

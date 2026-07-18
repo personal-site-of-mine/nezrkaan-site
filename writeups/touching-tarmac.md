@@ -1,20 +1,24 @@
 ---
-title: "Touching Tarmac — Field Notes by Nezr Kaan"
-ogTitle: "Touching Tarmac — A Plane, an Airline, an ICAO Code"
-ogDescription: "One taxiing photo. One airline. One airport in the Caribbean."
-description: "Solving Bellingcat's Touching Tarmac geolocation challenge — from a single taxiing photo to an airline, an airport and an ICAO code in Cuba."
-keywords: "OSINT, geolocation, Bellingcat CTF, Aero Caribbean, Havana, José Martí Airport"
-date: 2026-05-04
-kicker: "Field Note № 003 — Geolocation OSINT"
-articleTitle: "Touching Tarmac"
-dek: "A taxiing photo, an airline and one airport in the Caribbean."
-tag: "Bellingcat CTF"
-type: "Image OSINT"
-number: "003"
-category: "Image OSINT"
-excerpt: "Solving Bellingcat's geolocation challenge from a single photo of parked aircraft. Reading the livery, walking through the airline's route map, and confirming a control tower against historical satellite imagery."
-tags_for_filter: ["CTF", "Bellingcat", "Geolocation"]
-archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
+articleTitle: Touching Tarmac
+date: 2026-05-04T00:00:00.000Z
+excerpt: Solving Bellingcat's geolocation challenge from a single photo of parked aircraft. Reading the livery, walking through the airline's route map, and confirming a control tower against historical satellite imagery.
+tags_for_filter:
+  - CTF
+  - Bellingcat
+  - Geolocation
+advanced:
+  dek: A taxiing photo, an airline and one airport in the Caribbean.
+  category: Image OSINT
+  type: Image OSINT
+  tag: Bellingcat CTF
+  number: "003"
+  kicker: Field Note № 003 — Geolocation OSINT
+  archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
+  title: Touching Tarmac — Field Notes by Nezr Kaan
+  description: Solving Bellingcat's Touching Tarmac geolocation challenge — from a single taxiing photo to an airline, an airport and an ICAO code in Cuba.
+  keywords: OSINT, geolocation, Bellingcat CTF, Aero Caribbean, Havana, José Martí Airport
+  ogTitle: Touching Tarmac — A Plane, an Airline, an ICAO Code
+  ogDescription: One taxiing photo. One airline. One airport in the Caribbean.
 ---
 
 <p class="lead">
@@ -22,7 +26,7 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/touching-tarmac/challenge-original.jpg" alt="The original challenge photograph: small turboprop aircraft parked on a wet apron at dusk, taken from inside a taxiing aircraft.">
+  <img src="/images/uploads/touching-tarmac-challenge-original.jpg" alt="The original challenge photograph: small turboprop aircraft parked on a wet apron at dusk, taken from inside a taxiing aircraft.">
 </figure>
 
 <div class="try-callout">
@@ -46,7 +50,7 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/touching-tarmac/challenge-zoom.png" alt="A cropped, closer view of one of the parked aircraft showing the Aero Caribbean livery in white and yellow.">
+  <img src="/images/uploads/touching-tarmac-challenge-zoom.png" alt="A cropped, closer view of one of the parked aircraft showing the Aero Caribbean livery in white and yellow.">
 </figure>
 
 <a href="https://en.wikipedia.org/wiki/List_of_airlines_of_Cuba" target="_blank" rel="noopener" class="evidence-link is-reference">
@@ -98,7 +102,7 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/touching-tarmac/aerial-apron.png" alt="Satellite view of a circular apron at José Martí International Airport with several aircraft parked radially around its edge, highlighted with a red box.">
+  <img src="/images/uploads/touching-tarmac-aerial-apron.png" alt="Satellite view of a circular apron at José Martí International Airport with several aircraft parked radially around its edge, highlighted with a red box.">
 </figure>
 
 <p>
@@ -115,11 +119,11 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/touching-tarmac/aerial-context.png" alt="Wider satellite view showing the circular apron at the bottom and a building near the top, both highlighted with red boxes.">
+  <img src="/images/uploads/touching-tarmac-aerial-context.png" alt="Wider satellite view showing the circular apron at the bottom and a building near the top, both highlighted with red boxes.">
 </figure>
 
 <figure class="article-figure is-small">
-  <img src="/images/touching-tarmac/watch-tower.png" alt="Cropped detail from the original challenge photograph showing the control tower faintly visible in the background.">
+  <img src="/images/uploads/touching-tarmac-watch-tower.png" alt="Cropped detail from the original challenge photograph showing the control tower faintly visible in the background.">
   <figcaption>The control tower, just visible in the background of the original photo.</figcaption>
 </figure>
 
@@ -142,7 +146,7 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
       <li>Drag the timeline slider through the available dates and compare the results.</li>
     </ol>
     <figure class="article-figure inline-figure">
-      <img src="/images/touching-tarmac/historical-imagery-button.png" alt="Google Earth toolbar with the historical imagery clock icon highlighted by a red box.">
+      <img src="/images/uploads/touching-tarmac-historical-imagery-button.png" alt="Google Earth toolbar with the historical imagery clock icon highlighted by a red box.">
     </figure>
   </div>
 </details>
@@ -152,7 +156,7 @@ archive_title: "Touching Tarmac: A taxiing photo and an ICAO code"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/touching-tarmac/control-tower.png" alt="Aerial view of a black-and-white control tower with a circular observation deck, taken from an oblique satellite pass.">
+  <img src="/images/uploads/touching-tarmac-control-tower.png" alt="Aerial view of a black-and-white control tower with a circular observation deck, taken from an oblique satellite pass.">
 </figure>
 
 <p>

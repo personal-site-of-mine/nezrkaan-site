@@ -6,6 +6,66 @@
   <meta name="robots" content="noindex" />
   <title>Content Manager — Nezr Kaan</title>
   <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <style>
+    /* ── Editorial theme for the CMS UI itself ──
+       Decap renders into the page DOM, so element-level overrides with
+       !important restyle the app without depending on its hashed class
+       names. If a rule doesn't match a future version, nothing breaks. */
+
+    /* App canvas — the site's paper tone instead of grey */
+    body { background: #EDE6D0 !important; }
+
+    /* Field labels — small mono caps, like the site's kickers */
+    #nc-root label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      font-size: 11px !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+    }
+
+    /* Text inputs — serif, closer to the published look */
+    #nc-root input[type="text"],
+    #nc-root textarea {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-size: 1.05rem !important;
+      color: #201C18 !important;
+    }
+
+    /* The writing surface — a comfortable, Word-like page */
+    #nc-root [data-slate-editor="true"] {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-size: 1.13rem !important;
+      line-height: 1.75 !important;
+      color: #201C18 !important;
+      min-height: 65vh !important;
+      padding: 2.5rem 3rem !important;
+      caret-color: #5E3FA3;
+    }
+    #nc-root [data-slate-editor="true"] h1,
+    #nc-root [data-slate-editor="true"] h2,
+    #nc-root [data-slate-editor="true"] h3 {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-weight: 500 !important;
+      letter-spacing: -0.01em;
+    }
+    #nc-root [data-slate-editor="true"] code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      font-size: 0.85em !important;
+    }
+
+    /* Buttons — mono, square corners, quieter */
+    #nc-root button {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      border-radius: 2px !important;
+    }
+
+    @media (max-width: 700px) {
+      #nc-root [data-slate-editor="true"] { padding: 1.25rem 1rem !important; }
+    }
+  </style>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
@@ -471,34 +531,43 @@
           var entry = this.props.entry;
           var data = entry.get("data");
           var body = this.props.widgetFor("body");
+          // Read a field from the top level or the collapsed advanced group.
+          var advanced = data.get("advanced");
+          function field(name) {
+            var top = data.get(name);
+            if (top) return top;
+            if (advanced && advanced.get) return advanced.get(name);
+            return undefined;
+          }
           var dateRaw = data.get("date");
           var dateLabel = dateRaw
             ? new Date(dateRaw).toLocaleDateString("en-GB", {
                 day: "numeric", month: "long", year: "numeric"
               })
             : "";
-          var category = data.get("category") || data.get("type") || "OSINT";
-          var number = data.get("number") || "···";
-          var kicker = data.get("kicker") ||
+          var category = field("category") || field("type") || "OSINT";
+          var number = field("number") || "···";
+          var kicker = field("kicker") ||
             ("Field Note № " + number + " — " + category);
+          var tag = field("tag");
+          var type = field("type");
+          var dek = field("dek");
 
           return h("main", {},
             h("article", { className: "container" },
               h("header", { className: "article-header prose" },
                 h("p", { className: "article-kicker" }, kicker),
                 h("h1", { className: "article-title" },
-                  data.get("articleTitle") || data.get("title") || "Untitled"
+                  data.get("articleTitle") || field("title") || "Untitled"
                 ),
-                data.get("dek")
-                  ? h("p", { className: "article-dek" }, data.get("dek"))
+                dek
+                  ? h("p", { className: "article-dek" }, dek)
                   : null,
                 h("div", { className: "article-meta" },
-                  data.get("tag")
-                    ? h("span", { className: "tag" }, data.get("tag"))
-                    : null,
-                  data.get("tag") ? h("span", { className: "sep" }) : null,
-                  data.get("type") ? h("span", {}, data.get("type")) : null,
-                  data.get("type") ? h("span", { className: "sep" }) : null,
+                  tag ? h("span", { className: "tag" }, tag) : null,
+                  tag ? h("span", { className: "sep" }) : null,
+                  type ? h("span", {}, type) : null,
+                  type ? h("span", { className: "sep" }) : null,
                   h("span", {}, dateLabel)
                 )
               ),

@@ -20,10 +20,10 @@ collections:
     label: "Yazılar (Field Notes)"
     label_singular: "Yazı"
     description: >-
-      Yeni yazı ekle veya mevcut olanı düzenle. Sadece Başlık ve Özet'i doldurup
-      gövdeyi yazman yeterli — diğer her şey boş bırakılırsa otomatik üretilir.
-      Yayınla'ya bastıktan 1-2 dakika sonra yazı sitede, arşivde ve ana sayfada
-      kendiliğinden görünür.
+      Başlık + Özet yaz, gövdeyi doldur, Yayınla — hepsi bu. Numara, kicker,
+      SEO gibi her şey otomatik üretilir; gerekirse en alttaki 'Gelişmiş
+      ayarlar'dan elle değiştirebilirsin. Yayınladıktan 1-2 dakika sonra yazı
+      sitede, arşivde ve ana sayfada kendiliğinden görünür.
     folder: "writeups"
     create: true
     extension: "md"
@@ -44,11 +44,6 @@ collections:
         date_format: "YYYY-MM-DD"
         time_format: false
         picker_utc: true
-      - label: "Alt başlık (dek)"
-        name: "dek"
-        widget: "string"
-        required: false
-        hint: "H1 altındaki tek satırlık italik cümle. İsteğe bağlı."
       - label: "Özet"
         name: "excerpt"
         widget: "text"
@@ -58,7 +53,7 @@ collections:
         name: "tags_for_filter"
         widget: "select"
         multiple: true
-        options: ["CTF", "Bellingcat", "Investigation", "Academic", "Blog", "News"]
+        options: ["CTF", "Bellingcat", "Investigation", "Academic", "Blog", "News", "Audio OSINT", "Aviation OSINT", "Geolocation", "Munition Analysis"]
         default: ["CTF", "Bellingcat"]
         hint: "Arşiv sayfasındaki filtre çipleri bunlara göre otomatik oluşur — akademik yazılar için 'Academic' seç."
       - label: "Gövde"
@@ -89,62 +84,25 @@ collections:
           - "acknowledgement"
           - "end-mark"
           - "code-block"
-      # ── İsteğe bağlı ayrıntılar — boş bırakılırsa otomatik üretilir ──
-      - label: "Kart kategorisi"
-        name: "category"
-        widget: "string"
+      # ── Tek katlanır grup: hepsi isteğe bağlı, boşsa otomatik üretilir ──
+      - label: "Gelişmiş ayarlar (isteğe bağlı — hepsi otomatik üretilir)"
+        name: "advanced"
+        widget: "object"
+        collapsed: true
         required: false
-        hint: "Arşiv kartındaki kategori. ör. 'Audio OSINT'. Boşsa alt kategori kullanılır."
-      - label: "Alt kategori"
-        name: "type"
-        widget: "string"
-        required: false
-        hint: "Başlığın altındaki meta satırında görünür. ör. 'Audio forensics'"
-      - label: "Etiket (sol çip)"
-        name: "tag"
-        widget: "string"
-        required: false
-        default: "Bellingcat CTF"
-      - label: "Not numarası"
-        name: "number"
-        widget: "string"
-        required: false
-        hint: "ör. '006'. Boş bırak — tarih sırasına göre otomatik verilir."
-      - label: "Kicker"
-        name: "kicker"
-        widget: "string"
-        required: false
-        hint: "H1 üstündeki satır. Boşsa 'Field Note № 006 — Kategori' şeklinde otomatik oluşur."
-      - label: "Arşiv başlığı"
-        name: "archive_title"
-        widget: "string"
-        required: false
-        hint: "Arşiv kartındaki başlık, sayfa başlığından farklı olabilir. Boşsa Başlık kullanılır."
-      - label: "Tarayıcı sekmesi başlığı"
-        name: "title"
-        widget: "string"
-        required: false
-        hint: "Boşsa 'Başlık — Field Notes by Nezr Kaan' otomatik oluşur."
-      - label: "SEO açıklaması"
-        name: "description"
-        widget: "text"
-        required: false
-        hint: "Google'daki açıklama. Boşsa Özet kullanılır."
-      - label: "Anahtar kelimeler (SEO)"
-        name: "keywords"
-        widget: "string"
-        required: false
-        hint: "Virgülle ayır."
-      - label: "Paylaşım başlığı (Open Graph)"
-        name: "ogTitle"
-        widget: "string"
-        required: false
-        hint: "LinkedIn / Twitter'da paylaşınca görünen başlık. Boşsa sekme başlığı kullanılır."
-      - label: "Paylaşım açıklaması (Open Graph)"
-        name: "ogDescription"
-        widget: "text"
-        required: false
-        hint: "Paylaşımda görünen açıklama. Boşsa SEO açıklaması kullanılır."
+        fields:
+          - { label: "Alt başlık (dek)", name: "dek", widget: "string", required: false, hint: "Başlığın altındaki tek satırlık italik cümle" }
+          - { label: "Kart kategorisi", name: "category", widget: "string", required: false, hint: "Arşiv kartındaki kategori. ör. 'Audio OSINT'" }
+          - { label: "Alt kategori", name: "type", widget: "string", required: false, hint: "Başlığın altındaki meta satırında görünür. ör. 'Audio forensics'" }
+          - { label: "Etiket (sol çip)", name: "tag", widget: "string", required: false, hint: "ör. 'Bellingcat CTF'" }
+          - { label: "Not numarası", name: "number", widget: "string", required: false, hint: "Boşsa tarih sırasına göre otomatik verilir" }
+          - { label: "Kicker", name: "kicker", widget: "string", required: false, hint: "H1 üstündeki satır. Boşsa 'Field Note № 006 — Kategori' oluşur" }
+          - { label: "Arşiv başlığı", name: "archive_title", widget: "string", required: false, hint: "Arşiv kartında farklı başlık istersen" }
+          - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string", required: false }
+          - { label: "SEO açıklaması", name: "description", widget: "text", required: false, hint: "Boşsa Özet kullanılır" }
+          - { label: "Anahtar kelimeler (SEO)", name: "keywords", widget: "string", required: false }
+          - { label: "Paylaşım başlığı (Open Graph)", name: "ogTitle", widget: "string", required: false }
+          - { label: "Paylaşım açıklaması (Open Graph)", name: "ogDescription", widget: "text", required: false }
 
   # ─── SAYFALAR — bütün sabit sayfalar form alanlarıyla düzenlenir ───
   - name: "pages"

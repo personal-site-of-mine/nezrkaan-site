@@ -1,6 +1,14 @@
-// Data defaults for every writeup. Anything the CMS form leaves blank is
-// computed here, so a new post only needs a title, an excerpt and a body.
+// Data defaults for every writeup. The CMS form only asks for a title, an
+// excerpt, tags and the body; everything else lives in the optional
+// `advanced` group and is hoisted / auto-computed here, so a new post works
+// with minimal front matter.
+//
+// Note: computed values are read unconditionally (assigned to a const before
+// use) so Eleventy's computed-data dependency detection sees them even when
+// a short-circuit would skip them at real render time.
 const SITE_SUFFIX = " — Field Notes by Nezr Kaan";
+
+const adv = (data) => data.advanced || {};
 
 module.exports = {
   layout: "layouts/writeup.njk",
@@ -9,16 +17,32 @@ module.exports = {
     return `/writeups/${data.page.fileSlug}.html`;
   },
   eleventyComputed: {
+    // ── hoisted straight from the advanced group ──
+    dek: (data) => data.dek || adv(data).dek || "",
+    type: (data) => data.type || adv(data).type || "",
+    tag: (data) => data.tag || adv(data).tag || "",
+    archive_title: (data) => data.archive_title || adv(data).archive_title || "",
+    keywords: (data) => data.keywords || adv(data).keywords || "",
+    ogTitle: (data) => data.ogTitle || adv(data).ogTitle || "",
+    ogDescription: (data) => data.ogDescription || adv(data).ogDescription || "",
+
+    // ── hoisted with automatic fallbacks ──
     // Browser-tab title falls back to the article title.
     title: (data) =>
-      data.title || `${data.articleTitle || data.page.fileSlug}${SITE_SUFFIX}`,
+      data.title ||
+      adv(data).title ||
+      `${data.articleTitle || data.page.fileSlug}${SITE_SUFFIX}`,
 
     // Archive card category falls back to the sub-category / a generic label.
-    category: (data) => data.category || data.type || "OSINT",
+    category: (data) => {
+      const type = data.type;
+      return data.category || adv(data).category || type || "OSINT";
+    },
 
     // Field-note number: next number in date order unless set explicitly.
     number: (data) => {
-      if (data.number) return data.number;
+      const explicit = data.number || adv(data).number;
+      if (explicit) return explicit;
       try {
         const sorted = [...(data.collections.writeups || [])].sort(
           (a, b) => new Date(a.data.date) - new Date(b.data.date)
@@ -33,26 +57,30 @@ module.exports = {
     },
 
     // Kicker line above the H1, e.g. "Field Note № 002 — Audio OSINT".
-    // Computed values are read unconditionally so Eleventy's dependency
-    // detection orders number/category before this.
     kicker: (data) => {
       const number = data.number;
       const category = data.category;
-      return data.kicker || `Field Note № ${number} — ${category}`;
-    },
-
-    // SEO description falls back to the archive excerpt, then the dek.
-    description: (data) => {
-      const excerpt = data.excerpt;
-      return data.description || excerpt || data.dek || "";
+      return data.kicker || adv(data).kicker || `Field Note № ${number} — ${category}`;
     },
 
     // Archive excerpt falls back to the dek.
-    excerpt: (data) => data.excerpt || data.dek || "",
+    excerpt: (data) => {
+      const dek = data.dek;
+      return data.excerpt || dek || "";
+    },
+
+    // SEO description falls back to the archive excerpt.
+    description: (data) => {
+      const excerpt = data.excerpt;
+      return data.description || adv(data).description || excerpt || "";
+    },
 
     jsonLd: function (data) {
       const title = data.title;
       const description = data.description;
+      const ogTitle = data.ogTitle;
+      const ogDescription = data.ogDescription;
+      const keywords = data.keywords;
       const iso =
         data.date instanceof Date
           ? data.date.toISOString().split("T")[0]
@@ -60,8 +88,8 @@ module.exports = {
       return {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        headline: data.ogTitle || title,
-        description: data.ogDescription || description,
+        headline: ogTitle || title,
+        description: ogDescription || description,
         datePublished: iso,
         dateModified: data.dateModified || iso,
         author: {
@@ -78,7 +106,7 @@ module.exports = {
           "@type": "WebPage",
           "@id": `${data.site.url}/writeups/${data.page.fileSlug}`,
         },
-        keywords: data.keywords || "",
+        keywords: keywords || "",
       };
     },
   },
