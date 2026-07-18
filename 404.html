@@ -1,27 +1,21 @@
 ---
-templateEngineOverride: njk
-layout: layouts/base.njk
 title: "Page not found — Nezr Kaan"
 description: "The page you're looking for doesn't exist."
-permalink: /404.html
-showFieldNotesNav: true
-extraStyles:
-  - /css/home.css
-eleventyExcludeFromCollections: true
+heroLabel: "404 — Page not found"
+heroTitle: "Off the <em>map.</em>"
+heroDescription: "The page you're looking for doesn't exist, or it has moved. Try the field notes archive or head back to the homepage."
+nextLabel: "Where to next"
 ---
 
 <main>
   <section class="hero container">
-    <p class="hero-label">404 — Page not found</p>
-    <h1>Off the <em>map.</em></h1>
-    <p class="hero-description">
-      The page you're looking for doesn't exist, or it has moved.
-      Try the field notes archive or head back to the homepage.
-    </p>
+    <p class="hero-label">{{ heroLabel }}</p>
+    <h1>{{ heroTitle | safe }}</h1>
+    <p class="hero-description">{{ heroDescription }}</p>
   </section>
 
   <section class="section container">
-    <p class="section-label">Where to next</p>
+    <p class="section-label">{{ nextLabel }}</p>
     <a href="/writeups/" class="arrow-link">Read the field notes →</a>
     <br>
     <a href="/" class="arrow-link">Back to home →</a>

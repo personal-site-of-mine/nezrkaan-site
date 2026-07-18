@@ -9,66 +9,212 @@ public_folder: "/images/uploads"
 site_url: https://nezrkaan.com
 display_url: https://nezrkaan.com
 
+# Türkçe karakterli başlıklardan temiz dosya adı üret (ör. "Gölge Köprü" -> golge-kopru)
+slug:
+  encoding: ascii
+  clean_accents: true
+
 collections:
-  # ─── FIELD NOTES — markdown writeups ───
+  # ─── FIELD NOTES — yazılar ───
   - name: "writeups"
-    label: "Field Notes"
-    label_singular: "Field Note"
-    description: "Write a new note or edit an existing one. Title, kicker, dek, date go in the form. The body is Word-style — paste prose, click Image to upload, or click Add Component for snippets."
+    label: "Yazılar (Field Notes)"
+    label_singular: "Yazı"
+    description: >-
+      Yeni yazı ekle veya mevcut olanı düzenle. Sadece Başlık ve Özet'i doldurup
+      gövdeyi yazman yeterli — diğer her şey boş bırakılırsa otomatik üretilir.
+      Yayınla'ya bastıktan 1-2 dakika sonra yazı sitede, arşivde ve ana sayfada
+      kendiliğinden görünür.
     folder: "writeups"
     create: true
     extension: "md"
     format: "yaml-frontmatter"
+    identifier_field: articleTitle
     slug: "{{slug}}"
     preview_path: "writeups/{{slug}}"
+    summary: "{{fields.articleTitle}} — {{fields.date}}"
+    sortable_fields: ["date", "articleTitle"]
     fields:
-      - { label: "Browser title", name: "title", widget: "string", hint: "Shown in the browser tab. e.g. 'Shadow Bridge — Field Notes by Nezr Kaan'" }
-      - { label: "Kicker", name: "kicker", widget: "string", hint: "e.g. 'Field Note № 005 — Audio OSINT'" }
-      - { label: "Article title", name: "articleTitle", widget: "string", hint: "Shown as <h1> on the page. Short. e.g. 'Shadow Bridge'" }
-      - { label: "Dek (subtitle)", name: "dek", widget: "string", hint: "One-line italic sub-title under the H1" }
-      - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
-      - { label: "Tag (left-most chip)", name: "tag", widget: "string", default: "Bellingcat CTF" }
-      - { label: "Type / sub-category", name: "type", widget: "string", hint: "e.g. 'Audio forensics', 'Image OSINT'" }
-      - { label: "Read time", name: "readtime", widget: "string", default: "5 min read" }
-      - { label: "Field note number", name: "number", widget: "string", hint: "e.g. '005' — used in the archive" }
-      - { label: "Archive category", name: "category", widget: "string", hint: "Shown on the archive cards. e.g. 'Audio OSINT'" }
-      - { label: "Archive title", name: "archive_title", widget: "string", hint: "Heading shown on the archive page card. Can differ from articleTitle." }
-      - { label: "Excerpt (archive card)", name: "excerpt", widget: "text", hint: "Short summary shown on the archive page" }
-      - { label: "Filter tags", name: "tags_for_filter", widget: "list", default: ["CTF", "Bellingcat"], hint: "Used by the archive filter chips. Add: CTF, Bellingcat, Investigation, Blog, News, or your own." }
-      - { label: "SEO description", name: "description", widget: "text", hint: "Meta description for Google" }
-      - { label: "Keywords", name: "keywords", widget: "string", required: false, hint: "Comma-separated, for SEO" }
-      - { label: "Open Graph title", name: "ogTitle", widget: "string", required: false, hint: "Title when shared on LinkedIn / Twitter. Defaults to browser title." }
-      - { label: "Open Graph description", name: "ogDescription", widget: "text", required: false, hint: "Description when shared. Defaults to SEO description." }
-      - label: "Body"
+      - label: "Başlık"
+        name: "articleTitle"
+        widget: "string"
+        hint: "Sayfadaki büyük başlık (H1). Kısa tut. ör. 'Shadow Bridge'"
+      - label: "Tarih"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
+      - label: "Alt başlık (dek)"
+        name: "dek"
+        widget: "string"
+        required: false
+        hint: "H1 altındaki tek satırlık italik cümle. İsteğe bağlı."
+      - label: "Özet"
+        name: "excerpt"
+        widget: "text"
+        required: false
+        hint: "Arşiv kartında ve Google'da görünen 1-2 cümlelik özet. Boşsa alt başlık kullanılır."
+      - label: "Filtre etiketleri"
+        name: "tags_for_filter"
+        widget: "select"
+        multiple: true
+        options: ["CTF", "Bellingcat", "Investigation", "Blog", "News"]
+        default: ["CTF", "Bellingcat"]
+        hint: "Arşiv sayfasındaki filtre çipleri bunlara göre çalışır."
+      - label: "Gövde"
         name: "body"
         widget: "markdown"
-        hint: "Word-style editor. Paste prose, drag in images, or click 'Add Component' for callouts and special blocks. See admin/SNIPPETS.md for the HTML cheat-sheet."
+        hint: >-
+          Word gibi yaz: metni yapıştır, görsel sürükle. Özel bloklar (Try-it,
+          Part başlığı, Kanıt kartı, Cevap bloğu...) için editördeki + işaretine
+          basıp bileşen seç.
         editor_components:
+          - "lead"
+          - "try-callout"
+          - "part-header"
           - "image"
+          - "figure"
+          - "figure-pair"
+          - "evidence-list"
+          - "evidence-link"
+          - "pullquote"
+          - "dork"
+          - "method-detail"
+          - "finding"
+          - "acknowledgement"
+          - "end-mark"
           - "code-block"
+      # ── İsteğe bağlı ayrıntılar — boş bırakılırsa otomatik üretilir ──
+      - label: "Kart kategorisi"
+        name: "category"
+        widget: "string"
+        required: false
+        hint: "Arşiv kartındaki kategori. ör. 'Audio OSINT'. Boşsa alt kategori kullanılır."
+      - label: "Alt kategori"
+        name: "type"
+        widget: "string"
+        required: false
+        hint: "Başlığın altındaki meta satırında görünür. ör. 'Audio forensics'"
+      - label: "Etiket (sol çip)"
+        name: "tag"
+        widget: "string"
+        required: false
+        default: "Bellingcat CTF"
+      - label: "Not numarası"
+        name: "number"
+        widget: "string"
+        required: false
+        hint: "ör. '006'. Boş bırak — tarih sırasına göre otomatik verilir."
+      - label: "Kicker"
+        name: "kicker"
+        widget: "string"
+        required: false
+        hint: "H1 üstündeki satır. Boşsa 'Field Note № 006 — Kategori' şeklinde otomatik oluşur."
+      - label: "Arşiv başlığı"
+        name: "archive_title"
+        widget: "string"
+        required: false
+        hint: "Arşiv kartındaki başlık, sayfa başlığından farklı olabilir. Boşsa Başlık kullanılır."
+      - label: "Tarayıcı sekmesi başlığı"
+        name: "title"
+        widget: "string"
+        required: false
+        hint: "Boşsa 'Başlık — Field Notes by Nezr Kaan' otomatik oluşur."
+      - label: "SEO açıklaması"
+        name: "description"
+        widget: "text"
+        required: false
+        hint: "Google'daki açıklama. Boşsa Özet kullanılır."
+      - label: "Anahtar kelimeler (SEO)"
+        name: "keywords"
+        widget: "string"
+        required: false
+        hint: "Virgülle ayır."
+      - label: "Paylaşım başlığı (Open Graph)"
+        name: "ogTitle"
+        widget: "string"
+        required: false
+        hint: "LinkedIn / Twitter'da paylaşınca görünen başlık. Boşsa sekme başlığı kullanılır."
+      - label: "Paylaşım açıklaması (Open Graph)"
+        name: "ogDescription"
+        widget: "text"
+        required: false
+        hint: "Paylaşımda görünen açıklama. Boşsa SEO açıklaması kullanılır."
 
-  # ─── PAGES — home + archive (rarely edited) ───
+  # ─── SAYFALAR — bütün sabit sayfalar form alanlarıyla düzenlenir ───
   - name: "pages"
-    label: "Pages"
+    label: "Sayfalar"
+    description: >-
+      Ana sayfa, arşiv ve 404 sayfasındaki bütün metinler buradan düzenlenir.
+      'Sayfa şablonu' alanına normalde dokunmana gerek yok.
     files:
       - file: "index.html"
-        label: "Home"
+        label: "Ana Sayfa"
         name: "home"
         fields:
-          - { label: "Body (raw)", name: "body", widget: "code", default_language: "html", output_code_only: true }
+          - { label: "Üst etiket", name: "heroLabel", widget: "string", hint: "Büyük başlığın üstündeki küçük satır" }
+          - { label: "Büyük başlık", name: "heroTitle", widget: "string", hint: "Bir kelimeyi eğik yazmak için <em>kelime</em> kullanabilirsin" }
+          - { label: "Giriş paragrafı", name: "heroDescription", widget: "text" }
+          - { label: "'Ne yapıyorum' bölüm etiketi", name: "whatIDoLabel", widget: "string" }
+          - { label: "'Ne yapıyorum' metni", name: "whatIDoText", widget: "text" }
+          - label: "Uzmanlık listesi"
+            name: "focusList"
+            widget: "list"
+            field: { label: "Madde", name: "item", widget: "string" }
+          - { label: "'Field Notes' bölüm etiketi", name: "fieldNotesLabel", widget: "string" }
+          - { label: "'Field Notes' metni", name: "fieldNotesText", widget: "text", hint: "Son yazı kartı otomatik gelir — en yeni yazı kendiliğinden görünür." }
+          - { label: "İletişim bölüm etiketi", name: "contactLabel", widget: "string" }
+          - { label: "İletişim metni", name: "contactText", widget: "text" }
+          - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string" }
+          - { label: "SEO açıklaması", name: "description", widget: "text" }
+          - { label: "Anahtar kelimeler (SEO)", name: "keywords", widget: "string", required: false }
+          - { label: "Paylaşım başlığı (Open Graph)", name: "ogTitle", widget: "string", required: false }
+          - { label: "Paylaşım açıklaması (Open Graph)", name: "ogDescription", widget: "text", required: false }
+          - { label: "Sayfa şablonu (ileri düzey — dokunma)", name: "body", widget: "code", default_language: "html", output_code_only: true, required: false }
       - file: "writeups.html"
-        label: "Archive"
+        label: "Arşiv Sayfası"
         name: "archive"
         fields:
-          - { label: "Body (raw)", name: "body", widget: "code", default_language: "html", output_code_only: true }
-
-  # ─── REFERENCE — read-only snippet library ───
-  - name: "reference"
-    label: "Reference"
-    description: "Snippet cheat-sheet for special components (try-callout, finding, evidence-link). Copy from here, paste into the body."
-    files:
-      - file: "admin/SNIPPETS.md"
-        label: "Snippet library"
-        name: "snippets"
+          - { label: "Üst etiket", name: "heroLabel", widget: "string" }
+          - { label: "Büyük başlık", name: "heroTitle", widget: "string", hint: "Eğik kısım için <em>kelime</em> kullan" }
+          - { label: "Giriş paragrafı", name: "heroDescription", widget: "text" }
+          - { label: "Boş kategori mesajı", name: "emptyStateText", widget: "string", hint: "Bir filtrede hiç yazı yoksa görünen mesaj" }
+          - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string" }
+          - { label: "SEO açıklaması", name: "description", widget: "text" }
+          - { label: "Paylaşım başlığı (Open Graph)", name: "ogTitle", widget: "string", required: false }
+          - { label: "Paylaşım açıklaması (Open Graph)", name: "ogDescription", widget: "text", required: false }
+          - { label: "Sayfa şablonu (ileri düzey — dokunma)", name: "body", widget: "code", default_language: "html", output_code_only: true, required: false }
+      - file: "404.html"
+        label: "404 Sayfası"
+        name: "notfound"
         fields:
-          - { label: "Content", name: "body", widget: "markdown" }
+          - { label: "Üst etiket", name: "heroLabel", widget: "string" }
+          - { label: "Büyük başlık", name: "heroTitle", widget: "string", hint: "Eğik kısım için <em>kelime</em> kullan" }
+          - { label: "Açıklama", name: "heroDescription", widget: "text" }
+          - { label: "'Nereye?' bölüm etiketi", name: "nextLabel", widget: "string" }
+          - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string" }
+          - { label: "SEO açıklaması", name: "description", widget: "text" }
+          - { label: "Sayfa şablonu (ileri düzey — dokunma)", name: "body", widget: "code", default_language: "html", output_code_only: true, required: false }
+
+  # ─── SİTE AYARLARI — başlık, slogan, linkler ───
+  - name: "settings"
+    label: "Site Ayarları"
+    description: "Site adı, slogan, varsayılan SEO açıklaması ve profil linkleri."
+    files:
+      - file: "_data/site.json"
+        label: "Genel Ayarlar"
+        name: "site"
+        fields:
+          - { label: "Site adı", name: "title", widget: "string" }
+          - { label: "Slogan", name: "tagline", widget: "string", hint: "Footer'da görünür" }
+          - { label: "Varsayılan SEO açıklaması", name: "description", widget: "text" }
+          - { label: "Site adresi", name: "url", widget: "string" }
+          - { label: "Varsayılan paylaşım görseli", name: "ogImage", widget: "string" }
+          - label: "Yazar"
+            name: "author"
+            widget: "object"
+            fields:
+              - { label: "İsim", name: "name", widget: "string" }
+              - { label: "Profil adresi", name: "url", widget: "string" }
+              - { label: "LinkedIn", name: "linkedin", widget: "string" }
+              - { label: "Ko-fi (destek linki)", name: "kofi", widget: "string", required: false }

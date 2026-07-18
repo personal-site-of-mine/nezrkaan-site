@@ -1,37 +1,20 @@
 ---
-templateEngineOverride: njk
-layout: layouts/base.njk
 title: "Field Notes — Nezr Kaan"
+description: "OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology."
 ogTitle: "Field Notes — Nezr Kaan"
 ogDescription: "OSINT CTF writeups and open-source investigation notes."
-description: "OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology."
-permalink: /writeups.html
-showFieldNotesNav: true
-isArchive: true
-extraStyles:
-  - /css/archive.css
-jsonLd:
-  "@context": "https://schema.org"
-  "@type": "Blog"
-  name: "Field Notes"
-  description: "OSINT CTF writeups and open-source investigation notes by Nezr Kaan."
-  url: "https://nezrkaan.com/writeups"
-  author:
-    "@type": "Person"
-    name: "Nezr Kaan"
-    url: "https://nezrkaan.com"
+heroLabel: "The Archive"
+heroTitle: "Field <em>Notes.</em>"
+heroDescription: "A working archive of OSINT challenges I have solved and open-source investigations I have run. Method, evidence, and what I missed the first time."
+emptyStateText: "No entries in this category yet — check back soon."
 ---
 
 <main>
 
   <section class="hero container">
-    <p class="hero-label">The Archive</p>
-    <h1>Field <em>Notes.</em></h1>
-    <p class="hero-description">
-      A working archive of OSINT challenges I have solved and open-source
-      investigations I have run. Method, evidence, and what I missed the
-      first time.
-    </p>
+    <p class="hero-label">{{ heroLabel }}</p>
+    <h1>{{ heroTitle | safe }}</h1>
+    <p class="hero-description">{{ heroDescription }}</p>
 
     {%- set total = collections.writeups | length -%}
     {%- set ctfCount = 0 -%}
@@ -89,7 +72,7 @@ jsonLd:
     </div>
     {% endfor %}
 
-    <p class="empty-state" id="emptyState">No entries in this category yet — check back soon.</p>
+    <p class="empty-state" id="emptyState">{{ emptyStateText }}</p>
 
   </section>
 </main>
