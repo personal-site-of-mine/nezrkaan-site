@@ -1,33 +1,38 @@
 ---
 articleTitle: Point of Origin
 date: 2026-06-04T00:00:00.000Z
-excerpt: Solving Bellingcat's crater geolocation challenge from a single photo taken in Orikhiv, Ukraine. Reverse image searching a church to pin a street, then reading the blast pattern to find the munition's direction of fire.
+excerpt: Solving Bellingcat's crater geolocation challenge from a single photo
+  taken in Orikhiv, Ukraine. Reverse image searching a church to pin a street,
+  then reading the blast pattern to find the munition's direction of fire.
 tags_for_filter:
   - CTF
   - Bellingcat
   - Geolocation
   - Munition Analysis
 advanced:
+  ogTitle: "Point of Origin: A Crater, a Church, a Direction"
+  ogDescription: "One photo of a crater in a Ukrainian street. Two questions:
+    where, and from which direction."
+  number: "005"
   dek: A crater, a church, and a street in Ukraine.
-  category: Geolocation OSINT
+  keywords: OSINT, geolocation, munition analysis, crater analysis, blast pattern,
+    Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
+  kicker: Field Note № 005 — Geolocation OSINT
+  title: Point of Origin — Field Notes by Nezr Kaan
   type: Geolocation OSINT
   tag: Bellingcat CTF
-  number: "005"
-  kicker: Field Note № 005 — Geolocation OSINT
   archive_title: "Point of Origin: A crater and a compass bearing"
-  title: Point of Origin — Field Notes by Nezr Kaan
-  description: Solving Bellingcat's Point of Origin challenge. Geolocating a crater photo to Pokrovska Street in Orikhiv, Ukraine and working out the munition's direction of fire from the blast pattern.
-  keywords: OSINT, geolocation, munition analysis, crater analysis, blast pattern, Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
-  ogTitle: "Point of Origin: A Crater, a Church, a Direction"
-  ogDescription: "One photo of a crater in a Ukrainian street. Two questions: where, and from which direction."
+  description: Solving Bellingcat's Point of Origin challenge. Geolocating a
+    crater photo to Pokrovska Street in Orikhiv, Ukraine and working out the
+    munition's direction of fire from the blast pattern.
+  category: Geolocation OSINT
 ---
-
 <p class="lead">
   This month's Bellingcat challenges have all been about blast analysis and they have been fun to work through. This challenge gave one photo of a crater in a Ukrainian street. Two questions. What street is this and from which direction was the munition fired?
 </p>
 
 <figure class="article-figure">
-  <img src="/images/uploads/point-of-origin-blast-photo.jpg">
+  <img src="images/uploads/point-of-origin-blast-photo.jpg">
 </figure>
 
 <div class="try-callout">
