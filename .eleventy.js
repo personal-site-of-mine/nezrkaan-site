@@ -16,6 +16,16 @@ module.exports = function (eleventyConfig) {
   // Watch CSS so eleventy --serve picks up edits
   eleventyConfig.addWatchTarget("css/");
 
+  // Safety net: the CMS occasionally stores media paths without the leading
+  // slash ("images/uploads/x.jpg"), which 404 from nested pages like
+  // /writeups/. Rewrite them to site-absolute at build time.
+  eleventyConfig.addTransform("absoluteImagePaths", function (content) {
+    if (this.page.outputPath && String(this.page.outputPath).endsWith(".html")) {
+      return content.replace(/src="images\//g, 'src="/images/');
+    }
+    return content;
+  });
+
   // Date formatter for frontmatter dates -> human readable strings
   eleventyConfig.addFilter("readableDate", (dateObj) => {
     if (!dateObj) return "";
