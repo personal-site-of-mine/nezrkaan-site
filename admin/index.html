@@ -184,6 +184,14 @@
     // hand-pasted HTML snippets.
     // ─────────────────────────────────────────────────────────────────
     function esc(s) { return s == null ? "" : String(s); }
+    // Media paths picked from the library sometimes come back without the
+    // leading slash ("images/uploads/x.jpg"), which 404s from /writeups/
+    // pages. Always store site-absolute paths.
+    function imgPath(p) {
+      p = esc(p);
+      if (p && !/^(\/|https?:|data:)/.test(p)) p = "/" + p;
+      return p;
+    }
 
     // 1. Lead paragraph (drop cap)
     CMS.registerEditorComponent({
@@ -250,19 +258,19 @@
         { name: "caption", label: "Görsel altı yazısı", widget: "string", required: false },
         { name: "small", label: "Küçük görsel (ekran görüntüsü vb.)", widget: "boolean", default: false, required: false }
       ],
-      pattern: /^<figure class="article-figure( is-small)?">\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
+      pattern: /^<figure class="article-figure( is-small)?">\s*<img src="([^"]*)"(?: alt="([^"]*)")?\s*\/?>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
       fromBlock: function(m) {
-        return { small: !!m[1], image: m[2], alt: m[3], caption: m[4] || "" };
+        return { small: !!m[1], image: m[2], alt: m[3] || "", caption: m[4] || "" };
       },
       toBlock: function(d) {
         var cls = "article-figure" + (d.small ? " is-small" : "");
-        var out = '<figure class="' + cls + '">\n  <img src="' + esc(d.image) + '" alt="' + esc(d.alt) + '">';
+        var out = '<figure class="' + cls + '">\n  <img src="' + imgPath(d.image) + '" alt="' + esc(d.alt) + '">';
         if (d.caption) out += '\n  <figcaption>' + esc(d.caption) + '</figcaption>';
         return out + '\n</figure>';
       },
       toPreview: function(d) {
         var cls = "article-figure" + (d.small ? " is-small" : "");
-        return '<figure class="' + cls + '"><img src="' + esc(d.image) + '" alt="' + esc(d.alt) + '">' +
+        return '<figure class="' + cls + '"><img src="' + imgPath(d.image) + '" alt="' + esc(d.alt) + '">' +
           (d.caption ? '<figcaption>' + esc(d.caption) + '</figcaption>' : '') + '</figure>';
       }
     });
@@ -278,17 +286,17 @@
         { name: "rightAlt", label: "Sağ alt metin", widget: "string", required: false },
         { name: "caption", label: "Görsel altı yazısı", widget: "string", required: false }
       ],
-      pattern: /^<figure class="article-figure is-pair">\s*<div class="figure-pair">\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*<\/div>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
+      pattern: /^<figure class="article-figure is-pair">\s*<div class="figure-pair">\s*<img src="([^"]*)"(?: alt="([^"]*)")?\s*\/?>\s*<img src="([^"]*)"(?: alt="([^"]*)")?\s*\/?>\s*<\/div>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
       fromBlock: function(m) {
-        return { left: m[1], leftAlt: m[2], right: m[3], rightAlt: m[4], caption: m[5] || "" };
+        return { left: m[1], leftAlt: m[2] || "", right: m[3], rightAlt: m[4] || "", caption: m[5] || "" };
       },
       toBlock: function(d) {
-        var out = '<figure class="article-figure is-pair">\n  <div class="figure-pair">\n    <img src="' + esc(d.left) + '" alt="' + esc(d.leftAlt) + '">\n    <img src="' + esc(d.right) + '" alt="' + esc(d.rightAlt) + '">\n  </div>';
+        var out = '<figure class="article-figure is-pair">\n  <div class="figure-pair">\n    <img src="' + imgPath(d.left) + '" alt="' + esc(d.leftAlt) + '">\n    <img src="' + imgPath(d.right) + '" alt="' + esc(d.rightAlt) + '">\n  </div>';
         if (d.caption) out += '\n  <figcaption>' + esc(d.caption) + '</figcaption>';
         return out + '\n</figure>';
       },
       toPreview: function(d) {
-        return '<figure class="article-figure is-pair"><div class="figure-pair"><img src="' + esc(d.left) + '" alt="' + esc(d.leftAlt) + '"><img src="' + esc(d.right) + '" alt="' + esc(d.rightAlt) + '"></div>' +
+        return '<figure class="article-figure is-pair"><div class="figure-pair"><img src="' + imgPath(d.left) + '" alt="' + esc(d.leftAlt) + '"><img src="' + imgPath(d.right) + '" alt="' + esc(d.rightAlt) + '"></div>' +
           (d.caption ? '<figcaption>' + esc(d.caption) + '</figcaption>' : '') + '</figure>';
       }
     });

@@ -32,7 +32,7 @@ advanced:
 </p>
 
 <figure class="article-figure">
-  <img src="images/uploads/point-of-origin-blast-photo.jpg">
+  <img src="/images/uploads/point-of-origin-blast-photo.jpg" alt="Bellingcat challenge photo of the crater in a street in Orikhiv, Ukraine.">
 </figure>
 
 <div class="try-callout">
