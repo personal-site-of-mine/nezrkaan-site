@@ -1,20 +1,24 @@
 ---
-title: "Urban Symphony — Field Notes by Nezr Kaan"
-ogTitle: "Urban Symphony — An Audio Fingerprint of a City"
-ogDescription: "Solving Bellingcat's audio OSINT challenge with three minutes of sound and no metadata."
-description: "Solving Bellingcat's Urban Symphony audio OSINT challenge — identifying a city and its carillon from three minutes of sound and no metadata."
-keywords: "OSINT, audio forensics, Bellingcat CTF, Amsterdam, Munttoren, carillon"
-date: 2026-04-07
-kicker: "Field Note № 001 — Audio OSINT"
-articleTitle: "Urban Symphony"
-dek: "An audio fingerprint of a city, and the carillon that gave it away."
-tag: "Bellingcat CTF"
-type: "Audio forensics"
-number: "001"
-category: "Audio OSINT"
-excerpt: "Solving Bellingcat's audio-only challenge with three minutes of recording and no metadata. Working backwards from a pickpocket announcement, bicycle traffic, a Google dork on a travelator phrase and a carillon run to pinpoint a single tower in Amsterdam."
-tags_for_filter: ["CTF", "Bellingcat", "Audio OSINT"]
-archive_title: "Urban Symphony: An audio fingerprint of a city"
+articleTitle: Urban Symphony
+date: 2026-04-07T00:00:00.000Z
+excerpt: Solving Bellingcat's audio-only challenge with three minutes of recording and no metadata. Working backwards from a pickpocket announcement, bicycle traffic, a Google dork on a travelator phrase and a carillon run to pinpoint a single tower in Amsterdam.
+tags_for_filter:
+  - CTF
+  - Bellingcat
+  - Audio OSINT
+advanced:
+  dek: An audio fingerprint of a city, and the carillon that gave it away.
+  category: Audio OSINT
+  type: Audio forensics
+  tag: Bellingcat CTF
+  number: "001"
+  kicker: Field Note № 001 — Audio OSINT
+  archive_title: "Urban Symphony: An audio fingerprint of a city"
+  title: Urban Symphony — Field Notes by Nezr Kaan
+  description: Solving Bellingcat's Urban Symphony audio OSINT challenge — identifying a city and its carillon from three minutes of sound and no metadata.
+  keywords: OSINT, audio forensics, Bellingcat CTF, Amsterdam, Munttoren, carillon
+  ogTitle: Urban Symphony — An Audio Fingerprint of a City
+  ogDescription: Solving Bellingcat's audio OSINT challenge with three minutes of sound and no metadata.
 ---
 
 <p class="lead">

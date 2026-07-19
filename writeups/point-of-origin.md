@@ -1,25 +1,25 @@
 ---
-title: Point of Origin — Field Notes by Nezr Kaan
-kicker: Field Note № 005 — Geolocation OSINT
 articleTitle: Point of Origin
-dek: A crater, a church, and a street in Ukraine.
-date: 2026-06-04
-tag: Bellingcat CTF
-type: Geolocation OSINT
-readtime: 4 min read
-number: "005"
-category: Geolocation OSINT
-archive_title: "Point of Origin: A crater and a compass bearing"
+date: 2026-06-04T00:00:00.000Z
 excerpt: Solving Bellingcat's crater geolocation challenge from a single photo taken in Orikhiv, Ukraine. Reverse image searching a church to pin a street, then reading the blast pattern to find the munition's direction of fire.
 tags_for_filter:
   - CTF
   - Bellingcat
   - Geolocation
   - Munition Analysis
-description: Solving Bellingcat's Point of Origin challenge. Geolocating a crater photo to Pokrovska Street in Orikhiv, Ukraine and working out the munition's direction of fire from the blast pattern.
-keywords: OSINT, geolocation, munition analysis, crater analysis, blast pattern, Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
-ogTitle: "Point of Origin: A Crater, a Church, a Direction"
-ogDescription: "One photo of a crater in a Ukrainian street. Two questions: where, and from which direction."
+advanced:
+  dek: A crater, a church, and a street in Ukraine.
+  category: Geolocation OSINT
+  type: Geolocation OSINT
+  tag: Bellingcat CTF
+  number: "005"
+  kicker: Field Note № 005 — Geolocation OSINT
+  archive_title: "Point of Origin: A crater and a compass bearing"
+  title: Point of Origin — Field Notes by Nezr Kaan
+  description: Solving Bellingcat's Point of Origin challenge. Geolocating a crater photo to Pokrovska Street in Orikhiv, Ukraine and working out the munition's direction of fire from the blast pattern.
+  keywords: OSINT, geolocation, munition analysis, crater analysis, blast pattern, Bellingcat CTF, Orikhiv, Ukraine, Pokrovska
+  ogTitle: "Point of Origin: A Crater, a Church, a Direction"
+  ogDescription: "One photo of a crater in a Ukrainian street. Two questions: where, and from which direction."
 ---
 
 <p class="lead">
@@ -27,7 +27,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </p>
 
 <figure class="article-figure">
-  <img src="/images/point-of-origin/blast-photo.jpg">
+  <img src="/images/uploads/point-of-origin-blast-photo.jpg">
 </figure>
 
 <div class="try-callout">
@@ -51,7 +51,7 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 </p>
 
 <figure class="article-figure">
-  <img src="/images/point-of-origin/maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the exact location marked.">
+  <img src="/images/uploads/point-of-origin-maps-bird-view.png" alt="Bird's-eye satellite view of the area around Svyato-Pokrovskyy Khram in Orikhiv, with the exact location marked.">
   <figcaption>The exact location on Google Maps, with the church and surrounding streets visible.</figcaption>
 </figure>
 
@@ -70,8 +70,8 @@ ogDescription: "One photo of a crater in a Ukrainian street. Two questions: wher
 
 <figure class="article-figure is-pair">
   <div class="figure-pair">
-    <img src="/images/point-of-origin/blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
-    <img src="/images/point-of-origin/north-aligned-map.png" alt="Google Earth view of the location aligned to true North using the compass icon in the bottom right corner.">
+    <img src="/images/uploads/point-of-origin-blast-zoom.jpg" alt="Cropped close-up of the crater showing the uplifted and fractured asphalt edge facing toward the camera.">
+    <img src="/images/uploads/point-of-origin-north-aligned-map.png" alt="Google Earth view of the location aligned to true North using the compass icon in the bottom right corner.">
   </div>
   <figcaption>Left is the close-up of the crater edge. Right is the Google Earth view aligned to true North using the compass icon in the bottom right corner.</figcaption>
 </figure>

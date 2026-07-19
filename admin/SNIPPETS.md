@@ -1,6 +1,11 @@
 # Snippet Library — Field Note Components
 
-When writing a new note, copy and paste these blocks into the **Body HTML** field.
+> **Not:** Artık bu blokların hepsi editörden tek tıkla eklenebiliyor —
+> gövde alanında **+** işaretine basıp bileşeni seç (Giriş paragrafı,
+> Try-it kutusu, Bölüm başlığı, Görsel, Kanıt kartı, Cevap bloğu...).
+> Bu dosya yalnızca ham HTML yapıştırmak istersen başvuru olarak duruyor.
+
+When writing a new note, you can still copy and paste these blocks into the body.
 If your prose comes from AI, just paste the prose and wrap special components with these snippets.
 
 ---

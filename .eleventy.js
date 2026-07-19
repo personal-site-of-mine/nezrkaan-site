@@ -75,6 +75,29 @@ module.exports = function (eleventyConfig) {
       .map((y) => ({ year: y, items: groups[y] }));
   });
 
+  // Distinct filter tags with counts, for the archive filter chips.
+  // Known tags keep a fixed order; anything new sorts after, alphabetically,
+  // so a tag used in any post shows up as a chip automatically.
+  eleventyConfig.addCollection("writeupTags", (collectionApi) => {
+    const order = ["CTF", "Bellingcat", "Investigation", "Academic", "Blog", "News"];
+    const counts = {};
+    collectionApi.getFilteredByGlob("writeups/*.md").forEach((w) => {
+      (w.data.tags_for_filter || []).forEach((t) => {
+        counts[t] = (counts[t] || 0) + 1;
+      });
+    });
+    return Object.keys(counts)
+      .sort((a, b) => {
+        const ia = order.indexOf(a);
+        const ib = order.indexOf(b);
+        if (ia !== -1 && ib !== -1) return ia - ib;
+        if (ia !== -1) return -1;
+        if (ib !== -1) return 1;
+        return a.localeCompare(b);
+      })
+      .map((tag) => ({ tag, count: counts[tag] }));
+  });
+
   // All writeups, newest first
   eleventyConfig.addCollection("writeups", (collectionApi) =>
     collectionApi

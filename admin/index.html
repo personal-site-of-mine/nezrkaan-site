@@ -6,6 +6,66 @@
   <meta name="robots" content="noindex" />
   <title>Content Manager — Nezr Kaan</title>
   <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <style>
+    /* ── Editorial theme for the CMS UI itself ──
+       Decap renders into the page DOM, so element-level overrides with
+       !important restyle the app without depending on its hashed class
+       names. If a rule doesn't match a future version, nothing breaks. */
+
+    /* App canvas — the site's paper tone instead of grey */
+    body { background: #EDE6D0 !important; }
+
+    /* Field labels — small mono caps, like the site's kickers */
+    #nc-root label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      font-size: 11px !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+    }
+
+    /* Text inputs — serif, closer to the published look */
+    #nc-root input[type="text"],
+    #nc-root textarea {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-size: 1.05rem !important;
+      color: #201C18 !important;
+    }
+
+    /* The writing surface — a comfortable, Word-like page */
+    #nc-root [data-slate-editor="true"] {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-size: 1.13rem !important;
+      line-height: 1.75 !important;
+      color: #201C18 !important;
+      min-height: 65vh !important;
+      padding: 2.5rem 3rem !important;
+      caret-color: #5E3FA3;
+    }
+    #nc-root [data-slate-editor="true"] h1,
+    #nc-root [data-slate-editor="true"] h2,
+    #nc-root [data-slate-editor="true"] h3 {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-weight: 500 !important;
+      letter-spacing: -0.01em;
+    }
+    #nc-root [data-slate-editor="true"] code {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      font-size: 0.85em !important;
+    }
+
+    /* Buttons — mono, square corners, quieter */
+    #nc-root button {
+      font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+      border-radius: 2px !important;
+    }
+
+    @media (max-width: 700px) {
+      #nc-root [data-slate-editor="true"] { padding: 1.25rem 1rem !important; }
+    }
+  </style>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
@@ -16,48 +76,499 @@
     CMS.registerPreviewStyle("/css/base.css");
     CMS.registerPreviewStyle("/css/article.css");
 
-    // Decap exposes h (createElement) and createClass on window.
+    // ─────────────────────────────────────────────────────────────────
+    // Editor components — the site's special blocks become insertable
+    // via the editor's "+" menu, WordPress-block style, instead of
+    // hand-pasted HTML snippets.
+    // ─────────────────────────────────────────────────────────────────
+    function esc(s) { return s == null ? "" : String(s); }
+
+    // 1. Lead paragraph (drop cap)
+    CMS.registerEditorComponent({
+      id: "lead",
+      label: "Giriş paragrafı (büyük ilk harf)",
+      fields: [
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<p class="lead">\s*([\s\S]*?)\s*<\/p>$/,
+      fromBlock: function(m) { return { text: m[1] }; },
+      toBlock: function(d) {
+        return '<p class="lead">\n  ' + esc(d.text) + '\n</p>';
+      },
+      toPreview: function(d) {
+        return '<p class="lead">' + esc(d.text) + '</p>';
+      }
+    });
+
+    // 2. Try-it callout
+    CMS.registerEditorComponent({
+      id: "try-callout",
+      label: "Try-it kutusu (challenge linki)",
+      fields: [
+        { name: "icon", label: "Etiket", widget: "string", default: "↪ Try it" },
+        { name: "content", label: "İçerik (HTML kullanılabilir)", widget: "text",
+          default: '<strong>This writeup contains the solution.</strong> If you want to try the challenge yourself first, it is available at <a href="https://challenge.bellingcat.com/" target="_blank" rel="noopener">challenge.bellingcat.com</a>.' }
+      ],
+      pattern: /^<div class="try-callout">\s*<span class="try-callout-icon">([\s\S]*?)<\/span>\s*<p>\s*([\s\S]*?)\s*<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { icon: m[1], content: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="try-callout">\n  <span class="try-callout-icon">' + esc(d.icon) + '</span>\n  <p>\n    ' + esc(d.content) + '\n  </p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="try-callout"><span class="try-callout-icon">' + esc(d.icon) + '</span><p>' + esc(d.content) + '</p></div>';
+      }
+    });
+
+    // 3. Part header
+    CMS.registerEditorComponent({
+      id: "part-header",
+      label: "Bölüm başlığı (Part 01 / 03)",
+      fields: [
+        { name: "num", label: "Bölüm no", widget: "string", default: "01" },
+        { name: "total", label: "Toplam bölüm", widget: "string", default: "03" },
+        { name: "heading", label: "Başlık", widget: "string" }
+      ],
+      pattern: /^<div class="part-header">\s*<span class="part-label">Part <span class="part-num">([\s\S]*?)<\/span> \/ ([\s\S]*?)<\/span>\s*<h2>([\s\S]*?)<\/h2>\s*<\/div>$/,
+      fromBlock: function(m) { return { num: m[1], total: m[2], heading: m[3] }; },
+      toBlock: function(d) {
+        return '<div class="part-header">\n  <span class="part-label">Part <span class="part-num">' + esc(d.num) + '</span> / ' + esc(d.total) + '</span>\n  <h2>' + esc(d.heading) + '</h2>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="part-header"><span class="part-label">Part <span class="part-num">' + esc(d.num) + '</span> / ' + esc(d.total) + '</span><h2>' + esc(d.heading) + '</h2></div>';
+      }
+    });
+
+    // 4. Figure (single image, optional caption, optional small variant)
+    CMS.registerEditorComponent({
+      id: "figure",
+      label: "Görsel (başlıklı figür)",
+      fields: [
+        { name: "image", label: "Görsel", widget: "image" },
+        { name: "alt", label: "Alt metin (erişilebilirlik)", widget: "string", required: false },
+        { name: "caption", label: "Görsel altı yazısı", widget: "string", required: false },
+        { name: "small", label: "Küçük görsel (ekran görüntüsü vb.)", widget: "boolean", default: false, required: false }
+      ],
+      pattern: /^<figure class="article-figure( is-small)?">\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
+      fromBlock: function(m) {
+        return { small: !!m[1], image: m[2], alt: m[3], caption: m[4] || "" };
+      },
+      toBlock: function(d) {
+        var cls = "article-figure" + (d.small ? " is-small" : "");
+        var out = '<figure class="' + cls + '">\n  <img src="' + esc(d.image) + '" alt="' + esc(d.alt) + '">';
+        if (d.caption) out += '\n  <figcaption>' + esc(d.caption) + '</figcaption>';
+        return out + '\n</figure>';
+      },
+      toPreview: function(d) {
+        var cls = "article-figure" + (d.small ? " is-small" : "");
+        return '<figure class="' + cls + '"><img src="' + esc(d.image) + '" alt="' + esc(d.alt) + '">' +
+          (d.caption ? '<figcaption>' + esc(d.caption) + '</figcaption>' : '') + '</figure>';
+      }
+    });
+
+    // 5. Figure pair (side-by-side comparison)
+    CMS.registerEditorComponent({
+      id: "figure-pair",
+      label: "İkili görsel (yan yana karşılaştırma)",
+      fields: [
+        { name: "left", label: "Sol görsel", widget: "image" },
+        { name: "leftAlt", label: "Sol alt metin", widget: "string", required: false },
+        { name: "right", label: "Sağ görsel", widget: "image" },
+        { name: "rightAlt", label: "Sağ alt metin", widget: "string", required: false },
+        { name: "caption", label: "Görsel altı yazısı", widget: "string", required: false }
+      ],
+      pattern: /^<figure class="article-figure is-pair">\s*<div class="figure-pair">\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*<img src="([^"]*)" alt="([^"]*)"\s*\/?>\s*<\/div>\s*(?:<figcaption>([\s\S]*?)<\/figcaption>\s*)?<\/figure>$/,
+      fromBlock: function(m) {
+        return { left: m[1], leftAlt: m[2], right: m[3], rightAlt: m[4], caption: m[5] || "" };
+      },
+      toBlock: function(d) {
+        var out = '<figure class="article-figure is-pair">\n  <div class="figure-pair">\n    <img src="' + esc(d.left) + '" alt="' + esc(d.leftAlt) + '">\n    <img src="' + esc(d.right) + '" alt="' + esc(d.rightAlt) + '">\n  </div>';
+        if (d.caption) out += '\n  <figcaption>' + esc(d.caption) + '</figcaption>';
+        return out + '\n</figure>';
+      },
+      toPreview: function(d) {
+        return '<figure class="article-figure is-pair"><div class="figure-pair"><img src="' + esc(d.left) + '" alt="' + esc(d.leftAlt) + '"><img src="' + esc(d.right) + '" alt="' + esc(d.rightAlt) + '"></div>' +
+          (d.caption ? '<figcaption>' + esc(d.caption) + '</figcaption>' : '') + '</figure>';
+      }
+    });
+
+    // 6. Evidence list
+    CMS.registerEditorComponent({
+      id: "evidence-list",
+      label: "Kanıt listesi",
+      fields: [
+        { name: "items", label: "Maddeler", widget: "list",
+          field: { name: "item", label: "Madde", widget: "string" } }
+      ],
+      pattern: /^<ul class="evidence">\s*([\s\S]*?)\s*<\/ul>$/,
+      fromBlock: function(m) {
+        var items = [];
+        var re = /<li>([\s\S]*?)<\/li>/g, x;
+        while ((x = re.exec(m[1]))) items.push(x[1].trim());
+        return { items: items };
+      },
+      toBlock: function(d) {
+        var items = d.items || [];
+        // Decap may hand us an Immutable.List — normalise to array.
+        if (items.toJS) items = items.toJS();
+        return '<ul class="evidence">\n' + items.map(function(i) {
+          return '  <li>' + esc(i) + '</li>';
+        }).join('\n') + '\n</ul>';
+      },
+      toPreview: function(d) {
+        var items = d.items || [];
+        if (items.toJS) items = items.toJS();
+        return '<ul class="evidence">' + items.map(function(i) {
+          return '<li>' + esc(i) + '</li>';
+        }).join('') + '</ul>';
+      }
+    });
+
+    // 7. Evidence link card (video or written reference)
+    var PLAY_ICON = '<span class="play-icon" aria-hidden="true">\n    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>\n  </span>';
+    var SOURCE_ICON = '<span class="source-icon" aria-hidden="true">\n    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>\n  </span>';
+    CMS.registerEditorComponent({
+      id: "evidence-link",
+      label: "Kanıt / kaynak kartı (dış link)",
+      fields: [
+        { name: "url", label: "Adres (URL)", widget: "string" },
+        { name: "kicker", label: "Üst satır", widget: "string", default: "Evidence — YouTube", hint: "ör. 'Evidence — YouTube' veya 'Reference — Wikipedia'" },
+        { name: "title", label: "Kaynağın adı", widget: "string" },
+        { name: "variant", label: "Tür", widget: "select",
+          options: [
+            { label: "Video / ses (oynat ikonu)", value: "video" },
+            { label: "Yazılı kaynak (belge ikonu)", value: "reference" }
+          ],
+          default: "video" }
+      ],
+      pattern: /^<a href="([^"]*)" target="_blank" rel="noopener" class="evidence-link( is-reference)?">\s*<span class="(?:play|source)-icon"[\s\S]*?<span class="evidence-link-kicker">([\s\S]*?)<\/span>\s*<span class="evidence-link-title">([\s\S]*?)<\/span>\s*<\/span>\s*<span class="evidence-link-arrow"[\s\S]*?<\/a>$/,
+      fromBlock: function(m) {
+        return { url: m[1], variant: m[2] ? "reference" : "video", kicker: m[3], title: m[4] };
+      },
+      toBlock: function(d) {
+        var isRef = d.variant === "reference";
+        return '<a href="' + esc(d.url) + '" target="_blank" rel="noopener" class="evidence-link' + (isRef ? ' is-reference' : '') + '">\n  ' +
+          (isRef ? SOURCE_ICON : PLAY_ICON) +
+          '\n  <span class="evidence-link-text">\n    <span class="evidence-link-kicker">' + esc(d.kicker) + '</span>\n    <span class="evidence-link-title">' + esc(d.title) + '</span>\n  </span>\n  <span class="evidence-link-arrow" aria-hidden="true">↗</span>\n</a>';
+      },
+      toPreview: function(d) {
+        var isRef = d.variant === "reference";
+        return '<a class="evidence-link' + (isRef ? ' is-reference' : '') + '">' +
+          (isRef ? SOURCE_ICON : PLAY_ICON) +
+          '<span class="evidence-link-text"><span class="evidence-link-kicker">' + esc(d.kicker) + '</span><span class="evidence-link-title">' + esc(d.title) + '</span></span>' +
+          '<span class="evidence-link-arrow">↗</span></a>';
+      }
+    });
+
+    // 8. Pullquote
+    CMS.registerEditorComponent({
+      id: "pullquote",
+      label: "Vurgu cümlesi (pullquote)",
+      fields: [
+        { name: "text", label: "Cümle", widget: "text" }
+      ],
+      pattern: /^<div class="pullquote">\s*([\s\S]*?)\s*<\/div>$/,
+      fromBlock: function(m) { return { text: m[1] }; },
+      toBlock: function(d) {
+        return '<div class="pullquote">\n  ' + esc(d.text) + '\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="pullquote">' + esc(d.text) + '</div>';
+      }
+    });
+
+    // 9. Dork / search query
+    CMS.registerEditorComponent({
+      id: "dork",
+      label: "Arama sorgusu / komut (dork)",
+      fields: [
+        { name: "query", label: "Sorgu", widget: "string" }
+      ],
+      pattern: /^<p><span class="dork">([\s\S]*?)<\/span><\/p>$/,
+      fromBlock: function(m) { return { query: m[1] }; },
+      toBlock: function(d) {
+        return '<p><span class="dork">' + esc(d.query) + '</span></p>';
+      },
+      toPreview: function(d) {
+        return '<p><span class="dork">' + esc(d.query) + '</span></p>';
+      }
+    });
+
+    // 10. Method dropdown (collapsible detail)
+    CMS.registerEditorComponent({
+      id: "method-detail",
+      label: "Açılır detay (yöntem kutusu)",
+      fields: [
+        { name: "summary", label: "Başlık", widget: "string", default: "Show the method" },
+        { name: "content", label: "İçerik", widget: "text", hint: "Her satır ayrı paragraf olur. HTML kullanılabilir." }
+      ],
+      pattern: /^<details class="method-detail">\s*<summary>([\s\S]*?)<\/summary>\s*<div class="method-detail-body">\s*([\s\S]*?)\s*<\/div>\s*<\/details>$/,
+      fromBlock: function(m) {
+        var text = m[2];
+        var paras = [];
+        var re = /<p>([\s\S]*?)<\/p>/g, x;
+        while ((x = re.exec(text))) paras.push(x[1].trim());
+        return { summary: m[1], content: paras.length ? paras.join('\n') : text.trim() };
+      },
+      toBlock: function(d) {
+        var paras = esc(d.content).split('\n').filter(function(l) { return l.trim(); });
+        var body = paras.map(function(p) { return '    <p>' + p.trim() + '</p>'; }).join('\n');
+        return '<details class="method-detail">\n  <summary>' + esc(d.summary) + '</summary>\n  <div class="method-detail-body">\n' + body + '\n  </div>\n</details>';
+      },
+      toPreview: function(d) {
+        var paras = esc(d.content).split('\n').filter(function(l) { return l.trim(); });
+        return '<details class="method-detail" open><summary>' + esc(d.summary) + '</summary><div class="method-detail-body">' +
+          paras.map(function(p) { return '<p>' + p.trim() + '</p>'; }).join('') + '</div></details>';
+      }
+    });
+
+    // 11. Finding (blurred answer block)
+    CMS.registerEditorComponent({
+      id: "finding",
+      label: "Cevap bloğu (bulanık cevap)",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "The source" },
+        { name: "answer", label: "Cevap", widget: "string" },
+        { name: "hint", label: "Alt not", widget: "string", default: "Solve it first at challenge.bellingcat.com" }
+      ],
+      pattern: /^<div class="finding" id="finding">\s*<span class="finding-label">([\s\S]*?)<\/span>\s*<span class="finding-answer"[^>]*>([\s\S]*?)<\/span>\s*<button[\s\S]*?<\/button>\s*<span class="finding-hint">([\s\S]*?)<\/span>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], answer: m[2], hint: m[3] }; },
+      toBlock: function(d) {
+        return '<div class="finding" id="finding">\n  <span class="finding-label">' + esc(d.label) + '</span>\n  <span class="finding-answer" id="findingAnswer" aria-hidden="true">' + esc(d.answer) + '</span>\n  <button class="finding-reveal" id="findingReveal" type="button" aria-controls="findingAnswer" aria-expanded="false">\n    → Reveal the answer\n  </button>\n  <span class="finding-hint">' + esc(d.hint) + '</span>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="finding revealed"><span class="finding-label">' + esc(d.label) + '</span><span class="finding-answer">' + esc(d.answer) + '</span><span class="finding-hint">' + esc(d.hint) + '</span></div>';
+      }
+    });
+
+    // 12. Acknowledgement
+    CMS.registerEditorComponent({
+      id: "acknowledgement",
+      label: "Teşekkür bloğu",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "Thanks" },
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<div class="acknowledgement">\s*<span class="ack-label">([\s\S]*?)<\/span>\s*<p>([\s\S]*?)<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], text: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="acknowledgement">\n  <span class="ack-label">' + esc(d.label) + '</span>\n  <p>' + esc(d.text) + '</p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="acknowledgement"><span class="ack-label">' + esc(d.label) + '</span><p>' + esc(d.text) + '</p></div>';
+      }
+    });
+
+    // 13. End mark
+    CMS.registerEditorComponent({
+      id: "end-mark",
+      label: "Bitiş işareti (✦ ✦ ✦)",
+      fields: [
+        { name: "mark", label: "İşaret", widget: "string", default: "✦ ✦ ✦" }
+      ],
+      pattern: /^<div class="end-mark">([\s\S]*?)<\/div>$/,
+      fromBlock: function(m) { return { mark: m[1] }; },
+      toBlock: function(d) {
+        return '<div class="end-mark">' + esc(d.mark) + '</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="end-mark">' + esc(d.mark) + '</div>';
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Academic components — abstract, quote, key point, references,
+    // data table. For long-form / academic articles.
+    // ─────────────────────────────────────────────────────────────────
+
+    // 14. Abstract
+    CMS.registerEditorComponent({
+      id: "abstract",
+      label: "Abstract / Özet kutusu",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "Abstract" },
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<div class="abstract">\s*<span class="abstract-label">([\s\S]*?)<\/span>\s*<p>([\s\S]*?)<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], text: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="abstract">\n  <span class="abstract-label">' + esc(d.label) + '</span>\n  <p>' + esc(d.text) + '</p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="abstract"><span class="abstract-label">' + esc(d.label) + '</span><p>' + esc(d.text) + '</p></div>';
+      }
+    });
+
+    // 15. Academic quote with attribution
+    CMS.registerEditorComponent({
+      id: "article-quote",
+      label: "Alıntı (kaynaklı)",
+      fields: [
+        { name: "quote", label: "Alıntı", widget: "text" },
+        { name: "source", label: "Kaynak / kişi", widget: "string", required: false, hint: "ör. 'Bellingcat, 2024' veya 'C. Wardle — First Draft'" }
+      ],
+      pattern: /^<blockquote class="article-quote">\s*<p>([\s\S]*?)<\/p>\s*(?:<cite>([\s\S]*?)<\/cite>\s*)?<\/blockquote>$/,
+      fromBlock: function(m) { return { quote: m[1], source: m[2] || "" }; },
+      toBlock: function(d) {
+        var out = '<blockquote class="article-quote">\n  <p>' + esc(d.quote) + '</p>';
+        if (d.source) out += '\n  <cite>' + esc(d.source) + '</cite>';
+        return out + '\n</blockquote>';
+      },
+      toPreview: function(d) {
+        return '<blockquote class="article-quote"><p>' + esc(d.quote) + '</p>' +
+          (d.source ? '<cite>' + esc(d.source) + '</cite>' : '') + '</blockquote>';
+      }
+    });
+
+    // 16. Key point / highlight box
+    CMS.registerEditorComponent({
+      id: "keypoint",
+      label: "Önemli nokta kutusu",
+      fields: [
+        { name: "label", label: "Etiket", widget: "string", default: "Key point", hint: "ör. 'Key point', 'Tanım', 'Hipotez', 'Sonuç'" },
+        { name: "text", label: "Metin", widget: "text" }
+      ],
+      pattern: /^<div class="keypoint">\s*<span class="keypoint-label">([\s\S]*?)<\/span>\s*<p>([\s\S]*?)<\/p>\s*<\/div>$/,
+      fromBlock: function(m) { return { label: m[1], text: m[2] }; },
+      toBlock: function(d) {
+        return '<div class="keypoint">\n  <span class="keypoint-label">' + esc(d.label) + '</span>\n  <p>' + esc(d.text) + '</p>\n</div>';
+      },
+      toPreview: function(d) {
+        return '<div class="keypoint"><span class="keypoint-label">' + esc(d.label) + '</span><p>' + esc(d.text) + '</p></div>';
+      }
+    });
+
+    // 17. References / bibliography (numbered [1], [2], ...)
+    CMS.registerEditorComponent({
+      id: "references",
+      label: "Kaynakça (numaralı)",
+      fields: [
+        { name: "items", label: "Kaynaklar", widget: "list",
+          hint: "Sıra numarası otomatik verilir: [1], [2]... Metin içinde <sup>1</sup> ile atıf yapabilirsin. HTML kullanılabilir.",
+          field: { name: "item", label: "Kaynak", widget: "string" } }
+      ],
+      pattern: /^<ol class="references">\s*([\s\S]*?)\s*<\/ol>$/,
+      fromBlock: function(m) {
+        var items = [];
+        var re = /<li>([\s\S]*?)<\/li>/g, x;
+        while ((x = re.exec(m[1]))) items.push(x[1].trim());
+        return { items: items };
+      },
+      toBlock: function(d) {
+        var items = d.items || [];
+        if (items.toJS) items = items.toJS();
+        return '<ol class="references">\n' + items.map(function(i) {
+          return '  <li>' + esc(i) + '</li>';
+        }).join('\n') + '\n</ol>';
+      },
+      toPreview: function(d) {
+        var items = d.items || [];
+        if (items.toJS) items = items.toJS();
+        return '<ol class="references">' + items.map(function(i) {
+          return '<li>' + esc(i) + '</li>';
+        }).join('') + '</ol>';
+      }
+    });
+
+    // 18. Data table — one row per line, cells separated with |
+    function tableRows(d) {
+      var rows = d.rows || [];
+      if (rows.toJS) rows = rows.toJS();
+      return rows;
+    }
+    function splitCells(row) {
+      return String(row).split('|').map(function(c) { return c.trim(); });
+    }
+    CMS.registerEditorComponent({
+      id: "data-table",
+      label: "Tablo",
+      fields: [
+        { name: "header", label: "Başlık satırı", widget: "string", hint: "Sütunları | ile ayır. ör. 'Yıl | Olay | Kaynak'" },
+        { name: "rows", label: "Satırlar", widget: "list",
+          hint: "Her satırda hücreleri | ile ayır.",
+          field: { name: "row", label: "Satır", widget: "string" } }
+      ],
+      pattern: /^<div class="table-wrap"><table class="data-table">\s*<thead><tr>([\s\S]*?)<\/tr><\/thead>\s*<tbody>\s*([\s\S]*?)\s*<\/tbody>\s*<\/table><\/div>$/,
+      fromBlock: function(m) {
+        var header = [];
+        var re = /<th>([\s\S]*?)<\/th>/g, x;
+        while ((x = re.exec(m[1]))) header.push(x[1].trim());
+        var rows = [];
+        var rowRe = /<tr>([\s\S]*?)<\/tr>/g, r;
+        while ((r = rowRe.exec(m[2]))) {
+          var cells = [];
+          var cellRe = /<td>([\s\S]*?)<\/td>/g, c;
+          while ((c = cellRe.exec(r[1]))) cells.push(c[1].trim());
+          rows.push(cells.join(' | '));
+        }
+        return { header: header.join(' | '), rows: rows };
+      },
+      toBlock: function(d) {
+        var head = splitCells(d.header).map(function(c) { return '<th>' + c + '</th>'; }).join('');
+        var body = tableRows(d).map(function(row) {
+          return '  <tr>' + splitCells(row).map(function(c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+        }).join('\n');
+        return '<div class="table-wrap"><table class="data-table">\n  <thead><tr>' + head + '</tr></thead>\n  <tbody>\n' + body + '\n  </tbody>\n</table></div>';
+      },
+      toPreview: function(d) {
+        var head = splitCells(d.header).map(function(c) { return '<th>' + c + '</th>'; }).join('');
+        var body = tableRows(d).map(function(row) {
+          return '<tr>' + splitCells(row).map(function(c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+        }).join('');
+        return '<div class="table-wrap"><table class="data-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>';
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Preview template for writeups — mirrors the published layout and
+    // applies the same automatic fallbacks the site build uses.
+    // ─────────────────────────────────────────────────────────────────
     var h = window.h;
     var createClass = window.createClass;
 
-    // Custom preview template for the writeups collection.
-    // Renders a simplified version of the writeup layout so the preview
-    // mirrors the published page (kicker, title, dek, meta, body).
     if (h && createClass) {
       var WriteupPreview = createClass({
         render: function() {
           var entry = this.props.entry;
           var data = entry.get("data");
           var body = this.props.widgetFor("body");
+          // Read a field from the top level or the collapsed advanced group.
+          var advanced = data.get("advanced");
+          function field(name) {
+            var top = data.get(name);
+            if (top) return top;
+            if (advanced && advanced.get) return advanced.get(name);
+            return undefined;
+          }
           var dateRaw = data.get("date");
           var dateLabel = dateRaw
             ? new Date(dateRaw).toLocaleDateString("en-GB", {
                 day: "numeric", month: "long", year: "numeric"
               })
             : "";
+          var category = field("category") || field("type") || "OSINT";
+          var number = field("number") || "···";
+          var kicker = field("kicker") ||
+            ("Field Note № " + number + " — " + category);
+          var tag = field("tag");
+          var type = field("type");
+          var dek = field("dek");
 
           return h("main", {},
             h("article", { className: "container" },
               h("header", { className: "article-header prose" },
-                data.get("kicker")
-                  ? h("p", { className: "article-kicker" }, data.get("kicker"))
-                  : null,
+                h("p", { className: "article-kicker" }, kicker),
                 h("h1", { className: "article-title" },
-                  data.get("articleTitle") || data.get("title") || "Untitled"
+                  data.get("articleTitle") || field("title") || "Untitled"
                 ),
-                data.get("dek")
-                  ? h("p", { className: "article-dek" }, data.get("dek"))
+                dek
+                  ? h("p", { className: "article-dek" }, dek)
                   : null,
                 h("div", { className: "article-meta" },
-                  data.get("tag")
-                    ? h("span", { className: "tag" }, data.get("tag"))
-                    : null,
-                  data.get("tag") ? h("span", { className: "sep" }) : null,
-                  data.get("type") ? h("span", {}, data.get("type")) : null,
-                  data.get("type") ? h("span", { className: "sep" }) : null,
-                  h("span", {}, dateLabel),
-                  data.get("readtime") ? h("span", { className: "sep" }) : null,
-                  data.get("readtime") ? h("span", {}, data.get("readtime")) : null
+                  tag ? h("span", { className: "tag" }, tag) : null,
+                  tag ? h("span", { className: "sep" }) : null,
+                  type ? h("span", {}, type) : null,
+                  type ? h("span", { className: "sep" }) : null,
+                  h("span", {}, dateLabel)
                 )
               ),
               h("div", { className: "body prose" }, body)

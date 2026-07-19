@@ -1,20 +1,24 @@
 ---
-title: "Window Seat Field Notes by Nezr Kaan"
-ogTitle: "Window Seat"
-ogDescription: "One window seat photo. Three possible airlines. Two flights over the Alps. One tail number."
-description: "Solving Bellingcat Window Seat location challenge from a window seat photo of the Alps to a single tail number using FlightRadar24 and matching mountain shapes."
-keywords: "OSINT, aviation OSINT, Bellingcat CTF, Vueling, FlightRadar24, Alps geolocation"
-date: 2026-05-07
-kicker: "Field Note 004 Aviation OSINT"
-articleTitle: "Window Seat"
-dek: "A jet engine over many snowy mountains."
-tag: "Bellingcat CTF"
-type: "Aviation OSINT"
-number: "004"
-category: "Aviation OSINT"
-excerpt: "Solving Bellingcat's window-seat geolocation challenge. Yellow engine cowls cut the airline pool to three; FlightRadar24 playback narrowed it to two flights over the Alps; a valley silhouette did the rest."
-tags_for_filter: ["CTF", "Bellingcat", "Aviation OSINT"]
-archive_title: "Window Seat: A jet engine over many snowy mountains"
+articleTitle: Window Seat
+date: 2026-05-07T00:00:00.000Z
+excerpt: Solving Bellingcat's window-seat geolocation challenge. Yellow engine cowls cut the airline pool to three; FlightRadar24 playback narrowed it to two flights over the Alps; a valley silhouette did the rest.
+tags_for_filter:
+  - CTF
+  - Bellingcat
+  - Aviation OSINT
+advanced:
+  dek: A jet engine over many snowy mountains.
+  category: Aviation OSINT
+  type: Aviation OSINT
+  tag: Bellingcat CTF
+  number: "004"
+  kicker: Field Note 004 Aviation OSINT
+  archive_title: "Window Seat: A jet engine over many snowy mountains"
+  title: Window Seat Field Notes by Nezr Kaan
+  description: Solving Bellingcat Window Seat location challenge from a window seat photo of the Alps to a single tail number using FlightRadar24 and matching mountain shapes.
+  keywords: OSINT, aviation OSINT, Bellingcat CTF, Vueling, FlightRadar24, Alps geolocation
+  ogTitle: Window Seat
+  ogDescription: One window seat photo. Three possible airlines. Two flights over the Alps. One tail number.
 ---
 
 <p class="lead">
@@ -22,7 +26,7 @@ archive_title: "Window Seat: A jet engine over many snowy mountains"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/window-seat/original.jpg" alt="The original challenge photo showing a plane wing in the front and snowy mountains below.">
+  <img src="/images/uploads/window-seat-original.jpg" alt="The original challenge photo showing a plane wing in the front and snowy mountains below.">
 </figure>
 
 <div class="try-callout">
@@ -114,7 +118,7 @@ archive_title: "Window Seat: A jet engine over many snowy mountains"
       <li>FR24 reloads the map at that exact moment with only the filtered airlines visible.</li>
     </ol>
     <figure class="article-figure inline-figure">
-      <img src="/images/window-seat/filter-button.png" alt="The FlightRadar24 top menu with the Filters button shown in a red box.">
+      <img src="/images/uploads/window-seat-filter-button.png" alt="The FlightRadar24 top menu with the Filters button shown in a red box.">
     </figure>
   </div>
 </details>
@@ -124,7 +128,7 @@ archive_title: "Window Seat: A jet engine over many snowy mountains"
 </p>
 
 <figure class="article-figure">
-  <img src="/images/window-seat/2-planes.png" alt="Screenshot of FlightRadar24 map showing two planes crossing the Alps at 11:55 UTC on 24 February 2026.">
+  <img src="/images/uploads/window-seat-2-planes.png" alt="Screenshot of FlightRadar24 map showing two planes crossing the Alps at 11:55 UTC on 24 February 2026.">
 </figure>
 
 <p>
@@ -133,8 +137,8 @@ archive_title: "Window Seat: A jet engine over many snowy mountains"
 
 <figure class="article-figure is-pair">
   <div class="figure-pair">
-    <img src="/images/window-seat/map_view-painted.jpg" alt="Satellite map view of the Alps with valley shapes painted in red turned 180 degrees to match the photo angle.">
-    <img src="/images/window-seat/aviation_2_painted.jpg" alt="The original window seat photo with the same valley shapes painted in red.">
+    <img src="/images/uploads/window-seat-map_view-painted.jpg" alt="Satellite map view of the Alps with valley shapes painted in red turned 180 degrees to match the photo angle.">
+    <img src="/images/uploads/window-seat-aviation_2_painted.jpg" alt="The original window seat photo with the same valley shapes painted in red.">
   </div>
   <figcaption>Left is the satellite view turned 180 degrees to match the angle from the plane. Right is the original photo with the same valleys outlined.</figcaption>
 </figure>

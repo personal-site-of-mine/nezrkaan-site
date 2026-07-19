@@ -1,63 +1,28 @@
 ---
-templateEngineOverride: njk
-layout: layouts/base.njk
 title: "Field Notes — Nezr Kaan"
+description: "OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology."
 ogTitle: "Field Notes — Nezr Kaan"
 ogDescription: "OSINT CTF writeups and open-source investigation notes."
-description: "OSINT CTF writeups and investigation notes by Nezr Kaan — Bellingcat challenges, corporate investigations, and open-source research methodology."
-permalink: /writeups.html
-showFieldNotesNav: true
-isArchive: true
-extraStyles:
-  - /css/archive.css
-jsonLd:
-  "@context": "https://schema.org"
-  "@type": "Blog"
-  name: "Field Notes"
-  description: "OSINT CTF writeups and open-source investigation notes by Nezr Kaan."
-  url: "https://nezrkaan.com/writeups"
-  author:
-    "@type": "Person"
-    name: "Nezr Kaan"
-    url: "https://nezrkaan.com"
+heroLabel: "The Archive"
+heroTitle: "Field <em>Notes.</em>"
+heroDescription: "A working archive of OSINT challenges I have solved and open-source investigations I have run. Method, evidence, and what I missed the first time."
+emptyStateText: "No entries in this category yet — check back soon."
 ---
 
 <main>
 
   <section class="hero container">
-    <p class="hero-label">The Archive</p>
-    <h1>Field <em>Notes.</em></h1>
-    <p class="hero-description">
-      A working archive of OSINT challenges I have solved and open-source
-      investigations I have run. Method, evidence, and what I missed the
-      first time.
-    </p>
-
-    {%- set total = collections.writeups | length -%}
-    {%- set ctfCount = 0 -%}
-    {%- set bellingcatCount = 0 -%}
-    {%- set investigationCount = 0 -%}
-    {%- set blogCount = 0 -%}
-    {%- set newsCount = 0 -%}
-    {%- for w in collections.writeups -%}
-      {%- if w.data.tags_for_filter -%}
-        {%- if 'CTF' in w.data.tags_for_filter -%}{%- set ctfCount = ctfCount + 1 -%}{%- endif -%}
-        {%- if 'Bellingcat' in w.data.tags_for_filter -%}{%- set bellingcatCount = bellingcatCount + 1 -%}{%- endif -%}
-        {%- if 'Investigation' in w.data.tags_for_filter -%}{%- set investigationCount = investigationCount + 1 -%}{%- endif -%}
-        {%- if 'Blog' in w.data.tags_for_filter -%}{%- set blogCount = blogCount + 1 -%}{%- endif -%}
-        {%- if 'News' in w.data.tags_for_filter -%}{%- set newsCount = newsCount + 1 -%}{%- endif -%}
-      {%- endif -%}
-    {%- endfor -%}
+    <p class="hero-label">{{ heroLabel }}</p>
+    <h1>{{ heroTitle | safe }}</h1>
+    <p class="hero-description">{{ heroDescription }}</p>
 
     <div class="filters" role="group" aria-label="Filter writeups by category">
       <span class="filters-label">Filter by</span>
       <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all" type="button">All <span class="count">{{ total }}</span></button>
-        <button class="chip" data-filter="CTF" type="button">CTF <span class="count">{{ ctfCount }}</span></button>
-        <button class="chip" data-filter="Bellingcat" type="button">Bellingcat <span class="count">{{ bellingcatCount }}</span></button>
-        <button class="chip" data-filter="Investigation" type="button">Investigation <span class="count">{{ investigationCount }}</span></button>
-        <button class="chip" data-filter="Blog" type="button">Blog <span class="count">{{ blogCount }}</span></button>
-        <button class="chip" data-filter="News" type="button">News <span class="count">{{ newsCount }}</span></button>
+        <button class="chip active" data-filter="all" type="button">All <span class="count">{{ collections.writeups | length }}</span></button>
+        {%- for t in collections.writeupTags %}
+        <button class="chip" data-filter="{{ t.tag }}" type="button">{{ t.tag }} <span class="count">{{ t.count }}</span></button>
+        {%- endfor %}
       </div>
     </div>
   </section>
@@ -89,7 +54,7 @@ jsonLd:
     </div>
     {% endfor %}
 
-    <p class="empty-state" id="emptyState">No entries in this category yet — check back soon.</p>
+    <p class="empty-state" id="emptyState">{{ emptyStateText }}</p>
 
   </section>
 </main>
