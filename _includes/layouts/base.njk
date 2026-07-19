@@ -32,7 +32,7 @@
 <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
-<link rel="alternate" type="application/atom+xml" title="{{ site.title }} — Field Notes" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }} — Archive" href="/feed.xml">
 
 {% if jsonLd %}
 <script type="application/ld+json">
@@ -70,7 +70,7 @@
     <a href="{{ headerHomeHref or '/' }}" class="site-mark">{{ headerMark or 'NK' }}</a>
     <div class="header-nav">
       {% if showFieldNotesNav %}
-      <a href="/writeups/" class="nav-link{% if isArchive %} active{% endif %}">Field Notes</a>
+      <a href="/writeups/" class="nav-link{% if isArchive %} active{% endif %}">Archive</a>
       {% endif %}
       <button class="theme-toggle" aria-label="Toggle light/dark theme" id="themeToggle">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

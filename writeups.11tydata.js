@@ -9,9 +9,9 @@ module.exports = {
   jsonLd: {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: "Field Notes",
+    name: "The Archive",
     description:
-      "OSINT CTF writeups and open-source investigation notes by Nezr Kaan.",
+      "Writing by Nezr Kaan — OSINT investigations and CTF writeups, academic essays, and everyday notes.",
     url: "https://nezrkaan.com/writeups",
     author: {
       "@type": "Person",

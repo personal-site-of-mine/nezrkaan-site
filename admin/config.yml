@@ -15,11 +15,12 @@ slug:
   clean_accents: true
 
 collections:
-  # ─── FIELD NOTES — yazılar ───
+  # ─── YAZILAR — her tür içerik: OSINT, akademik, günlük ───
   - name: "writeups"
-    label: "Yazılar (Field Notes)"
+    label: "Yazılar"
     label_singular: "Yazı"
     description: >-
+      Her tür yazı buraya: OSINT araştırması, akademik yazı, günlük not...
       Başlık + Özet yaz, gövdeyi doldur, Yayınla — hepsi bu. Numara, kicker,
       SEO gibi her şey otomatik üretilir; gerekirse en alttaki 'Gelişmiş
       ayarlar'dan elle değiştirebilirsin. Yayınladıktan 1-2 dakika sonra yazı
@@ -49,13 +50,17 @@ collections:
         widget: "text"
         required: false
         hint: "Arşiv kartında ve Google'da görünen 1-2 cümlelik özet. Boşsa alt başlık kullanılır."
-      - label: "Filtre etiketleri"
+      - label: "Etiketler"
         name: "tags_for_filter"
-        widget: "select"
-        multiple: true
-        options: ["CTF", "Bellingcat", "Investigation", "Academic", "Blog", "News", "Audio OSINT", "Aviation OSINT", "Geolocation", "Munition Analysis"]
-        default: ["CTF", "Bellingcat"]
-        hint: "Arşiv sayfasındaki filtre çipleri bunlara göre otomatik oluşur — akademik yazılar için 'Academic' seç."
+        widget: "list"
+        required: false
+        field: { label: "Etiket", name: "tag", widget: "string" }
+        hint: >-
+          İstediğin etiketi yaz — yeni bir etiket de olabilir, arşivdeki filtre
+          çipi kendiliğinden oluşur. Mevcutlar: CTF, Bellingcat, Investigation,
+          Academic, Blog, News, Audio OSINT, Aviation OSINT, Geolocation,
+          Munition Analysis. Aynı yazımı kullan (büyük/küçük harf dahil) ki
+          aynı çipte toplansın.
       - label: "Gövde"
         name: "body"
         widget: "markdown"
@@ -95,9 +100,9 @@ collections:
           - { label: "Alt başlık (dek)", name: "dek", widget: "string", required: false, hint: "Başlığın altındaki tek satırlık italik cümle" }
           - { label: "Kart kategorisi", name: "category", widget: "string", required: false, hint: "Arşiv kartındaki kategori. ör. 'Audio OSINT'" }
           - { label: "Alt kategori", name: "type", widget: "string", required: false, hint: "Başlığın altındaki meta satırında görünür. ör. 'Audio forensics'" }
-          - { label: "Etiket (sol çip)", name: "tag", widget: "string", required: false, hint: "ör. 'Bellingcat CTF'" }
-          - { label: "Not numarası", name: "number", widget: "string", required: false, hint: "Boşsa tarih sırasına göre otomatik verilir" }
-          - { label: "Kicker", name: "kicker", widget: "string", required: false, hint: "H1 üstündeki satır. Boşsa 'Field Note № 006 — Kategori' oluşur" }
+          - { label: "Etiket (sol çip)", name: "tag", widget: "string", required: false, hint: "Başlık altındaki turuncu çip. ör. 'Bellingcat CTF'. Boş bırakılabilir." }
+          - { label: "Yazı numarası", name: "number", widget: "string", required: false, hint: "Boşsa tarih sırasına göre otomatik verilir" }
+          - { label: "Kicker", name: "kicker", widget: "string", required: false, hint: "H1 üstündeki satır. Boşsa 'Entry № 006 — Kategori' oluşur" }
           - { label: "Arşiv başlığı", name: "archive_title", widget: "string", required: false, hint: "Arşiv kartında farklı başlık istersen" }
           - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string", required: false }
           - { label: "SEO açıklaması", name: "description", widget: "text", required: false, hint: "Boşsa Özet kullanılır" }
@@ -125,8 +130,8 @@ collections:
             name: "focusList"
             widget: "list"
             field: { label: "Madde", name: "item", widget: "string" }
-          - { label: "'Field Notes' bölüm etiketi", name: "fieldNotesLabel", widget: "string" }
-          - { label: "'Field Notes' metni", name: "fieldNotesText", widget: "text", hint: "Son yazı kartı otomatik gelir — en yeni yazı kendiliğinden görünür." }
+          - { label: "'Arşiv' bölüm etiketi", name: "fieldNotesLabel", widget: "string" }
+          - { label: "'Arşiv' bölüm metni", name: "fieldNotesText", widget: "text", hint: "Son yazı kartı otomatik gelir — en yeni yazı kendiliğinden görünür." }
           - { label: "İletişim bölüm etiketi", name: "contactLabel", widget: "string" }
           - { label: "İletişim metni", name: "contactText", widget: "text" }
           - { label: "Tarayıcı sekmesi başlığı", name: "title", widget: "string" }

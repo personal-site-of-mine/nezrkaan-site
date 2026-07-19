@@ -6,7 +6,7 @@
 // Note: computed values are read unconditionally (assigned to a const before
 // use) so Eleventy's computed-data dependency detection sees them even when
 // a short-circuit would skip them at real render time.
-const SITE_SUFFIX = " — Field Notes by Nezr Kaan";
+const SITE_SUFFIX = " — Nezr Kaan";
 
 const adv = (data) => data.advanced || {};
 
@@ -33,13 +33,15 @@ module.exports = {
       adv(data).title ||
       `${data.articleTitle || data.page.fileSlug}${SITE_SUFFIX}`,
 
-    // Archive card category falls back to the sub-category / a generic label.
+    // Archive card category falls back to the sub-category, then the first
+    // filter tag, then a generic label.
     category: (data) => {
       const type = data.type;
-      return data.category || adv(data).category || type || "OSINT";
+      const firstTag = (data.tags_for_filter || [])[0];
+      return data.category || adv(data).category || type || firstTag || "Post";
     },
 
-    // Field-note number: next number in date order unless set explicitly.
+    // Entry number: next number in date order unless set explicitly.
     number: (data) => {
       const explicit = data.number || adv(data).number;
       if (explicit) return explicit;
@@ -56,11 +58,11 @@ module.exports = {
       }
     },
 
-    // Kicker line above the H1, e.g. "Field Note № 002 — Audio OSINT".
+    // Kicker line above the H1, e.g. "Entry № 002 — Audio OSINT".
     kicker: (data) => {
       const number = data.number;
       const category = data.category;
-      return data.kicker || adv(data).kicker || `Field Note № ${number} — ${category}`;
+      return data.kicker || adv(data).kicker || `Entry № ${number} — ${category}`;
     },
 
     // Archive excerpt falls back to the dek.
