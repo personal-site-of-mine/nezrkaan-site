@@ -65,6 +65,108 @@
     @media (max-width: 700px) {
       #nc-root [data-slate-editor="true"] { padding: 1.25rem 1rem !important; }
     }
+
+    /* ── Proofreader (LanguageTool) widget ── */
+    #proof-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 99999;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 10px 16px;
+      background: #5E3FA3;
+      color: #EDE6D0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(32,28,24,0.25);
+    }
+    #proof-btn:hover { background: #4b3283; }
+    #proof-btn[disabled] { opacity: 0.6; cursor: wait; }
+    #proof-panel {
+      position: fixed;
+      right: 18px;
+      bottom: 66px;
+      z-index: 99999;
+      width: min(420px, calc(100vw - 36px));
+      max-height: min(70vh, 640px);
+      overflow-y: auto;
+      background: #F4EFE1;
+      border: 1px solid #A8987E;
+      border-radius: 2px;
+      box-shadow: 0 6px 24px rgba(32,28,24,0.3);
+      font-family: 'Newsreader', Georgia, serif;
+      color: #201C18;
+      display: none;
+    }
+    #proof-panel.open { display: block; }
+    #proof-panel .proof-head {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #EDE6D0;
+      border-bottom: 1px solid #CEC3AB;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #5C5148;
+    }
+    #proof-panel .proof-head button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      color: #5C5148;
+    }
+    #proof-panel .proof-item {
+      padding: 12px 14px;
+      border-bottom: 1px dashed #CEC3AB;
+    }
+    #proof-panel .proof-item:last-child { border-bottom: none; }
+    #proof-panel .proof-msg { font-size: 0.95rem; line-height: 1.45; margin: 0 0 6px; }
+    #proof-panel .proof-ctx {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #5C5148;
+      background: #EDE6D0;
+      border: 1px solid #CEC3AB;
+      padding: 6px 8px;
+      margin: 0 0 8px;
+      word-break: break-word;
+    }
+    #proof-panel .proof-ctx mark {
+      background: rgba(184,90,40,0.25);
+      color: #B85A28;
+      font-weight: 500;
+      padding: 0 1px;
+    }
+    #proof-panel .proof-fix {
+      display: inline-block;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      padding: 3px 8px;
+      margin: 0 6px 4px 0;
+      background: #EDE6D0;
+      border: 1px solid #5E3FA3;
+      color: #5E3FA3;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    #proof-panel .proof-fix:hover { background: #5E3FA3; color: #EDE6D0; }
+    #proof-panel .proof-empty, #proof-panel .proof-note {
+      padding: 16px 14px;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #5C5148;
+    }
   </style>
 </head>
 <body>
@@ -579,6 +681,167 @@
 
       CMS.registerPreviewTemplate("writeups", WriteupPreview);
     }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Spellcheck & proofreading.
+    // 1) Force the browser's native spellchecker on in the rich-text
+    //    editor and text fields (red underlines + right-click fixes).
+    // 2) A "Dil denetimi" button that sends the body text to the free
+    //    LanguageTool API and lists grammar/spelling issues with
+    //    suggestions (motherTongue=tr catches Turkish false friends).
+    // ─────────────────────────────────────────────────────────────────
+    (function() {
+      // 1) Native spellcheck — Slate re-renders can reset the attribute,
+      //    so keep re-applying via a MutationObserver.
+      function enableSpellcheck() {
+        document.querySelectorAll('[data-slate-editor]').forEach(function(el) {
+          if (el.getAttribute('spellcheck') !== 'true') {
+            el.setAttribute('spellcheck', 'true');
+            el.setAttribute('lang', 'en');
+          }
+        });
+        document.querySelectorAll('#nc-root input[type="text"], #nc-root textarea').forEach(function(el) {
+          if (el.getAttribute('spellcheck') !== 'true') el.setAttribute('spellcheck', 'true');
+        });
+      }
+      new MutationObserver(enableSpellcheck)
+        .observe(document.documentElement, { childList: true, subtree: true });
+      enableSpellcheck();
+
+      // 2) LanguageTool panel
+      function escHtml(s) {
+        return String(s).replace(/[&<>"']/g, function(c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      var btn = document.createElement('button');
+      btn.id = 'proof-btn';
+      btn.type = 'button';
+      btn.textContent = '✓ Dil denetimi';
+      var panel = document.createElement('div');
+      panel.id = 'proof-panel';
+      document.body.appendChild(panel);
+      document.body.appendChild(btn);
+
+      // Track which editor was last focused, so the check targets the
+      // field you are actually writing in (falls back to the body editor).
+      var lastEditor = null;
+      document.addEventListener('focusin', function(e) {
+        var ed = e.target.closest && e.target.closest('[data-slate-editor]');
+        if (ed) lastEditor = ed;
+      });
+
+      function renderHead(count) {
+        return '<div class="proof-head"><span>' + count + '</span>' +
+          '<button type="button" id="proof-close">kapat ✕</button></div>';
+      }
+
+      function wireClose() {
+        var close = document.getElementById('proof-close');
+        if (close) close.onclick = function() { panel.classList.remove('open'); };
+      }
+
+      btn.addEventListener('click', function() {
+        var editor = (lastEditor && document.contains(lastEditor))
+          ? lastEditor
+          : document.querySelector('[data-slate-editor]');
+        if (!editor) {
+          panel.innerHTML = renderHead('Dil denetimi') +
+            '<p class="proof-empty">Önce bir yazı aç — denetlenecek gövde alanı bulunamadı.</p>';
+          panel.classList.add('open');
+          wireClose();
+          return;
+        }
+        var text = editor.innerText || '';
+        var truncated = false;
+        if (text.length > 19000) { text = text.slice(0, 19000); truncated = true; }
+        if (!text.trim()) {
+          panel.innerHTML = renderHead('Dil denetimi') +
+            '<p class="proof-empty">Gövde boş görünüyor.</p>';
+          panel.classList.add('open');
+          wireClose();
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '… denetleniyor';
+        fetch('https://api.languagetool.org/v2/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            text: text,
+            language: 'auto',
+            preferredVariants: 'en-US',
+            motherTongue: 'tr'
+          }).toString()
+        })
+        .then(function(r) {
+          if (!r.ok) throw new Error('API ' + r.status);
+          return r.json();
+        })
+        .then(function(res) {
+          var matches = res.matches || [];
+          var html = renderHead(matches.length
+            ? matches.length + ' bulgu'
+            : 'Temiz ✓');
+          if (!matches.length) {
+            html += '<p class="proof-empty">Hata bulunamadı — metin temiz görünüyor ✓</p>';
+          }
+          matches.slice(0, 60).forEach(function(m) {
+            var ctx = m.context || {};
+            var t = ctx.text || '';
+            var o = ctx.offset || 0;
+            var l = ctx.length || 0;
+            var ctxHtml = escHtml(t.slice(0, o)) +
+              '<mark>' + escHtml(t.slice(o, o + l)) + '</mark>' +
+              escHtml(t.slice(o + l));
+            var fixes = (m.replacements || []).slice(0, 3).map(function(rep) {
+              return '<button type="button" class="proof-fix" data-fix="' +
+                escHtml(rep.value) + '">' + escHtml(rep.value) + '</button>';
+            }).join('');
+            html += '<div class="proof-item">' +
+              '<p class="proof-msg">' + escHtml(m.message) + '</p>' +
+              '<p class="proof-ctx">' + ctxHtml + '</p>' +
+              (fixes ? fixes : '') +
+              '</div>';
+          });
+          if (matches.length > 60) {
+            html += '<p class="proof-note">İlk 60 bulgu gösteriliyor — bunları düzeltip tekrar denetle.</p>';
+          }
+          if (truncated) {
+            html += '<p class="proof-note">Not: metin çok uzun olduğu için ilk ~19.000 karakter denetlendi.</p>';
+          }
+          html += '<p class="proof-note">Öneriye tıkla → panoya kopyalanır; editörde hatalı kelimeyi seçip yapıştır. Denetim: LanguageTool (ücretsiz API).</p>';
+          panel.innerHTML = html;
+          panel.classList.add('open');
+          wireClose();
+          panel.querySelectorAll('.proof-fix').forEach(function(f) {
+            f.addEventListener('click', function() {
+              var v = f.getAttribute('data-fix');
+              (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject())
+                .then(function() {
+                  var old = f.textContent;
+                  f.textContent = 'kopyalandı ✓';
+                  setTimeout(function() { f.textContent = old; }, 1200);
+                })
+                .catch(function() {});
+            });
+          });
+        })
+        .catch(function(err) {
+          panel.innerHTML = renderHead('Hata') +
+            '<p class="proof-empty">Denetim servisine ulaşılamadı (' + escHtml(err.message) +
+            '). Biraz sonra tekrar dene — ücretsiz API dakikada sınırlı istek kabul ediyor.</p>';
+          panel.classList.add('open');
+          wireClose();
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btn.textContent = '✓ Dil denetimi';
+        });
+      });
+    })();
   </script>
 </body>
 </html>
