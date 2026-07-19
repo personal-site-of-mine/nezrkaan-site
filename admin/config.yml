@@ -60,7 +60,8 @@ collections:
         name: "body"
         widget: "markdown"
         hint: >-
-          Word gibi yaz: metni yapıştır, görsel sürükle. Özel bloklar (Try-it,
+          Word gibi yaz veya düz markdown kullan (## başlık, - liste, > alıntı,
+          `kod`, tablo) — hepsi sitenin stiliyle görünür. Özel bloklar (Try-it,
           Part başlığı, Kanıt kartı, Cevap bloğu...) için editördeki + işaretine
           basıp bileşen seç.
         editor_components:
