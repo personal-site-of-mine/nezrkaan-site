@@ -15,8 +15,8 @@ focusList:
   - "Open-source intelligence (OSINT) and public footprint analysis"
   - "Image, video, and social media verification"
   - "Writing Python tools to automate workflows and investigations"
-fieldNotesLabel: "Field Notes"
-fieldNotesText: "I publish write-ups on things I learn along the way. This includes OSINT CTF challenges, investigation methodologies, and breakdowns of the web systems and API integrations I build."
+fieldNotesLabel: "Archive"
+fieldNotesText: "I publish everything I write here — OSINT CTF challenges and investigations, academic essays, and everyday notes on what I'm building and learning."
 contactLabel: "Get in touch"
 contactText: "Whether you need help building a custom web project, integrating APIs, or want to discuss OSINT, feel free to reach out."
 ---
@@ -46,7 +46,7 @@ contactText: "Whether you need help building a custom web project, integrating A
     {% set latest = collections.writeups[0] %}
     {% if latest %}
     <a href="/writeups/{{ latest.fileSlug }}" class="latest-card">
-      <span class="latest-kicker">Latest field note · № {{ latest.data.number }}</span>
+      <span class="latest-kicker">Latest entry · № {{ latest.data.number }}</span>
       <h3 class="latest-title">{{ latest.data.archive_title or latest.data.articleTitle }}</h3>
       <p class="latest-excerpt">{{ latest.data.excerpt }}</p>
       <span class="latest-meta">
@@ -60,7 +60,7 @@ contactText: "Whether you need help building a custom web project, integrating A
     </a>
     {% endif %}
 
-    <a href="/writeups/" class="arrow-link">Read the full archive →</a>
+    <a href="/writeups/" class="arrow-link">Browse the full archive →</a>
   </section>
 
   <section class="section container">
