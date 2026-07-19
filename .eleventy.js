@@ -112,7 +112,10 @@ module.exports = function (eleventyConfig) {
       includes: "_includes",
       data: "_data",
     },
-    markdownTemplateEngine: "njk",
+    // Markdown bodies are NOT run through Nunjucks: posts written in the CMS
+    // may legitimately contain {{ }} or {% %} as plain text, and a template
+    // engine would crash the build on them.
+    markdownTemplateEngine: false,
     htmlTemplateEngine: "njk",
     templateFormats: ["md", "njk", "html"],
   };
