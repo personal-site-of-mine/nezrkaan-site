@@ -67,6 +67,23 @@
     }
 
     /* ── Proofreader (LanguageTool) widget ── */
+    #proof-lang {
+      position: fixed;
+      right: 172px;
+      bottom: 18px;
+      z-index: 99999;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 10px 12px;
+      background: #EDE6D0;
+      color: #5E3FA3;
+      border: 1px solid #5E3FA3;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(32,28,24,0.15);
+    }
+    #proof-lang:hover { background: #e2d8bd; }
     #proof-btn {
       position: fixed;
       right: 18px;
@@ -699,14 +716,18 @@
     //    suggestions (motherTongue=tr catches Turkish false friends).
     // ─────────────────────────────────────────────────────────────────
     (function() {
-      // 1) Native spellcheck — Slate re-renders can reset the attribute,
+      // Selected proofing language: 'en-GB' (site's English) or 'tr'.
+      // Drives both the browser's native spellcheck dictionary and the
+      // LanguageTool check. Persisted across sessions.
+      var proofLang = 'en-GB';
+      try { proofLang = localStorage.getItem('proofLang') || 'en-GB'; } catch (e) {}
+
+      // 1) Native spellcheck — Slate re-renders can reset the attributes,
       //    so keep re-applying via a MutationObserver.
       function enableSpellcheck() {
         document.querySelectorAll('[data-slate-editor]').forEach(function(el) {
-          if (el.getAttribute('spellcheck') !== 'true') {
-            el.setAttribute('spellcheck', 'true');
-            el.setAttribute('lang', 'en');
-          }
+          if (el.getAttribute('spellcheck') !== 'true') el.setAttribute('spellcheck', 'true');
+          if (el.getAttribute('lang') !== proofLang) el.setAttribute('lang', proofLang);
         });
         document.querySelectorAll('#nc-root input[type="text"], #nc-root textarea').forEach(function(el) {
           if (el.getAttribute('spellcheck') !== 'true') el.setAttribute('spellcheck', 'true');
@@ -727,10 +748,27 @@
       btn.id = 'proof-btn';
       btn.type = 'button';
       btn.textContent = '✓ Dil denetimi';
+      var langBtn = document.createElement('button');
+      langBtn.id = 'proof-lang';
+      langBtn.type = 'button';
+      langBtn.title = 'Denetim dilini değiştir (İngilizce UK / Türkçe)';
       var panel = document.createElement('div');
       panel.id = 'proof-panel';
       document.body.appendChild(panel);
       document.body.appendChild(btn);
+      document.body.appendChild(langBtn);
+
+      function refreshLangBtn() {
+        langBtn.textContent = proofLang === 'tr' ? '🇹🇷 TR' : '🇬🇧 EN';
+      }
+      refreshLangBtn();
+      langBtn.addEventListener('click', function() {
+        proofLang = proofLang === 'tr' ? 'en-GB' : 'tr';
+        try { localStorage.setItem('proofLang', proofLang); } catch (e) {}
+        refreshLangBtn();
+        enableSpellcheck();
+        panel.classList.remove('open');
+      });
 
       // Track which editor was last focused, so the check targets the
       // field you are actually writing in (falls back to the body editor).
@@ -774,11 +812,24 @@
           return;
         }
 
+        // Turkish mode: LanguageTool has no Turkish support, so grammar
+        // checking is browser-spellcheck only. Explain instead of erroring.
+        if (proofLang === 'tr') {
+          panel.innerHTML = renderHead('Türkçe modu') +
+            '<p class="proof-empty">Türkçe <strong>yazım</strong> denetimi editörün içinde çalışıyor: ' +
+            'yanlış yazılan kelimelerin altı kırmızı çizilir, sağ tıklayıp düzeltebilirsin. ' +
+            '(Görünmüyorsa tarayıcı ayarlarından Türkçe sözlük ekle: Ayarlar → Diller.)<br><br>' +
+            'Türkçe <strong>dilbilgisi</strong> servisi ise maalesef yok — LanguageTool Türkçeyi desteklemiyor. ' +
+            'İngilizce metin için 🇬🇧 EN moduna geç ve tekrar denetle.</p>';
+          panel.classList.add('open');
+          wireClose();
+          return;
+        }
+
         btn.disabled = true;
         btn.textContent = '… denetleniyor';
         // Note: no motherTongue param — LanguageTool rejects unsupported
-        // codes (tr) with a 400. If the first attempt fails (e.g. auto
-        // detection lands on an unsupported language), retry plain en-US.
+        // codes (tr) with a 400.
         function ltCheck(params) {
           return fetch('https://api.languagetool.org/v2/check', {
             method: 'POST',
@@ -795,13 +846,7 @@
             return r.json();
           });
         }
-        ltCheck({ text: text, language: 'auto', preferredVariants: 'en-US' })
-        .catch(function(err) {
-          if (err.status === 400) {
-            return ltCheck({ text: text, language: 'en-US' });
-          }
-          throw err;
-        })
+        ltCheck({ text: text, language: 'en-GB' })
         .then(function(res) {
           var matches = res.matches || [];
           var html = renderHead(matches.length
@@ -834,7 +879,7 @@
           if (truncated) {
             html += '<p class="proof-note">Not: metin çok uzun olduğu için ilk ~9.000 karakter denetlendi. Kalanını denetlemek için bulunanları düzelt, metnin ilk yarısını geçici olarak kes, tekrar denetle.</p>';
           }
-          html += '<p class="proof-note">Öneriye tıkla → panoya kopyalanır; editörde hatalı kelimeyi seçip yapıştır. Denetim: LanguageTool (ücretsiz API).</p>';
+          html += '<p class="proof-note">Öneriye tıkla → panoya kopyalanır; editörde hatalı kelimeyi seçip yapıştır. Denetim: LanguageTool · İngilizce (UK).</p>';
           panel.innerHTML = html;
           panel.classList.add('open');
           wireClose();
