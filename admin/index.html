@@ -763,7 +763,9 @@
         }
         var text = editor.innerText || '';
         var truncated = false;
-        if (text.length > 19000) { text = text.slice(0, 19000); truncated = true; }
+        // Free-API limit is 20 KB; Turkish/typographic chars take multiple
+        // UTF-8 bytes, so cap well below it.
+        if (text.length > 9000) { text = text.slice(0, 9000); truncated = true; }
         if (!text.trim()) {
           panel.innerHTML = renderHead('Dil denetimi') +
             '<p class="proof-empty">Gövde boş görünüyor.</p>';
@@ -774,19 +776,31 @@
 
         btn.disabled = true;
         btn.textContent = '… denetleniyor';
-        fetch('https://api.languagetool.org/v2/check', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({
-            text: text,
-            language: 'auto',
-            preferredVariants: 'en-US',
-            motherTongue: 'tr'
-          }).toString()
-        })
-        .then(function(r) {
-          if (!r.ok) throw new Error('API ' + r.status);
-          return r.json();
+        // Note: no motherTongue param — LanguageTool rejects unsupported
+        // codes (tr) with a 400. If the first attempt fails (e.g. auto
+        // detection lands on an unsupported language), retry plain en-US.
+        function ltCheck(params) {
+          return fetch('https://api.languagetool.org/v2/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(params).toString()
+          }).then(function(r) {
+            if (!r.ok) {
+              return r.text().then(function(msg) {
+                var e = new Error('API ' + r.status + (msg ? ' — ' + msg.slice(0, 200) : ''));
+                e.status = r.status;
+                throw e;
+              });
+            }
+            return r.json();
+          });
+        }
+        ltCheck({ text: text, language: 'auto', preferredVariants: 'en-US' })
+        .catch(function(err) {
+          if (err.status === 400) {
+            return ltCheck({ text: text, language: 'en-US' });
+          }
+          throw err;
         })
         .then(function(res) {
           var matches = res.matches || [];
@@ -818,7 +832,7 @@
             html += '<p class="proof-note">İlk 60 bulgu gösteriliyor — bunları düzeltip tekrar denetle.</p>';
           }
           if (truncated) {
-            html += '<p class="proof-note">Not: metin çok uzun olduğu için ilk ~19.000 karakter denetlendi.</p>';
+            html += '<p class="proof-note">Not: metin çok uzun olduğu için ilk ~9.000 karakter denetlendi. Kalanını denetlemek için bulunanları düzelt, metnin ilk yarısını geçici olarak kes, tekrar denetle.</p>';
           }
           html += '<p class="proof-note">Öneriye tıkla → panoya kopyalanır; editörde hatalı kelimeyi seçip yapıştır. Denetim: LanguageTool (ücretsiz API).</p>';
           panel.innerHTML = html;
@@ -838,9 +852,11 @@
           });
         })
         .catch(function(err) {
+          var hint = (err.status === 429)
+            ? 'Ücretsiz API dakikada sınırlı istek kabul ediyor — bir dakika bekleyip tekrar dene.'
+            : 'Tekrar dene; sorun sürerse hata mesajını not al.';
           panel.innerHTML = renderHead('Hata') +
-            '<p class="proof-empty">Denetim servisine ulaşılamadı (' + escHtml(err.message) +
-            '). Biraz sonra tekrar dene — ücretsiz API dakikada sınırlı istek kabul ediyor.</p>';
+            '<p class="proof-empty">Denetim başarısız: ' + escHtml(err.message) + '<br>' + hint + '</p>';
           panel.classList.add('open');
           wireClose();
         })
