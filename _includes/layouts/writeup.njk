@@ -65,15 +65,16 @@ extraStyles:
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
-  var finding = document.getElementById('finding');
-  var revealBtn = document.getElementById('findingReveal');
-  var answer = document.getElementById('findingAnswer');
-  if (revealBtn && finding) {
+  var findings = document.querySelectorAll('.finding');
+  Array.prototype.forEach.call(findings, function(finding) {
+    var revealBtn = finding.querySelector('.finding-reveal');
+    var answer = finding.querySelector('.finding-answer');
+    if (!revealBtn) return;
     revealBtn.addEventListener('click', function() {
       finding.classList.add('revealed');
       revealBtn.setAttribute('aria-expanded', 'true');
       if (answer) answer.setAttribute('aria-hidden', 'false');
     });
-  }
+  });
 })();
 </script>
