@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FairKick – Privacy Policy / Gizlilik Politikası</title>
+<style>
+  body { margin: 0; background: #0b0e0f; color: #e8ecee; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 20px 64px; }
+  h1 { font-size: 30px; margin: 0 0 4px; } h1 b { color: #53fc18; }
+  h2 { font-size: 20px; margin: 36px 0 8px; border-top: 1px solid #242a2d; padding-top: 24px; }
+  p, li { color: #c3cbce; } .tarih { color: #8b9498; font-size: 14px; }
+  a { color: #53fc18; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Fair<b>Kick</b></h1>
+  <p class="tarih">Last updated / Son güncelleme: 30 September 2026</p>
+
+  <h2>Privacy Policy</h2>
+  <p>FairKick is a browser extension for kick.com. It does not collect, store, sell or share any personal data.</p>
+  <ul>
+    <li><b>No data collection.</b> FairKick has no analytics, no tracking and no accounts. Nothing about you or your browsing is sent to the developer or to any third party.</li>
+    <li><b>Settings stay on your device.</b> Your choices (ad mode, corner ad volume, language) and simple counters used for the toolbar badge are saved in your browser's local extension storage and never leave your device.</li>
+    <li><b>Requests to Kick.</b> When an ad starts, FairKick asks Kick's own public website for the address of the live stream you are already watching, directly from your browser, so it can keep the stream playing. No data is sent anywhere else.</li>
+    <li><b>Optional blocking.</b> In "Block completely" mode, the browser blocks a short, fixed list of ad and tracking domains on kick.com. This happens inside your browser and involves no data collection.</li>
+    <li><b>Support link.</b> The "Support" button opens ko-fi.com in a new tab. Ko-fi's own privacy policy applies there.</li>
+  </ul>
+  <p>If this policy changes, the updated version will be published on this page.</p>
+  <p>FairKick is an independent project and is not affiliated with or endorsed by Kick.</p>
+
+  <h2>Gizlilik Politikası</h2>
+  <p>FairKick, kick.com için bir tarayıcı eklentisidir. Hiçbir kişisel veri toplamaz, saklamaz, satmaz ya da paylaşmaz.</p>
+  <ul>
+    <li><b>Veri toplanmaz.</b> FairKick'te analiz, takip ya da hesap yoktur. Sen ya da gezinmen hakkında hiçbir bilgi geliştiriciye veya üçüncü bir tarafa gönderilmez.</li>
+    <li><b>Ayarlar cihazında kalır.</b> Seçimlerin (reklam modu, köşedeki reklamın sesi, dil) ve araç çubuğu rozeti için tutulan basit sayaçlar tarayıcının yerel eklenti depolamasında saklanır, cihazından çıkmaz.</li>
+    <li><b>Kick'e yapılan istekler.</b> Reklam başladığında FairKick, zaten izlediğin canlı yayının adresini doğrudan tarayıcından Kick'in herkese açık sitesine sorar ki yayın kesilmesin. Başka hiçbir yere veri gönderilmez.</li>
+    <li><b>İsteğe bağlı engelleme.</b> "Tam engelle" modunda tarayıcı, kick.com'da sabit ve kısa bir reklam/izleme alan adı listesini engeller. Bu işlem tarayıcının içinde olur, veri toplamaz.</li>
+    <li><b>Destek bağlantısı.</b> "Destek ol" düğmesi ko-fi.com'u yeni sekmede açar. Orada Ko-fi'nin kendi gizlilik politikası geçerlidir.</li>
+  </ul>
+  <p>Bu politika değişirse güncel hali bu sayfada yayınlanır.</p>
+  <p>FairKick bağımsız bir projedir, Kick ile bağlantılı değildir ve Kick tarafından onaylanmamıştır.</p>
+
+  <p style="margin-top:40px"><a href="https://ko-fi.com/nezrkaan">ko-fi.com/nezrkaan</a></p>
+</main>
+</body>
+</html>
