@@ -5569,16 +5569,20 @@ let mineScan=null;                                            // the scan in pro
 /* ---------- HTTP: native requests in the app (no CORS), fetch on the web ---------- */
 async function getText(url,headers){
   const CH=NATIVE?nativePlugin('CapacitorHttp'):null;
-  if(CH){
-    const r=await CH.get({url,headers:headers||{},responseType:'text'});
-    if(r.status===404)throw new Error('notfound');
-    if(r.status<200||r.status>=300)throw new Error('http '+r.status);
-    return typeof r.data==='string'?r.data:JSON.stringify(r.data);
-  }
-  const r=await fetch(url,{headers:headers||{}});
-  if(r.status===404)throw new Error('notfound');
-  if(!r.ok)throw new Error('http '+r.status);
-  return r.text();
+  let status,body;
+  try{
+    if(CH){
+      const r=await CH.get({url,headers:headers||{},responseType:'text'});
+      status=r.status;body=typeof r.data==='string'?r.data:JSON.stringify(r.data);
+    }else{
+      const r=await fetch(url,{headers:headers||{}});
+      status=r.status;if(r.ok)body=await r.text();
+    }
+  }catch(e){throw new Error('network');}                     // no answer at all (offline, blocked, CORS)
+  if(status===404||status===410)throw new Error('notfound');
+  if(status===429)throw new Error('busy');
+  if(status<200||status>=300)throw new Error('http '+status);
+  return body;
 }
 
 /* ---------- the engine: Stockfish in a web worker, one search at a time ---------- */
@@ -5587,10 +5591,16 @@ function Engine(){
   const lines=[];
   async function start(){
     const src=await getText(ENGINE_JS);
-    const url=URL.createObjectURL(new Blob([src],{type:'text/javascript'}));
-    w=new Worker(url+'#'+encodeURIComponent(ENGINE_WASM));
+    /* the engine reads where its .wasm is from the worker's #hash; write it into the code instead,
+       so it does not depend on how a browser treats a #hash on a blob: URL */
+    const hook='self.location.hash.substr(1)',wasm=JSON.stringify(encodeURIComponent(ENGINE_WASM));
+    const code=src.includes(hook)?src.split(hook).join(wasm):src;
+    const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
+    w=new Worker(code===src?url+'#'+encodeURIComponent(ENGINE_WASM):url);
     w.onmessage=e=>{const s=String(e.data);if(listener)listener(s);};
-    await cmd('uci',s=>s==='uciok');
+    const broke=new Promise((_,rej)=>{w.onerror=e=>{if(e&&e.preventDefault)e.preventDefault();rej(new Error('engine'));};});
+    broke.catch(()=>{});                                     // an error after a good start is handled by the timeouts
+    await Promise.race([cmd('uci',s=>s==='uciok'),broke]);
     w.postMessage('setoption name Hash value 16');
     await cmd('isready',s=>s==='readyok');
   }
@@ -5632,13 +5642,16 @@ async function chesscomGames(user,n){
   const out=[];
   for(const u of urls){
     if(out.length>=n)break;
-    const j=JSON.parse(await getText(u));
-    (j.games||[]).filter(g=>g.rules==='chess'&&g.pgn).reverse().forEach(g=>{
+    let j;
+    try{j=JSON.parse(await getText(u));}catch(e){if(out.length)break;throw e;}   // one month failing: keep what we have
+    (j.games||[]).filter(g=>g&&g.rules==='chess'&&g.pgn).reverse().forEach(g=>{
       if(out.length>=n)return;
-      const me=user.toLowerCase(),color=(g.white.username||'').toLowerCase()===me?'w':'b';
-      const ch=new Chess();if(!ch.load_pgn(g.pgn,{sloppy:true}))return;
-      const h=ch.header()||{},start=h.SetUp==='1'&&h.FEN?h.FEN:null;   // games from a set-up position
-      out.push({id:(g.url||'').split('/').pop()||String(out.length),site:'chesscom',url:g.url,speed:g.time_class,color,opp:color==='w'?g.black.username:g.white.username,start,sans:ch.history()});
+      try{
+        const me=user.toLowerCase(),color=((g.white||{}).username||'').toLowerCase()===me?'w':'b';
+        const ch=new Chess();if(!ch.load_pgn(g.pgn,{sloppy:true}))return;
+        const h=ch.header()||{},start=h.SetUp==='1'&&h.FEN?h.FEN:null;   // games from a set-up position
+        out.push({id:(g.url||'').split('/').pop()||String(out.length),site:'chesscom',url:g.url,speed:g.time_class,color,opp:color==='w'?(g.black||{}).username:(g.white||{}).username,start,sans:ch.history()});
+      }catch(e){}                                                // one odd game never stops the scan
     });
   }
   return out;
@@ -5649,7 +5662,8 @@ async function scanGames(site,user,progress){
   const games=site==='chesscom'?await chesscomGames(user,MINE_GAMES):await lichessGames(user,MINE_GAMES);
   if(!games.length)throw new Error('nogames');
   progress({phase:'engine',games:games.length});
-  const eng=Engine();await eng.start();
+  const eng=Engine();
+  try{await eng.start();}catch(e){eng.stop();throw new Error(e.message==='busy'?'busy':'engine');}
   mineScan.engine=eng;
   const found=[];
   try{
@@ -5704,6 +5718,16 @@ function renderMine(){
     '<div class="empty-note">no big misses found in these games. nice.</div>';
   list.querySelectorAll('.mine-row').forEach(b=>b.addEventListener('click',()=>{const p=mine.list[+b.dataset.k];if(p.solved)openReplay(p,0);else startMine(+b.dataset.k);}));
 }
+function scanError(e,site){
+  const where=site==='chesscom'?'chess.com':'lichess',m=String(e&&e.message||e);
+  if(m==='notfound')return 'no such player on '+where;
+  if(m==='nogames')return 'no standard games found';
+  if(m==='busy')return where+' is busy · try again in a minute';
+  if(/^engine/.test(m))return "couldn't run the engine · try again";
+  if(m==='network')return "couldn't reach "+where+' · check your connection';
+  if(/^http \d+$/.test(m))return where+' said no ('+m.slice(5)+') · try again later';
+  return 'something went wrong · '+m.slice(0,60);
+}
 async function toggleScan(){
   if(mineScan){mineScan.cancel=true;if(mineScan.engine)mineScan.engine.stop();mineScan=null;renderMine();return;}
   const user=document.getElementById('mineUser').value.trim().replace(/^@/,'');
@@ -5726,7 +5750,7 @@ async function toggleScan(){
     track('mine_done',{site,found:res.list.length});
   }catch(e){
     console.warn(e);
-    st.textContent=e.message==='notfound'?'no such player on '+(site==='chesscom'?'chess.com':'lichess'):e.message==='nogames'?'no standard games found':"couldn't reach "+(site==='chesscom'?'chess.com':'lichess')+' · check your connection';
+    st.textContent=scanError(e,site);
     mineScan=null;bar.classList.add('hidden');document.getElementById('mineScanBtn').textContent='scan my last '+MINE_GAMES+' games';return;
   }
   mineScan=null;bar.classList.add('hidden');renderMine();renderHome();
