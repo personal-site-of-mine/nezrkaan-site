@@ -26,3 +26,7 @@
 
 /robots.txt
   Cache-Control: public, max-age=86400
+
+# TEMPO puzzle data: changes rarely (a new build every few months)
+/tempo/data/*
+  Cache-Control: public, max-age=86400

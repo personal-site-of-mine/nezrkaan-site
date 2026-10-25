@@ -12,6 +12,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("googlef9a1995f79913751.html");
   eleventyConfig.addPassthroughCopy("admin");
   eleventyConfig.addPassthroughCopy("_headers");
+  // TEMPO (chess puzzle arcade): copied as-is, never run through the template engine
+  eleventyConfig.addPassthroughCopy("tempo");
 
   // Watch CSS so eleventy --serve picks up edits
   eleventyConfig.addWatchTarget("css/");

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>TEMPO.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -598,6 +598,201 @@
   .tm-board .d,.skin-mini .d{position:absolute;width:26%;height:26%;transform:rotate(45deg);opacity:.9;}
   .skin.locked .theme-mini{filter:grayscale(.8) brightness(.55);}
   #skinTabs{margin-bottom:12px;}
+
+  /* ---------- v20: progress, missions, badges, review, challenges, replay, onboarding ---------- */
+  .wrap{padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:calc(50px + env(safe-area-inset-bottom));padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right));}
+  .toast{top:calc(14px + env(safe-area-inset-top));}
+  .gameover,.replay,.onboard{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);}
+  .sheet-wrap{padding-bottom:calc(16px + env(safe-area-inset-bottom));}
+
+  /* home: rating · days in a row · level */
+  .me-band{grid-template-columns:1.15fr 1fr 1fr;}
+  .me-days .mv{display:flex;align-items:baseline;gap:4px;}
+  .me-days .flame{font-size:20px;line-height:1;filter:grayscale(1) brightness(.7);transition:filter .2s;}
+  .me-days.lit .flame{filter:none;}
+  .me-days.lit .mv{color:#FF8A1F;}
+  .me-days.pending .ml{color:#FF8A1F;animation:blink 1.2s steps(2) infinite;}
+  .me-level{background:transparent;border:none;border-left:1px solid var(--rule);text-align:left;cursor:pointer;font-family:inherit;color:inherit;position:relative;}
+  .me-level .mv{color:var(--yellow);}
+  .xp-bar{display:block;height:4px;background:var(--rule);margin-top:4px;position:relative;overflow:hidden;}
+  .xp-bar b{position:absolute;left:0;top:0;bottom:0;background:var(--yellow);transition:width .6s cubic-bezier(.2,.8,.2,1);}
+  .xp-l{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);margin-top:2px;white-space:nowrap;}
+  .pick-row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .freeze-chip{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);background:transparent;border:1px solid var(--rule);padding:5px 9px;cursor:pointer;}
+  .freeze-chip b{color:#7FD3FF;font-weight:700;}
+  .freeze-chip.can{border-color:rgba(127,211,255,.45);}
+  .freeze-chip.can::after{content:' · +1 with an ad';color:var(--bone-soft);}
+
+  /* today: three missions */
+  .today-box{border:1px solid var(--rule);background:var(--surface);padding:6px 14px 10px;}
+  .ms-row{display:grid;grid-template-columns:18px 1fr auto auto;align-items:center;gap:4px 10px;padding:9px 0 7px;border-bottom:1px solid var(--rule);}
+  .ms-ck{width:16px;height:16px;border:1.5px solid var(--bone-mute);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--bg-deep);}
+  .ms-row.done .ms-ck{background:#39D98A;border-color:#39D98A;}
+  .ms-t{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:lowercase;color:var(--bone);line-height:1.35;}
+  .ms-row.done .ms-t{color:var(--bone-mute);text-decoration:line-through;text-decoration-color:var(--bone-mute);}
+  .ms-n{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:15px;color:var(--bone-soft);font-variant-numeric:tabular-nums;}
+  .ms-x{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:13px;color:var(--yellow);min-width:30px;text-align:right;}
+  .ms-bar{grid-column:2 / -1;height:3px;background:var(--rule);position:relative;display:block;}
+  .ms-bar b{position:absolute;left:0;top:0;bottom:0;background:var(--yellow);}
+  .ms-row.done .ms-bar b{background:#39D98A;}
+  .ms-note{font-size:8.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-mute);padding-top:9px;}
+  .ms-repair{display:block;width:100%;margin-top:10px;padding:10px 12px;background:rgba(255,138,31,.1);border:1px solid #FF8A1F;color:#FF8A1F;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:left;cursor:pointer;}
+  .today-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;}
+  .today-cards:has(.review.hidden){grid-template-columns:1fr;}
+  .tc-card,.mine-card{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:13px 14px 12px;background:var(--surface);border:1px solid var(--rule);cursor:pointer;text-align:left;font-family:'IBM Plex Mono',monospace;color:var(--bone);position:relative;overflow:hidden;transition:transform .12s,border-color .12s;}
+  .tc-card:hover,.mine-card:hover{transform:translateY(-2px);}
+  .tc-card::before,.mine-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#39D98A);}
+  .tc-card.review{--c:#39D98A;}
+  .tc-card.review.empty{opacity:.55;}
+  .tc-card.focus{--c:#3BA7FF;}
+  .tc-k{font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--c,#A36BFF);}
+  .tc-n{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:26px;line-height:.85;text-transform:uppercase;color:var(--bone);}
+  .tc-n b{color:var(--c);}
+  .tc-s{font-size:8.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-mute);}
+  .mine-card{--c:#A36BFF;width:100%;margin-top:6px;}
+  .mc-t{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:24px;line-height:.85;text-transform:uppercase;}
+  .mc-a{position:absolute;right:14px;top:13px;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c);}
+
+  /* clocks: berserk */
+  .berserk-chip{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-mute);background:transparent;border:1px solid var(--rule);padding:5px 9px;cursor:pointer;}
+  .berserk-chip b{color:#FF4D6D;}
+  .berserk-chip.on{background:#FF4D6D;border-color:#FF4D6D;color:var(--bg-deep);}
+  .berserk-chip.on b{color:var(--bg-deep);}
+  .meta-cell.time-cell.berserk{box-shadow:inset 0 -3px 0 #FF4D6D;}
+  .meta-cell.time-cell.berserk .ml{color:#FF4D6D;}
+
+  /* arcade cards that open later */
+  .arc-btn.locked{opacity:.5;}
+  .arc-btn.locked .an{color:var(--bone-mute);}
+  .arc-btn.locked::before{background:var(--bone-mute);}
+  .arc-btn.locked .ai{filter:grayscale(1);opacity:.55;}
+  .arc-btn .ar.lock{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--bone-mute);}
+  .new-tag{position:absolute;top:10px;right:10px;font-style:normal;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:3px 6px;background:var(--c);color:var(--bg-deep);animation:blink 1s steps(2) 6;}
+
+  /* the ghost of your best run */
+  .ghost{display:flex;align-items:center;gap:10px;margin:-6px 0 10px;padding:6px 10px;border:1px dashed var(--rule);font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--bone-soft);font-variant-numeric:tabular-nums;}
+  .ghost b{font-weight:800;color:var(--bone-mute);font-size:12px;letter-spacing:.18em;}
+  .ghost i{margin-left:auto;font-style:normal;font-weight:900;font-size:16px;}
+  .ghost.ahead{border-color:rgba(57,217,138,.5);}
+  .ghost.ahead i{color:#39D98A;}
+  .ghost.behind{border-color:rgba(255,77,109,.45);}
+  .ghost.behind i{color:#FF4D6D;}
+
+  /* game over: duel, xp, next goal, missed puzzles, sharing */
+  .gameover .go-duel{margin-top:14px;padding:10px 12px;border:1px solid #FF4D6D;color:#FF4D6D;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:20px;letter-spacing:.03em;text-transform:uppercase;text-align:center;}
+  .gameover .go-duel.win{border-color:#39D98A;color:#39D98A;}
+  .gameover .go-duel.hidden,.gameover .go-xp.hidden,.gameover .go-hooks.hidden,.gameover .go-missed.hidden,.gameover .go-share.hidden,.go-mini.hidden{display:none;}
+  .go-xp{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:4px 12px;margin-top:16px;}
+  .gx-n{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:22px;color:var(--yellow);}
+  .gx-l{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-soft);text-align:right;}
+  .gx-bar{grid-column:1 / -1;display:block;height:6px;background:var(--rule);position:relative;overflow:hidden;}
+  .gx-bar b{position:absolute;left:0;top:0;bottom:0;background:var(--yellow);transition:width .9s cubic-bezier(.2,.8,.2,1);}
+  .go-hooks{margin-top:12px;font-size:10px;font-weight:600;letter-spacing:.08em;line-height:1.7;text-transform:lowercase;color:var(--bone-soft);}
+  .go-missed{margin-top:14px;}
+  .gm-l{font-size:8.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-mute);margin-bottom:6px;}
+  .gm-list{display:flex;flex-wrap:wrap;gap:5px;}
+  .gm-p{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:6px 9px;background:transparent;border:1px solid rgba(255,77,109,.4);color:var(--bone);cursor:pointer;font-family:'IBM Plex Mono',monospace;}
+  .gm-p b{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:16px;line-height:1;color:#FF4D6D;}
+  .gm-p small{font-size:8px;letter-spacing:.1em;text-transform:lowercase;color:var(--bone-mute);}
+  .go-share{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .go-mini{padding:11px 6px;background:transparent;border:1px dashed var(--bone-mute);color:var(--bone-soft);font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;}
+  .go-mini.duel{border-color:var(--yellow);color:var(--yellow);}
+  .go-mini.hidden{display:none;}
+  .go-share:has(.go-mini.duel.hidden){grid-template-columns:1fr;}
+
+  /* badges */
+  .badge-head{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 12px;}
+  .badge-head b{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:32px;color:var(--yellow);}
+  .badge-head span{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-soft);}
+  .badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  .badge{min-width:0;display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto auto auto;gap:3px 10px;padding:11px 12px;background:var(--surface);border:1px solid var(--rule);opacity:.62;}
+  .badge.on{opacity:1;border-color:var(--yellow);}
+  .bg-ic{grid-row:1 / span 2;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--bone-mute);background:var(--bg-deep);}
+  .badge.on .bg-ic{color:var(--yellow);background:var(--light-sq);}
+  .bg-ic svg{width:80%;height:80%;display:block;}
+  .bg-n{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:17px;line-height:.95;text-transform:uppercase;color:var(--bone);overflow-wrap:anywhere;}
+  .bg-d,.bg-s{overflow-wrap:anywhere;}
+  .bg-d{font-size:8.5px;line-height:1.45;letter-spacing:.06em;color:var(--bone-soft);}
+  .bg-bar{grid-column:1 / -1;display:block;height:3px;background:var(--rule);position:relative;margin-top:4px;}
+  .bg-bar b{position:absolute;left:0;top:0;bottom:0;background:var(--yellow);}
+  .bg-s{grid-column:1 / -1;font-size:8px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);}
+  .badge.on .bg-s{color:#39D98A;}
+
+  /* your games */
+  .mine-intro{margin:12px 0 4px;font-size:11px;line-height:1.6;letter-spacing:.03em;color:var(--bone-soft);}
+  #mineUser{margin:4px 0 8px;font-size:14px;padding:12px;}
+  .mine-scan,.mine-play{width:100%;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;padding:14px 8px;cursor:pointer;border:1px solid var(--bone-mute);background:transparent;color:var(--bone);}
+  .mine-scan.primary,.go-btn.primary.mine-scan{background:var(--yellow);color:var(--bg-deep);border-color:var(--yellow);}
+  .mine-play{margin-top:10px;border-color:#A36BFF;color:#A36BFF;}
+  .mine-play.hidden,.mine-bar.hidden{display:none;}
+  .mine-bar{height:5px;background:var(--rule);margin-top:10px;position:relative;overflow:hidden;}
+  .mine-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:#A36BFF;transition:width .3s;}
+  .mine-status{margin-top:10px;font-size:9.5px;font-weight:600;letter-spacing:.12em;line-height:1.6;text-transform:uppercase;color:var(--bone-mute);}
+  .mine-list{display:flex;flex-direction:column;gap:5px;margin-top:12px;}
+  .mine-row{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;padding:11px 12px;background:var(--surface);border:1px solid var(--rule);text-align:left;cursor:pointer;color:var(--bone);font-family:'IBM Plex Mono',monospace;}
+  .mine-row .mr-a{grid-row:1 / span 2;align-self:center;font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#FF4D6D;min-width:72px;}
+  .mine-row.done .mr-a{color:#39D98A;}
+  .mine-row .mr-b{font-size:11px;letter-spacing:.04em;}
+  .mine-row .mr-b b{color:var(--yellow);}
+  .mine-row .mr-c{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-mute);}
+
+  /* replay */
+  .replay{position:fixed;inset:0;z-index:85;background:rgba(var(--bg-deep-rgb),.86);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;}
+  .replay.hidden{display:none;}
+  .rp-card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--rule);border-top:3px solid var(--yellow);padding:16px 16px 14px;animation:sheetUp .3s cubic-bezier(.2,.9,.3,1.1);}
+  .rp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px;}
+  .rp-head .quit{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-mute);background:transparent;border:1px solid var(--rule);padding:8px 12px;cursor:pointer;}
+  .rp-title{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:28px;line-height:.85;text-transform:uppercase;color:var(--bone);}
+  .rp-sub{margin-top:5px;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:lowercase;color:var(--bone-soft);}
+  .rp-board{margin-bottom:10px;}
+  .rp-board .sq{cursor:default;}
+  .rp-moves{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0 10px;}
+  .rp-mv{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:5px 9px;background:transparent;border:1px solid var(--rule);color:var(--bone);font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;cursor:pointer;}
+  .rp-mv small{font-family:'IBM Plex Mono',monospace;font-size:7.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);}
+  .rp-mv.they{color:var(--bone-soft);}
+  .rp-mv.on{border-color:var(--yellow);background:var(--yellow);color:var(--bg-deep);}
+  .rp-mv.on small{color:rgba(var(--bg-rgb),.7);}
+  .rp-ctl{display:grid;grid-template-columns:1fr 1fr auto 1fr 1fr;gap:6px;align-items:center;}
+  .rp-ctl .btn{padding:12px 4px;font-size:15px;}
+  .rp-ctl .btn:disabled{opacity:.3;}
+  .rp-step{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;color:var(--bone-soft);min-width:46px;text-align:center;font-variant-numeric:tabular-nums;}
+  .rp-link{display:block;margin-top:12px;text-align:center;font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--bone-soft);}
+  .rp-link.hidden{display:none;}
+
+  /* onboarding */
+  .onboard{position:fixed;inset:0;z-index:88;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow-y:auto;}
+  .onboard.hidden{display:none;}
+  .ob-step{width:100%;max-width:440px;padding:28px 22px;display:flex;flex-direction:column;gap:8px;animation:scrInUp .4s cubic-bezier(.2,.8,.2,1);}
+  .ob-step.hidden{display:none;}
+  .ob-brand{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:110px;line-height:.74;letter-spacing:-.02em;color:var(--yellow);text-transform:uppercase;}
+  .ob-brand .dot{color:var(--red);}
+  .ob-sub{font-size:11px;font-weight:600;letter-spacing:.4em;text-transform:uppercase;color:var(--bone-mute);margin:10px 0 18px;}
+  .ob-q{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:30px;line-height:.9;text-transform:uppercase;color:var(--bone);margin:10px 0 6px;}
+  .ob-q.big{font-size:56px;line-height:.82;color:var(--yellow);}
+  .ob-text{font-size:11px;line-height:1.7;letter-spacing:.05em;color:var(--bone-soft);margin-bottom:10px;}
+  .ob-opt,.ob-mode{--c:var(--yellow);display:flex;flex-direction:column;align-items:flex-start;gap:5px;width:100%;padding:16px 16px 14px;background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--c);cursor:pointer;text-align:left;color:var(--bone);font-family:'IBM Plex Mono',monospace;transition:transform .12s,border-color .12s;}
+  .ob-opt:hover,.ob-mode:hover{transform:translateX(3px);border-color:var(--c);}
+  .ob-opt b,.ob-mode b{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:24px;line-height:.9;text-transform:uppercase;color:var(--c);}
+  .ob-opt span,.ob-mode span{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);}
+  .ob-opt[data-goal="tactics"]{--c:#3BA7FF;}
+  .ob-opt[data-goal="fun"]{--c:#FF4D6D;}
+  .ob-go{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:22px;letter-spacing:.06em;text-transform:uppercase;padding:18px 8px;background:var(--yellow);color:var(--bg-deep);border:1px solid var(--yellow);cursor:pointer;margin-top:8px;}
+  .ob-skip{margin-top:12px;background:none;border:none;color:var(--bone-mute);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;cursor:pointer;align-self:center;}
+  .ob-level{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:150px;line-height:.8;color:var(--yellow);font-variant-numeric:tabular-nums;}
+  .ob-modes{display:flex;flex-direction:column;gap:6px;}
+
+  /* sheets and settings bits */
+  .nick-in{margin-top:14px;font-size:16px;padding:12px;}
+  .set-sel{flex:none;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;color:var(--yellow);background:var(--bg-deep);border:1px solid var(--rule);padding:6px 8px;margin-left:auto;}
+  #setRemindRow.hidden{display:none;}
+  .sp-row{display:grid;grid-template-columns:1fr auto;gap:6px 10px;padding:9px 2px;border-bottom:1px solid var(--rule);font-size:11px;}
+  .sp-row .tn{text-transform:lowercase;letter-spacing:.04em;color:var(--bone);}
+  .sp-row .tv{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:15px;color:var(--bone-soft);}
+  .sp-row .bar{grid-column:1 / -1;height:3px;background:var(--rule);position:relative;}
+  .sp-row .bar i{position:absolute;left:0;top:0;bottom:0;background:#39D98A;}
+  .sp-row.slow .bar i{background:#FF8A1F;}
+  .pro-fine a{color:var(--bone-soft);text-decoration:underline;}
+  a.set-row.set-link{text-decoration:none;color:inherit;}
 </style>
 </head>
 <body>
@@ -616,9 +811,17 @@
 
     <div class="me-band">
       <div class="me-cell me-rating"><div class="ml">overall rating</div><div class="mv" id="meRating">1500?</div></div>
-      <div class="me-cell"><div class="ml">played</div><div class="mv" id="mePlayed">0</div></div>
-      <div class="me-cell"><div class="ml">solved</div><div class="mv" id="meRate">&mdash;</div></div>
+      <div class="me-cell me-days" id="meDaysCell"><div class="ml" id="meDaysL">day streak</div><div class="mv"><span class="flame">🔥</span><span id="meDays">0</span></div></div>
+      <button class="me-cell me-level" id="meLevelCell"><div class="ml">level</div><div class="mv" id="meLevel">1</div><i class="xp-bar"><b id="meXpBar"></b></i><div class="xp-l" id="meXpL">0/100 xp</div></button>
     </div>
+
+    <div class="pick pick-row"><span>today</span><button class="freeze-chip" id="freezeChip"></button></div>
+    <div class="today-box" id="todayBox"></div>
+    <div class="today-cards">
+      <button class="tc-card review hidden" id="reviewCard"><span class="tc-k">review</span><span class="tc-n"><b id="reviewN">0</b> due</span><span class="tc-s" id="reviewSub"></span></button>
+      <button class="tc-card focus" id="focusCard"><span class="tc-k">today's focus</span><span class="tc-n" id="focusName">fork</span><span class="tc-s" id="focusSub">train 10 puzzles</span></button>
+    </div>
+    <button class="mine-card" id="mineCard"><span class="tc-k">your games</span><span class="mc-t">find the moves you missed</span><span class="tc-s" id="mineSub">puzzles from your own blunders</span><span class="mc-a">lichess · chess.com ›</span></button>
 
     <div class="pick">train</div>
     <div class="modes" id="trainList">
@@ -647,11 +850,12 @@
     <div class="pick">arcade</div>
     <div class="modes arcade-grid" id="arcadeList"></div>
 
-    <div class="pick">choose your clock</div>
+    <div class="pick pick-row"><span>choose your clock</span><button class="berserk-chip" id="berserkChip" role="switch" aria-checked="false"><b>berserk</b> half time · ×2</button></div>
     <div class="modes" id="modesList"></div>
 
     <div class="sound-row">
       <button class="sound-toggle" id="statsBtn">stats</button>
+      <button class="sound-toggle" id="badgesBtn">badges</button>
       <button class="sound-toggle" id="skinsBtn">skins</button>
       <button class="sound-toggle" id="settingsBtn">settings</button>
     </div>
@@ -708,6 +912,12 @@
       <div class="set-row"><span class="set-l">shake, flashes &amp; particles</span><button class="tgl" id="setFx" role="switch" aria-checked="true" aria-label="shake, flashes and particles"></button></div>
     </div>
 
+    <div class="pick">reminders &amp; friends</div>
+    <div class="set-group">
+      <div class="set-row" id="setRemindRow"><span class="set-l">daily reminder<small class="set-note">keeps your streak alive · never more than once a day</small></span><select class="set-sel" id="setRemindTime" aria-label="reminder time"><option value="8">08:00</option><option value="12">12:00</option><option value="17">17:00</option><option value="19">19:00</option><option value="21">21:00</option></select><button class="tgl" id="setRemind" role="switch" aria-checked="false" aria-label="daily reminder"></button></div>
+      <button class="set-row set-link" id="setNick"><span class="set-l">your name on challenges</span><span class="set-v2" id="setNickV">set ›</span></button>
+    </div>
+
     <div class="pick">look</div>
     <div class="set-group">
       <button class="set-row set-link" id="setSkins"><span class="set-l">themes &amp; skins</span><span class="set-v2" id="setSkinsV">tempo · classic · navy</span></button>
@@ -724,6 +934,8 @@
     <div class="set-group">
       <div class="set-row"><span class="set-l">share anonymous gameplay data<small class="set-note">which modes you play and how puzzles go · no names · helps improve tempo</small></span><button class="tgl" id="setData" role="switch" aria-checked="false" aria-label="share anonymous gameplay data"></button></div>
       <button class="set-row set-btn plain" id="setExport">export my data</button>
+      <button class="set-row set-btn plain hidden" id="setAdPrivacy">ad privacy choices</button>
+      <a class="set-row set-link" id="setPolicy" href="https://nezrkaan.com/tempo/privacy.html" target="_blank" rel="noopener"><span class="set-l">privacy policy</span><span class="set-v2">↗</span></a>
     </div>
 
     <div class="pick">data</div>
@@ -768,6 +980,38 @@
     <div class="pro-fine" id="proFine"></div>
   </div>
 
+  <!-- ===== BADGES ===== -->
+  <div class="panel hidden" id="badgesScreen">
+    <div class="game-head">
+      <div class="brand-sm" data-home>tempo<span class="dot">.</span></div>
+      <button class="quit" id="badgesBack">back</button>
+    </div>
+    <div class="panel-title">badges</div>
+    <div class="badge-head"><b id="badgeCount">0/0</b><span id="badgeLevel">level 1</span></div>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </div>
+
+  <!-- ===== YOUR GAMES ===== -->
+  <div class="panel hidden" id="mineScreen">
+    <div class="game-head">
+      <div class="brand-sm" data-home>tempo<span class="dot">.</span></div>
+      <button class="quit" id="mineBack">back</button>
+    </div>
+    <div class="panel-title">your games</div>
+    <div class="mine-intro">we look at your recent games and turn the moves where you missed something into puzzles.</div>
+    <div class="f-chips tabs" id="mineSite">
+      <button class="f-chip active" data-site="lichess">lichess</button>
+      <button class="f-chip" data-site="chesscom">chess.com</button>
+    </div>
+    <input class="f-select" id="mineUser" type="text" placeholder="your username" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button class="go-btn primary mine-scan" id="mineScanBtn">scan my last 20 games</button>
+    <div class="mine-bar hidden" id="mineBar"><i></i></div>
+    <div class="mine-status" id="mineStatus"></div>
+    <button class="go-btn mine-play hidden" id="minePlay">play</button>
+    <div class="mine-list" id="mineList"></div>
+    <div class="set-foot">games come from the lichess and chess.com public apis · analysis by stockfish (gplv3), loaded when you scan</div>
+  </div>
+
   <!-- ===== STATS ===== -->
   <div class="panel hidden" id="statsScreen">
     <div class="game-head">
@@ -795,6 +1039,8 @@
     <div id="weakList"></div>
     <div class="pick">strongest</div>
     <div id="strongList"></div>
+    <div class="pick">speed by pattern · fastest &amp; slowest</div>
+    <div id="speedList"></div>
     <div class="sound-row"><button class="sound-toggle" id="resetBtn">reset rating &amp; stats</button></div>
   </div>
 
@@ -825,6 +1071,8 @@
       <div class="fever-segs"><i></i><i></i><i></i><i></i><i></i></div>
       <div class="fever-lbl" id="feverLbl">combo</div>
     </div>
+
+    <div class="ghost hidden" id="ghostRow"></div>
 
     <div class="race hidden" id="raceTrack">
       <div class="lane you"><span class="lane-lbl">you</span><div class="lane-track"><i class="lane-fill" id="raceYouFill"></i><span class="runner" id="raceYou"></span></div><b class="lane-n" id="raceYouN">0</b></div>
@@ -883,10 +1131,18 @@
       <div class="go-stat"><div class="n" id="goBest">0</div><div class="l" id="goL2">best streak</div></div>
       <div class="go-stat"><div class="n" id="goHigh">0</div><div class="l" id="goL3">high score</div></div>
     </div>
+    <div class="go-duel hidden" id="goDuel"></div>
     <div class="go-list hidden" id="goList"></div>
+    <div class="go-xp hidden" id="goXp"></div>
+    <div class="go-hooks hidden" id="goHooks"></div>
+    <div class="go-missed hidden" id="goMissed"></div>
     <div class="go-btns">
       <button class="go-btn" id="goHome">home</button>
       <button class="go-btn primary" id="goAgain">play again</button>
+    </div>
+    <div class="go-share" id="goShareRow">
+      <button class="go-mini" id="goShare">share score</button>
+      <button class="go-mini duel" id="goDuelBtn">challenge a friend</button>
     </div>
   </div>
 </div>
@@ -916,6 +1172,62 @@
     <div class="admock-count" id="adMockCount">5</div>
   </div>
   <button class="go-btn primary" id="adMockClose" disabled>wait</button>
+</div>
+<div class="sheet-wrap hidden" id="duelSheet">
+  <div class="sheet">
+    <div class="sheet-title" id="duelTitle">a friend challenges you</div>
+    <div class="sheet-text" id="duelText"></div>
+    <div class="sheet-btns"><button class="go-btn" id="duelNo">not now</button><button class="go-btn primary" id="duelYes">play</button></div>
+  </div>
+</div>
+<div class="sheet-wrap hidden" id="nickSheet">
+  <div class="sheet">
+    <div class="sheet-title">your name</div>
+    <div class="sheet-text">it goes on your challenges, so friends know who to beat.</div>
+    <input class="f-select nick-in" id="nickInput" type="text" maxlength="18" placeholder="e.g. ken" autocomplete="off">
+    <div class="sheet-btns"><button class="go-btn" id="nickNo">cancel</button><button class="go-btn primary" id="nickOk">save</button></div>
+  </div>
+</div>
+<div class="sheet-wrap hidden" id="remindSheet">
+  <div class="sheet">
+    <div class="sheet-title">keep the streak?</div>
+    <div class="sheet-text">tempo can remind you once a day if you haven't played yet. no other notifications.</div>
+    <div class="sheet-btns"><button class="go-btn" id="remindNo">no thanks</button><button class="go-btn primary" id="remindYes">remind me</button></div>
+  </div>
+</div>
+<div class="replay hidden" id="replay">
+  <div class="rp-card">
+    <div class="rp-head"><div><div class="rp-title" id="rpTitle">puzzle</div><div class="rp-sub" id="rpSub"></div></div><button class="quit" id="rpClose">close</button></div>
+    <div class="board rp-board" id="rpBoard"></div>
+    <div class="rp-moves" id="rpMoves"></div>
+    <div class="rp-ctl"><button class="btn" id="rpFirst" aria-label="start">⏮</button><button class="btn" id="rpPrev" aria-label="back">◀</button><span class="rp-step" id="rpStep">0/0</span><button class="btn" id="rpNext" aria-label="forward">▶</button><button class="btn" id="rpLast" aria-label="end">⏭</button></div>
+    <a class="rp-link" id="rpLink" href="#" target="_blank" rel="noopener">lichess ↗</a>
+  </div>
+</div>
+<div class="onboard hidden" id="onboard">
+  <div class="ob-step" data-step="goal">
+    <div class="ob-brand">tempo<span class="dot">.</span></div>
+    <div class="ob-sub">chess puzzle arcade</div>
+    <div class="ob-q">what are you here for?</div>
+    <button class="ob-opt" data-goal="bullet"><b>faster in bullet &amp; blitz</b><span>see patterns in a second</span></button>
+    <button class="ob-opt" data-goal="tactics"><b>better at tactics</b><span>train your weak spots</span></button>
+    <button class="ob-opt" data-goal="fun"><b>just for fun</b><span>arcade modes, music, streaks</span></button>
+    <button class="ob-skip" data-skip>skip</button>
+  </div>
+  <div class="ob-step hidden" data-step="place">
+    <div class="ob-q big">let's find your level</div>
+    <div class="ob-text">6 puzzles · no clock · they get harder when you solve and easier when you miss</div>
+    <button class="go-btn primary ob-go" id="obPlace">start</button>
+    <button class="ob-skip" data-skip>skip · start at 1500</button>
+  </div>
+  <div class="ob-step hidden" data-step="done">
+    <div class="ob-sub">your level</div>
+    <div class="ob-level" id="obLevel">1500</div>
+    <div class="ob-text" id="obLevelSub"></div>
+    <div class="ob-q">start here</div>
+    <div class="ob-modes" id="obModes"></div>
+    <button class="ob-skip" id="obHome">see everything ›</button>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -963,7 +1275,12 @@
     rookEndgame: 'Rook endgame', sacrifice: 'Sacrifice', short: 'Short puzzle', skewer: 'Skewer',
     smotheredMate: 'Smothered mate', superGM: 'Super GM games', trappedPiece: 'Trapped piece',
     underPromotion: 'Underpromotion', veryLong: 'Very long puzzle', vukovicMate: 'Vukovic mate',
-    xRayAttack: 'X-ray attack', zugzwang: 'Zugzwang'
+    xRayAttack: 'X-ray attack', zugzwang: 'Zugzwang',
+    // newer Lichess themes
+    balestraMate: 'Balestra mate', blindSwineMate: 'Blind swine mate', cornerMate: 'Corner mate',
+    epauletteMate: 'Epaulette mate', morphysMate: "Morphy's mate", operaMate: 'Opera mate',
+    pillsburysMate: "Pillsbury's mate", swallowstailMate: "Swallow's tail mate", triangleMate: 'Triangle mate',
+    discoveredCheck: 'Discovered check', collinearMove: 'Collinear move'
   };
 
   /* Same grouping as the Lichess themes page. Unknown themes go to "Other". */
@@ -971,14 +1288,15 @@
     ['Recommended', ['mix']],
     ['Phases', ['opening', 'middlegame', 'endgame', 'rookEndgame', 'bishopEndgame', 'pawnEndgame',
       'knightEndgame', 'queenEndgame', 'queenRookEndgame']],
-    ['Motifs', ['advancedPawn', 'attackingF2F7', 'capturingDefender', 'discoveredAttack', 'doubleCheck',
+    ['Motifs', ['advancedPawn', 'attackingF2F7', 'capturingDefender', 'discoveredAttack', 'discoveredCheck', 'doubleCheck',
       'exposedKing', 'fork', 'hangingPiece', 'kingsideAttack', 'pin', 'queensideAttack', 'sacrifice',
       'skewer', 'trappedPiece']],
-    ['Advanced', ['attraction', 'clearance', 'defensiveMove', 'deflection', 'interference',
+    ['Advanced', ['attraction', 'clearance', 'collinearMove', 'defensiveMove', 'deflection', 'interference',
       'intermezzo', 'quietMove', 'xRayAttack', 'zugzwang']],
     ['Mates', ['mate', 'mateIn1', 'mateIn2', 'mateIn3', 'mateIn4', 'mateIn5', 'anastasiaMate',
       'arabianMate', 'backRankMate', 'bodenMate', 'doubleBishopMate', 'dovetailMate', 'hookMate',
-      'killBoxMate', 'smotheredMate', 'vukovicMate']],
+      'killBoxMate', 'smotheredMate', 'vukovicMate', 'balestraMate', 'blindSwineMate', 'cornerMate', 'epauletteMate',
+      'morphysMate', 'operaMate', 'pillsburysMate', 'swallowstailMate', 'triangleMate']],
     ['Special moves', ['castling', 'enPassant', 'promotion', 'underPromotion']],
     ['Goals', ['equality', 'advantage', 'crushing']],
     ['Lengths', ['oneMove', 'short', 'long', 'veryLong']],
@@ -1083,7 +1401,9 @@
         cache.set(rel, p);
         return p;
       }
-      p = getJSON(rel).then(function (j) { return decode(j.p || []); })
+      p = getJSON(rel).then(function (j) {
+        return decode(j.p || []).map(function (q, i) { q.src = rel + '#' + i; return q; });
+      })
         .catch(function (e) { cache.delete(rel); throw e; });
       cache.set(rel, p);
       if (cache.size > o.maxCached) cache.delete(cache.keys().next().value);
@@ -1113,41 +1433,43 @@
       return (m.themeFiles && m.themeFiles[theme]) || theme;
     }
 
-    function shuffled(n) {
+    function shuffled(n, R) {
       var a = [];
+      R = R || rnd;
       for (var i = 0; i < n; i++) a.push(i);
       for (var j = n - 1; j > 0; j--) {
-        var k = Math.floor(rnd() * (j + 1)), t = a[j];
+        var k = Math.floor(R() * (j + 1)), t = a[j];
         a[j] = a[k];
         a[k] = t;
       }
       return a;
     }
 
-    function pathsFor(theme, b) {
+    function pathsFor(theme, b, R) {
       var m = need();
       if (!theme || theme === 'mix') {
         var pages = (m.mix && m.mix[b]) || 0;
-        return shuffled(pages).map(function (i) { return 'mix/' + b + '_' + i + '.json'; });
+        return shuffled(pages, R).map(function (i) { return 'mix/' + b + '_' + i + '.json'; });
       }
       var counts = m.shards[theme];
       return counts && counts[b] ? ['t/' + themeFile(theme) + '/' + b + '.json'] : [];
     }
 
-    function pickRandom(list) {
-      return list[Math.floor(rnd() * list.length)];
+    function pickRandom(list, R) {
+      return list[Math.floor((R || rnd)() * list.length)];
     }
 
-    /* Random pick among the puzzles closest to the target rating. */
-    function pickNear(list, target, k) {
-      var sorted = list.slice().sort(function (a, b) {
-        return Math.abs(a.rating - target) - Math.abs(b.rating - target);
-      });
-      return pickRandom(sorted.slice(0, Math.max(1, k || 12)));
+    /* Random pick among the puzzles closest to the target rating (ties keep shard order, so a
+       seeded generator always picks the same one). */
+    function pickNear(list, target, k, R) {
+      var sorted = list.map(function (p, i) { return [p, i]; }).sort(function (a, b) {
+        return Math.abs(a[0].rating - target) - Math.abs(b[0].rating - target) || a[1] - b[1];
+      }).map(function (x) { return x[0]; });
+      return pickRandom(sorted.slice(0, Math.max(1, k || 12)), R);
     }
 
-    function isFresh(exclude) {
-      return function (p) { return !seen.has(p.id) && !(exclude && exclude.has(p.id)); };
+    function isFresh(exclude, ignoreSeen) {
+      return function (p) { return (ignoreSeen || !seen.has(p.id)) && !(exclude && exclude.has(p.id)); };
     }
 
     function targetOf(sel) {
@@ -1162,20 +1484,23 @@
      *   sel.rating      player rating (default 1500)
      *   sel.difficulty  'easiest' | 'easier' | 'normal' | 'harder' | 'hardest'
      *   sel.exclude     optional Set of ids to skip (e.g. the current streak run)
+     *   sel.random      optional generator for this pick (a seeded one repeats a run exactly)
+     *   sel.ignoreSeen  true: puzzles played before may come again (challenges replay a run)
      */
     function next(sel) {
       sel = sel || {};
+      var R = sel.random || rnd;
       return init().then(function () {
         var target = targetOf(sel);
-        var fresh = isFresh(sel.exclude);
-        if (sel.opening) return nextOpening(sel.opening, target, fresh);
+        var fresh = isFresh(sel.exclude, sel.ignoreSeen);
+        if (sel.opening) return nextOpening(sel.opening, target, fresh, R);
         var theme = sel.theme || 'mix';
         var order = bucketOrder(target, 12);
         var tried = [];
 
         function tryBucket(i) {
           if (i >= order.length) return fallback();
-          var paths = pathsFor(theme, order[i]);
+          var paths = pathsFor(theme, order[i], R);
           return tryPaths(paths, 0).then(function (p) { return p || tryBucket(i + 1); });
         }
         function tryPaths(paths, j) {
@@ -1183,7 +1508,7 @@
           tried.push(paths[j]);
           return shard(paths[j]).then(function (list) {
             var ok = list.filter(fresh);
-            return ok.length ? pickNear(ok, target, ok.length) : tryPaths(paths, j + 1);
+            return ok.length ? pickNear(ok, target, ok.length, R) : tryPaths(paths, j + 1);
           });
         }
         /* Everything near the target was already played: allow repeats. */
@@ -1191,20 +1516,28 @@
           if (!tried.length) throw new Error('TEMPO data: no puzzles for theme "' + theme + '"');
           return shard(tried[0]).then(function (list) {
             var notCurrent = list.filter(function (p) { return !(sel.exclude && sel.exclude.has(p.id)); });
-            return pickNear(notCurrent.length ? notCurrent : list, target, 30);
+            return pickNear(notCurrent.length ? notCurrent : list, target, 30, R);
           });
         }
         return tryBucket(0);
       });
     }
 
-    function nextOpening(key, target, fresh) {
+    function nextOpening(key, target, fresh, R) {
       var meta = manifest.openings && manifest.openings[key];
       if (!meta) return Promise.reject(new Error('TEMPO data: unknown opening "' + key + '"'));
       return shard('o/' + meta.file + '.json').then(function (list) {
         var ok = list.filter(fresh);
-        return pickNear(ok.length ? ok : list, target, 12);
+        return pickNear(ok.length ? ok : list, target, 12, R);
       });
+    }
+
+    /* One exact puzzle by its place, 'mix/1500_3.json#217' (null if this data has no such puzzle). */
+    function byRef(ref) {
+      var m = /^([\w\/.-]+\.json)#(\d+)$/.exec(ref || '');
+      if (!m) return Promise.resolve(null);
+      return init().then(function () { return shard(m[1]); })
+        .then(function (list) { return list[+m[2]] || null; }, function () { return null; });
     }
 
     /* Warm the cache for the shard the next call will most likely need. */
@@ -1245,13 +1578,20 @@
       try { if (store) store.setItem(o.seenKey, seenList.join(' ')); } catch (e) { /* quota or blocked */ }
     }
 
+    /* how many puzzles of a theme the app really has (the shards keep up to pageSize per rating bucket);
+       inDb is how many the Lichess database has */
+    function kept(key) {
+      var m = need(), b = m.shards[key];
+      if (!b) return 0;
+      return Object.keys(b).reduce(function (n, k) { return n + (+b[k] || 0); }, 0);
+    }
     function themes() {
       var m = need();
       var have = Object.keys(m.shards);
       var list = have.map(function (key) {
-        return { key: key, name: themeName(key), total: m.totals[key] || 0 };
+        return { key: key, name: themeName(key), total: kept(key) || m.totals[key] || 0, inDb: m.totals[key] || 0 };
       });
-      list.push({ key: 'mix', name: themeName('mix'), total: m.eligible });
+      list.push({ key: 'mix', name: themeName('mix'), total: m.unique || m.eligible, inDb: m.eligible });
       return list;
     }
 
@@ -1274,13 +1614,15 @@
       var m = need();
       return Object.keys(m.openings || {}).map(function (key) {
         var x = m.openings[key];
-        return { key: key, name: key.replace(/_/g, ' '), total: x.total, min: x.min, max: x.max };
-      }).sort(function (a, b) { return b.total - a.total; });
+        return { key: key, name: key.replace(/_/g, ' '), total: x.n || x.total, inDb: x.total, min: x.min, max: x.max };
+      }).sort(function (a, b) { return (b.inDb || b.total) - (a.inDb || a.total); });   // most played first
     }
 
     return {
       init: init,
+      kept: kept,
       next: next,
+      byRef: byRef,
       prefetch: prefetch,
       daily: daily,
       markSeen: markSeen,
@@ -1414,14 +1756,19 @@
    e.g. under nezrkaan.com/tempo) still finds /tempo/data/ */
 const DATA_BASE = (()=>{const p=location.pathname||'/';return (/\/$/.test(p)||/\.[a-z0-9]+$/i.test(p)||location.protocol==='file:')?'data/':p.slice(p.lastIndexOf('/')+1)+'/data/';})();
 const data = TempoData.create({ base: DATA_BASE });
+/* v20 store app: iOS can clear web storage when the phone runs out of space. A marker key that
+   nothing else writes tells a wiped install from a used one, and until the native backup has been
+   checked nothing is written (native.js restores it and reloads, or lifts the hold). */
+const STORAGE_MARK='tempo.alive.v1';
+let HOLD_SAVES=(()=>{try{const c=window.Capacitor;return !!(c&&c.isNativePlatform&&c.isNativePlatform())&&!localStorage.getItem(STORAGE_MARK);}catch(e){return false;}})();
 function loadJSON(k,d){try{const r=localStorage.getItem(k);return r?JSON.parse(r):d;}catch(e){return d;}}
-function saveJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function saveJSON(k,v){if(HOLD_SAVES)return;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 /* ratings (v17): one overall rating fed by every puzzle in every mode, plus a rating per
    mode fed by that mode's puzzles. Each mode picks its puzzles from its own rating; a mode
    you haven't played yet starts from your overall rating (provisional, settles fast). */
-const rating = TempoRating.create(loadJSON('tempo.rating.v1',null));
+let rating = TempoRating.create(loadJSON('tempo.rating.v1',null));   // let: placement sets a new player's start
 let modeRatings=loadJSON('tempo.mratings.v1',{});            // {modeKey: {rating, rd, vol, n}}
-const NO_MODE_RATING=new Set(['daily']);                     // one puzzle a day: overall only
+const NO_MODE_RATING=new Set(['daily','review','placement','mine']);   // daily: overall only; the rest: no rating at all
 function hasModeRating(key){return !!modeRatings[key];}
 function modeGames(key){return (modeRatings[key]&&modeRatings[key].n)||0;}
 function modeRating(key){
@@ -1465,9 +1812,18 @@ const MODES=[
 const RATED_MODE ={key:'rated', kind:'rated', name:'puzzles'};
 const DAILY_MODE ={key:'daily', kind:'daily', name:'daily'};
 const STREAK_MODE={key:'streak',kind:'streak',name:'streak'};
+/* v20 training runs: one puzzle at a time like rated, from their own source */
+const REVIEW_MODE={key:'review',kind:'rated',train:'review',noRating:true,name:'review',color:'#39D98A',tag:'missed puzzles come back'};
+const FOCUS_MODE ={key:'focus',kind:'rated',train:'focus',rateAs:'rated',target:10,name:'focus',color:'#3BA7FF'};
+const PLACE_MODE ={key:'placement',kind:'rated',train:'placement',noRating:true,target:6,name:'your level',color:'#F5C518',tag:'6 puzzles · no clock'};
+const MINE_MODE  ={key:'mine',kind:'rated',train:'mine',noRating:true,name:'your games',color:'#A36BFF',tag:'find the moves you missed'};
+/* the rating a mode feeds (focus trains your rated rating) */
+function rk(m){m=m||mode;return m?(m.rateAs||m.key):null;}
+function modeByKey(k){return [RATED_MODE,DAILY_MODE,STREAK_MODE,REVIEW_MODE,FOCUS_MODE,PLACE_MODE,MINE_MODE,...MODES,...ARCADE_MODES].find(m=>m.key===k)||null;}
+function startFocus(){const t=focusTheme();if(!t)return;FOCUS_MODE.theme=t;FOCUS_MODE.tag=themeLabel(t)+' · 10 puzzles';startGame(FOCUS_MODE);}
 /* no difficulty picker: every mode starts from the player's level (the rating), and every
    puzzle in every mode updates that rating, so the level forms as you play */
-function level(){return mode&&!NO_MODE_RATING.has(mode.key)?modeRating(mode.key).value:rating.value;}
+function level(){if(run&&run.ch&&run.ch.r)return run.ch.r;return mode&&!NO_MODE_RATING.has(rk())?modeRating(rk()).value:rating.value;}
 /* arcade modes (v14). mate rush is a clock mode with a checkmate ladder; the rest
    share one engine whose rules come from these flags:
      lives   mistakes allowed       fuse   every puzzle has its own countdown
@@ -1804,8 +2160,8 @@ function selObj(){return selection.kind==='opening'?{opening:selection.key}:{the
 function selName(){return selection.kind==='opening'?selection.key.replace(/_/g,' ').toLowerCase():themeLabel(selection.key);}
 function selCount(){
   const m=data.manifest;if(!m)return 0;
-  if(selection.kind==='opening')return (m.openings[selection.key]||{}).total||0;
-  return selection.key==='mix'?(m.unique||m.eligible):(m.totals[selection.key]||0);
+  if(selection.kind==='opening'){const o=m.openings[selection.key]||{};return o.n||o.total||0;}   // what the app has, not the whole database
+  return selection.key==='mix'?(m.unique||m.eligible):(data.kept(selection.key)||m.totals[selection.key]||0);
 }
 /* A hidden game screen keeps its finished CSS animations, and showing it again replays
    them: the last game's "ruthless" or "floor 3" popped up again during 3-2-1-GO.
@@ -1827,7 +2183,8 @@ function resetFx(){
 let currentScreen='home';
 function showScreen(name,dir){
   const screens={home:homeScreen,game:gameScreen,themes:themesScreen,stats:statsScreen,race:document.getElementById('raceScreen'),
-    settings:document.getElementById('settingsScreen'),skins:document.getElementById('skinsScreen'),pro:document.getElementById('proScreen')};
+    settings:document.getElementById('settingsScreen'),skins:document.getElementById('skinsScreen'),pro:document.getElementById('proScreen'),
+    badges:document.getElementById('badgesScreen'),mine:document.getElementById('mineScreen')};
   const prev=currentScreen;currentScreen=name;
   Object.values(screens).forEach(s=>s.classList.add('hidden'));
   const el=screens[name];el.classList.remove('hidden');
@@ -1862,9 +2219,12 @@ function renderArcade(){
   const box=document.getElementById('arcadeList');box.innerHTML='';
   ARCADE_MODES.forEach(m=>{
     const b=document.createElement('button');
-    b.className='arc-btn';b.dataset.mode=m.key;b.style.setProperty('--c',m.color);
-    b.innerHTML=`<span class="ai">${modeIcon(m.icon)}</span><span class="an">${m.name}</span><span class="at">${m.tag}</span><span class="ar">${arcadeRecord(m)}</span><span class="art">${ratingLine(m.key)}</span>`;
-    b.addEventListener('click',()=>m.bot?openRace():startGame(m));
+    const open=modeOpen(m.key);
+    b.className='arc-btn'+(open?'':' locked');b.dataset.mode=m.key;b.style.setProperty('--c',m.color);
+    b.innerHTML=`<span class="ai">${modeIcon(m.icon)}</span><span class="an">${m.name}</span><span class="at">${m.tag}</span>`+
+      (open?`<span class="ar">${arcadeRecord(m)}</span><span class="art">${ratingLine(m.key)}</span>`:`<span class="ar lock">${lockLine(m.key)}</span>`)+
+      (open&&modeIsNew(m.key)?'<em class="new-tag">new</em>':'');
+    b.addEventListener('click',()=>{if(!modeOpen(m.key)){toast(m.name+' opens after '+MODE_UNLOCK[m.key]+' solved puzzles');return;}m.bot?openRace():startGame(m);});
     box.appendChild(b);
   });
 }
@@ -1886,10 +2246,9 @@ function renderBots(){
   });
 }
 function renderHome(){
-  const wins=hist.filter(h=>h[3]).length;           // every mode counts towards your level
   document.getElementById('meRating').textContent=rating.label();
-  document.getElementById('mePlayed').textContent=hist.length;
-  document.getElementById('meRate').textContent=hist.length?Math.round(100*wins/hist.length)+'%':'—';
+  renderProgressBand();renderToday();
+  const bz=document.getElementById('berserkChip');bz.classList.toggle('on',!!settings.berserk);bz.setAttribute('aria-checked',settings.berserk?'true':'false');
   document.getElementById('selKind').textContent=selection.kind==='opening'?'opening':'theme';
   document.getElementById('selName').textContent=selName();
   document.getElementById('ratedSel').textContent=selName();
@@ -1981,6 +2340,22 @@ function renderStats(){
     :'<div class="empty-note">play any mode to get a rating for it</div>';
   fillStatList('weakList',weak,true);
   fillStatList('strongList',strong,false);
+  renderSpeedList();
+}
+/* v20: how fast you see each pattern (clean solves only) */
+function renderSpeedList(){
+  const agg={};
+  hist.forEach(h=>{if(!h[3]||h[7]==null)return;(h[4]||'').split(' ').forEach(t=>{if(!t||STAT_SKIP.has(t))return;const a=agg[t]||(agg[t]={n:0,s:0});a.n++;a.s+=h[7];});});
+  const rows=Object.keys(agg).filter(t=>agg[t].n>=3).map(t=>({t,n:agg[t].n,avg:agg[t].s/agg[t].n})).sort((a,b)=>a.avg-b.avg);
+  const box=document.getElementById('speedList');box.innerHTML='';
+  if(!rows.length){box.innerHTML='<div class="empty-note">solve a few more puzzles to see this</div>';return;}
+  const max=Math.max(...rows.map(r=>r.avg));
+  const pick=rows.length>8?rows.slice(0,4).concat(rows.slice(-4)):rows;
+  pick.forEach((r,i)=>{
+    const b=document.createElement('div');b.className='sp-row'+(i>=pick.length-4&&rows.length>8?' slow':'');
+    b.innerHTML=`<span class="tn">${esc(themeLabel(r.t))}</span><span class="tv">${r.avg.toFixed(1)}s · ${r.n}</span><div class="bar"><i style="width:${Math.round(100*r.avg/max)}%"></i></div>`;
+    box.appendChild(b);
+  });
 }
 function fillStatList(id,list,weak){
   const box=document.getElementById(id);box.innerHTML='';
@@ -2018,9 +2393,16 @@ function startGame(m){
   initAudio();
   mode=m;
   stopArcadeTimers();
-  run={score:0,solved:0,streak:0,best:0,skips:1,top:0};
+  run={score:0,solved:0,streak:0,best:0,skips:1,top:0,xp:0,missed:[],trace:[],served:0,timeline:[],done:0,fixed:0,badges:[]};
+  if(pendingChallenge&&pendingChallenge.m===m.key)run.ch=pendingChallenge;   // a friend's link: same puzzles
+  pendingChallenge=null;
+  run.seed=run.ch&&run.ch.s!=null?run.ch.s>>>0:(Math.random()*4294967296)>>>0;
+  run.berserk=m.kind==='clock'&&!!m.seconds&&(run.ch?!!run.ch.b:!!settings.berserk);
   if(mode.kind==='arcade')arcadeInit();
-  run.r0=NO_MODE_RATING.has(mode.key)?null:modeRating(mode.key).value;   // for the game-over rating change
+  if(mode.train==='placement')placementInit();
+  run.base=level();
+  run.r0=NO_MODE_RATING.has(rk(m))?null:modeRating(rk(m)).value;   // for the game-over rating change
+  prog.seenModes[m.key]=true;saveProg();
   runSeen=new Set();sessionDelta=0;
   gameActive=true;
   cancelCountdown();
@@ -2031,15 +2413,18 @@ function startGame(m){
   setupMeta();
   setupHud();
   setFever(false,true);
-  if(mode.kind==='clock'){if(mode.seconds){timeLeft=mode.seconds;}else{elapsedEndless=0;}renderTime();updateScore(false);}
+  if(mode.kind==='clock'){if(mode.seconds){timeLeft=run.berserk?Math.round(mode.seconds/2):mode.seconds;}else{elapsedEndless=0;}renderTime();updateScore(false);}
   stopGameTimer();
+  ghostShow(null);
   updateRunStats();updateMultCorner();updateFever();
   speedReset();kickMusic();updateMusic();
   run.started=Date.now();
-  track('mode_start',{mode:m.key,mode_rating:level(),overall:rating.value});
-  const go=()=>{if(mode.kind==='clock')startGameTimer();if(mode.kind==='arcade')arcadeGo();loadNext();};
+  track('mode_start',{mode:m.key,mode_rating:level(),overall:rating.value,berserk:run.berserk||undefined,duel:run.ch?true:undefined});
+  const go=()=>{run.t0=Date.now();if(mode.kind==='clock')startGameTimer();if(mode.kind==='arcade')arcadeGo();loadNext();};
   emptyBoard();
-  playIntro(m,()=>{                                   // the mode's colour sweeps in, then 3-2-1 (or the first puzzle)
+  const intro=run.berserk?Object.assign({},m,{tag:'berserk · half the time · ×2 points',color:'#FF4D6D'})
+    :run.ch?Object.assign({},m,{tag:'challenge · '+(run.ch.n||'a friend')+' · '+(m.key==='sprint'?fmtWatch(run.ch.sc/10):Number(run.ch.sc).toLocaleString())}):m;
+  playIntro(intro,()=>{                               // the mode's colour sweeps in, then 3-2-1 (or the first puzzle)
     if(!gameActive||mode!==m)return;
     if(mode.kind!=='rated'&&mode.kind!=='daily')countdown(go);
     else go();
@@ -2048,7 +2433,8 @@ function startGame(m){
 function setupMeta(){
   timeCell.classList.remove('danger');
   timerEl.classList.remove('delta-up','delta-down');scoreNumEl.classList.remove('delta-up','delta-down');
-  if(mode.kind==='clock'){mlTime.textContent='time';mlScore.textContent='score';mlRating.textContent='puzzle';ratingEl.innerHTML='&mdash;';}
+  if(mode.kind==='clock'){mlTime.textContent=run.berserk?'berserk':'time';mlScore.textContent='score';mlRating.textContent='puzzle';ratingEl.innerHTML='&mdash;';timeCell.classList.toggle('berserk',!!run.berserk);}
+  else if(mode.train)trainMeta();
   else if(mode.kind==='rated'){mlTime.textContent='rating';timerEl.textContent=modeRating('rated').label();mlScore.textContent='session';scoreNumEl.textContent=signed(0);mlRating.textContent='puzzle';ratingEl.textContent='?';}
   else if(mode.kind==='daily'){mlTime.textContent='daily';timerEl.textContent=shortDate(new Date());mlScore.textContent='result';scoreNumEl.innerHTML='&mdash;';mlRating.textContent='puzzle';ratingEl.textContent='?';}
   else if(mode.kind==='arcade')arcadeMeta();
@@ -2058,6 +2444,8 @@ function setupMeta(){
 function nextSel(ahead){
   const n=run.solved+(ahead||0);
   const base=level();
+  if(mode.train==='focus')return {theme:themeOr(mode.theme),rating:base,exclude:runSeen};
+  if(mode.train==='placement')return placementNext();
   if(mode.kind==='rated')return Object.assign(selObj(),{rating:base});
   if(mode.kind==='streak')return {theme:'mix',rating:startFrom(base-600,1800)+n*60,exclude:runSeen};
   if(mode.kind==='arcade')return arcadeSel(ahead||0);
@@ -2065,7 +2453,7 @@ function nextSel(ahead){
     const t=n<4?'mateIn1':n<10?'mateIn2':(n%2?'mateIn2':'mateIn3');
     return {theme:themeOr(t),rating:Math.max(600,Math.min(base-300,1500))+n*30,exclude:runSeen};
   }
-  return Object.assign(selObj(),{rating:Math.min(base-200+n*20,base+600),exclude:runSeen});   // clock: warm up, then ramp
+  return Object.assign(run.ch?{theme:'mix'}:selObj(),{rating:Math.min(base-200+n*20,base+600),exclude:runSeen});   // clock: warm up, then ramp
 }
 /* where a run starts: a bit under the player's level, never below `floor` or above `cap` */
 function startFrom(r,cap,floor){return Math.round(Math.max(floor||600,Math.min(r,cap)));}
@@ -2074,7 +2462,7 @@ function startGameTimer(){
   stopGameTimer();
   gameTimer=setInterval(()=>{
     if(mode.seconds){
-      timeLeft--;renderTime();
+      timeLeft--;renderTime();ghostTick();
       if(timeLeft<=5&&timeLeft>0)sndTick();
       if(timeLeft<=0){endGame();}
     } else {elapsedEndless++;renderTime();}
@@ -2102,8 +2490,18 @@ async function loadNext(){
   busy=true;solved=true;
   const slow=setTimeout(()=>{if(token===loadToken)hintEl.innerHTML='<span class="blink">▖</span> loading...';},180);
   let p;
+  if(mode.train&&mode.target&&run.done>=mode.target){clearTimeout(slow);finishTrain();return;}
   try{
-    p=mode.kind==='daily'?await data.daily(new Date()):await data.next(nextSel(0));
+    if(mode.kind==='daily')p=await data.daily(new Date());
+    else if(mode.train==='review')p=reviewNext();
+    else if(mode.train==='mine')p=mineNext();
+    else if(run.ch){                                   // a challenge: the challenger's puzzles first, then seeded picks
+      const ref=run.ch.v===dataVersion()?run.ch.refs[run.served]:null;
+      p=ref?await data.byRef(ref):null;
+      if(!p)p=await data.next(Object.assign(nextSel(0),{random:seededRng((run.seed^0x9E3779B9)+run.served*7919),ignoreSeen:true}));
+    }
+    else p=await data.next(nextSel(0));
+    if(!p&&mode.train){clearTimeout(slow);if(token===loadToken&&gameActive)finishTrain();return;}
     if(!p)throw new Error('no puzzle');
   }catch(e){
     clearTimeout(slow);
@@ -2117,8 +2515,10 @@ async function loadNext(){
   clearTimeout(slow);
   if(token!==loadToken||!gameActive)return;
   runSeen.add(p.id);data.markSeen(p.id);
+  run.served++;if(p.src&&run.trace.length<120)run.trace.push(p.src);
   setupPuzzle(p);
-  if(mode.kind!=='daily')data.prefetch(nextSel(1));
+  if(run.ch&&run.ch.refs[run.served]&&run.ch.v===dataVersion())data.byRef(run.ch.refs[run.served]);
+  else if(mode.kind!=='daily'&&!mode.train||mode.train==='focus'||mode.train==='placement')data.prefetch(nextSel(1));
 }
 
 function setupPuzzle(p){
@@ -2136,6 +2536,7 @@ function setupPuzzle(p){
   hintEl.innerHTML='';
   if(mode.kind==='clock'){ratingEl.textContent=p.rating;renderThemeTags(p.themes);}
   else if(mode.kind==='arcade')arcadePuzzle(p);
+  else if(mode.train)trainPuzzle(p);
   else{ratingEl.textContent='?';renderThemeTags(selection.kind==='theme'&&selection.key!=='mix'&&mode.kind==='rated'?[selection.key]:[]);}
   renderPosition();
   speedReset();
@@ -2144,7 +2545,7 @@ function setupPuzzle(p){
     playOpponentMove();
     if(!cur||cur.p!==p)return;                       // a broken puzzle was skipped
     if(mode.blind){memPreview(3);return;}             // memory: look first, then play blind
-    hintEl.innerHTML='';speedStart();
+    hintEl.innerHTML=mode.train==='mine'&&p.game?'› you played <b>'+esc(p.game.played||'?')+'</b> here · find better':'';speedStart();
     if(mode.fuse)startFuse();
     if(mode.rounds)gauntletHint();
   },480);
@@ -2157,7 +2558,7 @@ function renderThemeTags(list){
 function setBtn(b,label,fn,disabled){b.textContent=label;b.onclick=fn;b.disabled=!!disabled;}
 function setControls(kind){
   if(kind==='play'){setBtn(hintBtn,'hint',giveHint);setBtn(solveBtn,'solve',revealSolution);}
-  else if(kind==='done'){setBtn(hintBtn,'lichess ↗',openLichess);setBtn(solveBtn,mode.kind==='daily'?'home':'next',mode.kind==='daily'?goHome:nextNow);}
+  else if(kind==='done'){setBtn(hintBtn,'replay',()=>openReplay(cur&&cur.p,1));setBtn(solveBtn,mode.kind==='daily'?'home':'next',mode.kind==='daily'?goHome:nextNow);}
   else if(kind==='streak'){setBtn(hintBtn,'skip ('+run.skips+')',skipMove,run.skips<=0);setBtn(solveBtn,'end run',endRun);}
   else if(kind==='arcade'){const [l,fn,off]=arcadeLeftButton();setBtn(hintBtn,l,fn,off);setBtn(solveBtn,'end run',endRun);}
   else if(kind==='retry'){setBtn(hintBtn,'home',goHome);setBtn(solveBtn,'retry',loadNext);}
@@ -2174,6 +2575,7 @@ function saveRecord(key,score,lower){
 }
 /* what the game-over card says, per mode */
 function gameSummary(){
+  if(mode.train)return trainSummary();
   if(mode.kind==='streak'){
     const isNew=saveRecord('streak',run.solved);
     return {title:'streak over',score:run.solved,lbl:'puzzles in a row',isNew,
@@ -2189,6 +2591,9 @@ function gameSummary(){
 function endGame(){
   gameActive=false;stopGameTimer();stopArcadeTimers();endDrag();clearTimeout(advanceTimer);clearTimeout(oppTimer);closePromo();
   const s=gameSummary();
+  ghostEnd(s);
+  const duel=duelResult();
+  progressRun({mode:mode.key,kind:mode.kind,score:s.score,solved:run.solved,win:!!s.win,finished:true,berserk:!!run.berserk});
   life.runs++;saveLife();Ads.runEnded();
   track('mode_end',{mode:mode.key,score:s.score,solved:run.solved,best_streak:run.best,secs:Math.round((Date.now()-(run.started||Date.now()))/1000),
     win:!!s.win,new_record:!!s.isNew,rating_delta:run.r0!=null&&hasModeRating(mode.key)?modeRating(mode.key).value-run.r0:null,continued:!!run.continued});
@@ -2218,9 +2623,62 @@ function endGame(){
   const list=document.getElementById('goList');
   list.innerHTML=(s.list||[]).map(r=>`<span class="${r.ok?'ok':'no'}">${r.ok?'✓':'✗'} ${esc(themeLabel(r.t))}</span>`).join('');
   list.classList.toggle('hidden',!s.list);
+  renderGoExtras(s,duel);
   gameOverEl.classList.remove('hidden');
   gameOverEl.scrollTop=0;
   Music.duck(2.4);updateMusic();
+  setTimeout(()=>{if(!gameOverEl.classList.contains('hidden'))maybeAskReminders();},1600);
+}
+/* v20 extras on the game-over card: a challenge result, XP, the next goal, missed puzzles, sharing */
+function renderGoExtras(s,duel){
+  const dl=document.getElementById('goDuel');
+  dl.classList.toggle('hidden',!duel);
+  if(duel){dl.textContent=duel.text;dl.classList.toggle('win',!!duel.win);}
+  renderRunXP();
+  const hooks=runHooks(s),hk=document.getElementById('goHooks');
+  hk.innerHTML=hooks.map(h=>`<div>› ${esc(h)}</div>`).join('');hk.classList.toggle('hidden',!hooks.length);
+  const ms=document.getElementById('goMissed'),list=(run.missed||[]).slice(-6);
+  const tag=p=>{const t=(p.themes||[]).filter(x=>!STAT_SKIP.has(x))[0];return t?themeLabel(t):p.game?'your game':'';};
+  ms.innerHTML=list.length?'<div class="gm-l">missed · tap to replay</div><div class="gm-list">'+list.map((p,i)=>`<button class="gm-p" data-i="${i}"><b>${p.rating||'—'}</b><small>${esc(tag(p))}</small></button>`).join('')+'</div>':'';
+  ms.classList.toggle('hidden',!list.length);
+  ms.querySelectorAll('.gm-p').forEach(b=>b.addEventListener('click',()=>openReplay(list[+b.dataset.i],1)));
+  const sc=runScore(s);
+  document.getElementById('goShareRow').classList.toggle('hidden',!sc);
+  const db=document.getElementById('goDuelBtn');
+  db.classList.toggle('hidden',!challengeable());
+  db.textContent=run.ch?'send your score back':'challenge a friend';
+  if(run.ch)document.getElementById('goAgain').textContent='rematch';
+}
+/* ---------- ghost: the pace of your best run ---------- */
+const ghostEl=document.getElementById('ghostRow');
+function runElapsed(){return run.t0?(Date.now()-run.t0)/1000:0;}
+function ghostShow(html,ahead){
+  if(html==null){ghostEl.classList.add('hidden');return;}
+  ghostEl.classList.remove('hidden');ghostEl.innerHTML=html;
+  ghostEl.classList.toggle('ahead',ahead===true);ghostEl.classList.toggle('behind',ahead===false);
+}
+function ghostTick(){
+  if(!gameActive||!mode||mode.kind!=='clock'||mode.key==='endless')return;
+  const g=ghostAt(mode,runElapsed());
+  if(g==null){ghostShow(null);return;}
+  const d=run.score-g;
+  ghostShow(`<b>pb pace</b><span>${g.toLocaleString()}</span><i>${d>=0?'+':'−'}${Math.abs(d).toLocaleString()}</i>`,d>=0);
+}
+function ghostSprint(){
+  const g=prog.ghost[ghostKey(mode)];if(!g)return;
+  const hit=g.find(x=>x[1]>=run.solved);if(!hit)return;
+  const d=watchTime()-hit[0];
+  ghostShow(`<b>vs pb</b><span>puzzle ${run.solved}</span><i>${d<=0?'−':'+'}${Math.abs(d).toFixed(1)}s</i>`,d<=0);
+}
+/* the ghost is your own best run of this mode (berserk runs have their own) */
+function ghostEnd(s){
+  const sprint=mode.key==='sprint',timed=(mode.kind==='clock'&&mode.key!=='endless')||sprint;
+  if(timed&&run.timeline.length&&(!sprint||run.final!=null)){
+    const g=prog.ghost[ghostKey(mode)],end=g&&g.length?g[g.length-1]:null,mine=run.timeline[run.timeline.length-1];
+    const better=!end||(sprint?mine[0]<end[0]:mine[1]>end[1]);
+    if(better){if(end)prog.counts.ghostBeat=(prog.counts.ghostBeat||0)+1;ghostSave(mode,run.timeline);}
+  }
+  ghostShow(null);
 }
 function endRun(){if(gameActive)endGame();}
 function goHome(){
@@ -2356,7 +2814,9 @@ function attemptUserMove(move){
   if(!made){selected=null;renderPosition();return;}
   const uci=made.from+made.to+(made.promotion||'');
   const mate=game.in_checkmate();               // like Lichess: any mating move solves it
-  if(uci===expected||mate){
+  const alt=!!(cur.p.ok&&step===1&&cur.p.ok.includes(uci));   // your games: equally good moves count
+  if(uci===expected||mate||alt){
+    if(alt&&uci!==expected){step=cur.p.moves.length-1;}
     lastMove={from:made.from,to:made.to};selected=null;step++;
     if(!dragState.moved)slideNext={from:made.from,to:made.to};
     renderPosition();moveFx(made);
@@ -2403,17 +2863,23 @@ function recordOnce(win){
   if(!cur||cur.recorded)return null;
   cur.recorded=true;
   win=!!win;
-  const o=rating.apply(cur.p.rating,win);
-  saveJSON('tempo.rating.v1',rating.state);
-  const m=NO_MODE_RATING.has(mode.key)?null:applyModeRating(mode.key,cur.p.rating,win);
+  const rated=!mode.noRating&&cur.p.rating!=null;          // review, placement and your games leave the rating alone
+  const o=rated?rating.apply(cur.p.rating,win):null;
+  if(o)saveJSON('tempo.rating.v1',rating.state);
+  const m=rated&&!NO_MODE_RATING.has(rk())?applyModeRating(rk(),cur.p.rating,win):null;
   const secs=win&&cur.elapsed!=null?Math.round(cur.elapsed*10)/10:null;
-  hist.push([Math.floor(Date.now()/1000),cur.p.id,cur.p.rating,win?1:0,cur.p.themes.join(' '),mode.key,o.after,secs,m?m.after:null]);
-  if(hist.length>1500)hist.splice(0,hist.length-1500);
-  saveJSON('tempo.hist.v1',hist);
+  if(rated){
+    hist.push([Math.floor(Date.now()/1000),cur.p.id,cur.p.rating,win?1:0,cur.p.themes.join(' '),mode.key,o.after,secs,m?m.after:null]);
+    if(hist.length>1500)hist.splice(0,hist.length-1500);
+    saveJSON('tempo.hist.v1',hist);
+  }
   if(m)hudRating(m.delta);
   life.played++;if(win)life.solved++;life.peak=Math.max(life.peak||0,rating.value);saveLife();
   track('puzzle',{mode:mode.key,id:cur.p.id,prating:cur.p.rating,win,secs,hinted:!!cur.hinted,failed:!!cur.failed,
-    mode_rating:m?m.after:null,overall:o.after,themes:cur.p.themes.slice(0,4).join(' ')});
+    mode_rating:m?m.after:null,overall:o?o.after:null,themes:(cur.p.themes||[]).slice(0,4).join(' ')});
+  if(!win&&run.missed&&run.missed.length<12)run.missed.push(cur.p);
+  const ev={win,clean:win&&!cur.hinted&&!cur.failed&&!revealed,p:cur.p,mode:mode.key,secs,level:level()};
+  queueMicrotask(()=>{ev.streak=run.streak;progressPuzzle(ev);});   // after the caller has counted the streak
   checkUnlocks();
   return {overall:o,mode:m};
 }
@@ -2429,9 +2895,13 @@ function applyRated(win){
 function markFailed(){
   if(cur.failed)return;
   cur.failed=true;
-  if(mode.kind==='rated'){const r=applyRated(false);if(r)timerEl.textContent=modeRating('rated').label();}
+  if(mode.kind==='rated'){
+    if(mode.noRating){recordOnce(false);return;}
+    const r=applyRated(false);if(r)timerEl.textContent=modeRating(rk()).label();
+  }
 }
 function onMistake(){
+  if(mode.train==='placement'){showFeedback('not the move','err');breakStreak();placementFail();return;}
   if(mode.kind==='clock'){showFeedback('not the move','err');hintEl.textContent='› try again';breakStreak();cur.failed=true;return;}
   if(mode.kind==='streak'){showFeedback('not the move','err');hintEl.textContent='› that ends the run';endStreakRun();return;}
   if(mode.kind==='arcade'){arcadeMistake();return;}
@@ -2468,14 +2938,16 @@ function clockSolved(){
   const fever=run.streak>=FEVER_AT;
   const sp=cur.speed||0;
   const speedMult=1+sp;                       // up to x2 for an instant solve
-  const gained=Math.round((base+streakBonus)*(fever?2:1)*speedMult);
+  const gained=Math.round((base+streakBonus)*(fever?2:1)*speedMult*(run.berserk?2:1));
   const scoreBefore=run.score;
   run.score+=gained;
+  run.timeline.push([Math.round(runElapsed()*10)/10,run.score]);ghostTick();
   updateRunStats();updateMultCorner(true);updateFever();
   const sh=pickShout(run.streak);
   let tag='';
   if(sp>=0.4)tag+=`  ⚡×${speedMult.toFixed(1)}`;
   if(fever)tag+='  fever ×2';
+  if(run.berserk)tag+='  berserk ×2';
   fireAnnouncer(sh,run.streak,gained,tag?`+${gained}${tag}`:null);
   if(mode.seconds&&sp>=0.4){                  // fast solves buy time
     const add=sp>=0.7?3:2;
@@ -2496,12 +2968,18 @@ function clockSolved(){
   hintEl.innerHTML='<span class="blink">▖</span> next up...';
   advanceTimer=setTimeout(()=>{if(gameActive&&!revealed)loadNext();},950);
 }
+function puzzleLink(p){
+  if(p.game)return `<a href="${esc(p.url||'#')}" target="_blank" rel="noopener">${p.game.site==='chesscom'?'chess.com':'lichess'} game ↗</a>`;
+  return `<a href="${esc(p.url)}" target="_blank" rel="noopener">lichess #${esc(p.id)}</a>`;
+}
 function trainSolved(){
   const clean=!cur.failed&&!cur.hinted&&!revealed;
-  ratingEl.textContent=cur.p.rating;
+  ratingEl.textContent=cur.p.rating||'—';
   renderThemeTags(cur.p.themes);
-  const link=`<a href="${esc(cur.p.url)}" target="_blank" rel="noopener">lichess #${esc(cur.p.id)}</a>`;
+  const link=puzzleLink(cur.p);
   setControls('done');
+  if(mode.train&&mode.train!=='focus')return trainDone(clean,link);
+  if(mode.train==='focus'){run.done++;if(run.done>=mode.target&&!clean)setBtn(solveBtn,'finish',finishTrain);}
   if(mode.kind==='daily'){
     dailyState={date:todayKey(),id:cur.p.id,win:clean};saveJSON('tempo.daily.v1',dailyState);
     recordOnce(clean);
@@ -2525,10 +3003,87 @@ function trainSolved(){
   const tInfo=sndTally(Math.max(4,Math.min(Math.round(Math.abs(r.delta)/2),16)),run.streak);
   animateNumber(timerEl,r.before,r.after,tInfo.delay*1000,tInfo.gap*1000,tInfo.count,modeRating('rated').label());
   feedbackEl.classList.remove('show');
-  hintEl.innerHTML=`<span class="blink">▖</span> ${signed(r.delta)} · ⚡ ${cur.elapsed.toFixed(1)}s · puzzle ${cur.p.rating} · ${link}`;
+  hintEl.innerHTML=`<span class="blink">▖</span> ${mode.train==='focus'?run.done+'/'+mode.target+' · ':''}${signed(r.delta)} · ⚡ ${cur.elapsed.toFixed(1)}s · puzzle ${cur.p.rating} · ${link}`;
   const p=cur.p;
   advanceTimer=setTimeout(()=>{if(gameActive&&cur&&cur.p===p)loadNext();},1300);
 }
+/* ---------- v20 training runs: review, focus, placement, your games ---------- */
+function trainMeta(){
+  const t=mode.train;
+  if(t==='review'){mlTime.textContent='due';timerEl.textContent=reviewDue().length;mlScore.textContent='fixed';scoreNumEl.textContent='0';mlRating.textContent='puzzle';ratingEl.textContent='?';}
+  else if(t==='focus'){mlTime.textContent='rating';timerEl.textContent=modeRating('rated').label();mlScore.textContent='session';scoreNumEl.textContent=signed(0);mlRating.textContent='puzzle';ratingEl.textContent='?';}
+  else if(t==='placement'){mlTime.textContent='puzzle';timerEl.textContent='1/'+mode.target;mlScore.textContent='solved';scoreNumEl.textContent='0';mlRating.textContent='rating';ratingEl.textContent='?';}
+  else if(t==='mine'){mlTime.textContent='move';timerEl.innerHTML='&mdash;';mlScore.textContent='left';scoreNumEl.textContent='0';mlRating.textContent='vs';ratingEl.innerHTML='&mdash;';}
+}
+function trainPuzzle(p){
+  const t=mode.train;
+  if(t==='review'){timerEl.textContent=Math.max(0,reviewDue().filter(r=>!runSeen.has(r.p.id)).length);ratingEl.textContent='?';renderThemeTags([]);}
+  else if(t==='focus'){ratingEl.textContent='?';renderThemeTags([mode.theme]);}
+  else if(t==='placement'){timerEl.textContent=(run.done+1)+'/'+mode.target;scoreNumEl.textContent=run.solved;ratingEl.textContent='?';renderThemeTags([]);}
+  else if(t==='mine'){
+    const g=p.game||{};
+    timerEl.textContent=g.moveNo||'—';ratingEl.textContent=(g.opp||'?').slice(0,12);
+    scoreNumEl.textContent=mine&&mine.list?mine.list.filter(x=>!x.solved).length:0;
+    renderThemeTags([g.kind||'your game',g.speed||''].filter(Boolean));
+  }
+}
+/* the next puzzle for review / your games (null: the run is over) */
+function reviewNext(){
+  const r=reviewDue().find(x=>!runSeen.has(x.p.id));
+  return r?Object.assign({url:'https://lichess.org/training/'+r.p.id},r.p):null;
+}
+function mineNext(){
+  if(!mine||!mine.list)return null;
+  const order=MINE_MODE.order||mine.list.map((_,i)=>i);
+  const k=order.find(i=>mine.list[i]&&!mine.list[i].solved&&!runSeen.has(mine.list[i].id));
+  return k==null?null:Object.assign({},mine.list[k]);
+}
+/* a puzzle of review, placement or your games is over (no rating) */
+function trainDone(clean,link){
+  recordOnce(clean);
+  run.done++;
+  if(clean){
+    run.solved++;run.streak++;if(run.streak>run.best)run.best=run.streak;
+    updateRunStats();updateMultCorner(true);updateFever();
+    celebrate(mode.train==='review'?'fixed ✓':mode.train==='mine'?'found it ✓':'#'+run.done);
+    feedbackEl.classList.remove('show');
+  }else{breakStreak();showFeedback(revealed?'shown.':'missed','reveal');}
+  if(mode.train==='review'){if(clean)run.fixed++;scoreNumEl.textContent=run.fixed;}
+  if(mode.train==='mine')mineSolved(cur.p.id,clean);
+  if(mode.train==='placement'){placementResult(clean);scoreNumEl.textContent=run.solved;}
+  hintEl.innerHTML=(clean?'<span class="blink">▖</span> next up... · ':'')+link;
+  const p=cur.p;
+  if(clean||mode.train==='placement')advanceTimer=setTimeout(()=>{if(gameActive&&cur&&cur.p===p)loadNext();},clean?1200:1600);
+}
+function placementFail(){
+  cur.failed=true;cur.done=true;solved=true;busy=true;
+  clearTimeout(oppTimer);clearTimeout(speedSlowTimer);speedBar.classList.add('done');
+  recordOnce(false);placementResult(false);run.done++;
+  flashSolution();hintEl.textContent='› next one';
+  hintBtn.disabled=true;solveBtn.disabled=true;
+  advanceTimer=setTimeout(()=>{if(gameActive)loadNext();},1400);
+}
+/* a training run is over: placement shows your level, the rest the game-over card */
+function finishTrain(){
+  if(!gameActive)return;
+  if(mode.train==='placement'){
+    gameActive=false;stopGameTimer();stopArcadeTimers();endDrag();clearTimeout(advanceTimer);clearTimeout(oppTimer);closePromo();
+    setFever(false,true);speedReset();updateMusic();life.runs++;saveLife();
+    finishPlacement();return;
+  }
+  endGame();
+}
+function themePct(t){const r=themeStats(1).find(x=>x.t===t);return r?Math.round(100*r.p)+'%':'—';}
+function trainSummary(){
+  const t=mode.train,pct=run.done?Math.round(100*run.solved/run.done):0;
+  if(t==='review')return {title:run.done&&run.fixed===run.done?'all fixed':'review done',score:run.fixed,lbl:'fixed of '+run.done,win:run.done>0&&run.fixed===run.done,
+    stats:[[reviewDue().length,'still due'],[run.best,'best streak'],[prog.counts.reviewFixed,'fixed ever']]};
+  if(t==='focus')return {title:'focus done',score:run.solved,lbl:'of '+run.done+' · '+themeLabel(mode.theme),win:pct>=70,
+    stats:[[pct+'%','this time'],[run.best,'best streak'],[themePct(mode.theme),'all time']]};
+  const left=mine&&mine.list?mine.list.filter(x=>!x.solved).length:0;
+  return {title:'your games',score:run.solved,lbl:'moments found',win:run.solved>0,stats:[[left,'left'],[run.best,'best streak'],[prog.counts.mine,'found ever']]};
+}
+
 function streakSolved(){
   run.solved++;run.streak++;if(run.streak>run.best)run.best=run.streak;
   run.top=Math.max(run.top,cur.p.rating);
@@ -2575,7 +3130,7 @@ const HEART_SVG='<svg viewBox="0 0 24 24"><path d="M12 20.5s-7.6-4.7-9.7-9.4C.8 
 function arcadeInit(){
   Object.assign(run,{lives:mode.lives||0,livesMax:mode.lives||0,round:0,floor:1,bosses:0,found:0,results:[],
     penalty:0,peeks:mode.blind?2:0,watch0:null,final:null,finished:false,won:false,lastFloorShown:0,
-    plan:mode.rounds?gauntletPlan(mode.rounds):null,bot:null});
+    plan:mode.rounds?(run.ch&&Array.isArray(run.ch.p)?run.ch.p.slice(0,mode.rounds):gauntletPlan(mode.rounds)):null,bot:null});
   if(mode.bot){const lv=raceBot!=null?raceBot:Math.min(raceState().level,RACE_BOTS.length-1);run.bot={n:0,level:lv,bot:RACE_BOTS[lv],timer:null};}
 }
 function gauntletPlan(n){
@@ -2749,6 +3304,7 @@ function arcadeSolved(){
   } else if(mode.rounds){tag=themeLabel(run.plan[run.round-1])+' ✓';target=scoreNumEl.parentElement;}
   else if(mode.stopwatch){
     scoreNumEl.textContent=run.solved+'/'+mode.target;target=scoreNumEl.parentElement;
+    run.timeline.push([Math.round(watchTime()*10)/10,run.solved]);ghostSprint();
     if(run.solved>=mode.target){run.final=watchTime();stopWatch();renderWatch();finish=true;}
   } else if(mode.bot){
     renderRace();target=scoreNumEl.parentElement;
@@ -3510,7 +4066,13 @@ function renderSettings(){
   sv.closest('.set-row').classList.toggle('off',!settings.sfx);
   document.getElementById('setHapticsNote').classList.toggle('hidden',!!navigator.vibrate);
   document.getElementById('setSkinsV').textContent=settings.theme+' · '+settings.pieces+' · '+settings.board;
+  document.getElementById('setRemindRow').classList.toggle('hidden',!NATIVE);
+  tg('setRemind',!!prog.notif.on);
+  document.getElementById('setRemindTime').value=String(prog.notif.time||19);
+  document.getElementById('setNickV').textContent=settings.nick||'set ›';
+  document.getElementById('setAdPrivacy').classList.toggle('hidden',!(NATIVE&&Ads.privacy));
   tg('setData',consent===true);
+  document.getElementById('setData').closest('.set-row').classList.toggle('hidden',!ANALYTICS.key);
   renderProBits();
 }
 function toggleSetting(key){
@@ -3531,7 +4093,9 @@ document.getElementById('quitBtn').addEventListener('click',goHome);
 document.getElementById('homeLink').addEventListener('click',goHome);
 /* game over buttons: a paced interstitial ad may play first (never for Pro, never mid-game) */
 document.getElementById('goHome').addEventListener('click',async()=>{await Ads.interstitial('gameover');const toBots=!!(mode&&mode.bot);goHome();if(toBots)openRace();});
-document.getElementById('goAgain').addEventListener('click',async()=>{await Ads.interstitial('again');gameOverEl.classList.add('hidden');sndStart();if(mode&&mode.bot&&againBot!=null)raceBot=againBot;startGame(mode);});
+document.getElementById('goAgain').addEventListener('click',async()=>{await Ads.interstitial('again');gameOverEl.classList.add('hidden');sndStart();if(mode&&mode.bot&&againBot!=null)raceBot=againBot;if(run&&run.ch)pendingChallenge=run.ch;if(mode&&mode.train==='focus')startFocus();else startGame(mode);});
+document.getElementById('goShare').addEventListener('click',()=>shareRun(false));
+document.getElementById('goDuelBtn').addEventListener('click',()=>shareRun(true));
 document.getElementById('raceBack').addEventListener('click',()=>showScreen('home'));
 document.getElementById('ratedBtn').addEventListener('click',()=>startGame(RATED_MODE));
 document.getElementById('dailyBtn').addEventListener('click',()=>startGame(DAILY_MODE));
@@ -3553,6 +4117,31 @@ document.getElementById('setSfxVol').addEventListener('input',e=>{settings.sfxVo
 document.getElementById('setSfxVol').addEventListener('change',()=>{if(settings.sfx){initAudio();sndCorrect();}track('setting',{key:'sfxVol',value:settings.sfxVol});});
 document.getElementById('setMusicVol').addEventListener('change',()=>track('setting',{key:'musicVol',value:settings.musicVol}));
 document.getElementById('resetStatsBtn').addEventListener('click',resetStats);
+/* v20 wiring */
+document.getElementById('reviewCard').addEventListener('click',()=>{if(reviewDue().length)startGame(REVIEW_MODE);else toast('nothing due today · missed puzzles come back here');});
+document.getElementById('focusCard').addEventListener('click',startFocus);
+document.getElementById('mineCard').addEventListener('click',openMine);
+document.getElementById('badgesBtn').addEventListener('click',openBadges);
+document.getElementById('badgesBack').addEventListener('click',()=>showScreen('home'));
+document.getElementById('meLevelCell').addEventListener('click',openBadges);
+document.getElementById('freezeChip').addEventListener('click',()=>{
+  if(prog.days.freezes>=FREEZE_MAX){toast('freezes full · a missed day uses one');return;}
+  if(prog.adFreezeOn===todayKey()){toast('one freeze from an ad per day · finish the missions for another');return;}
+  adFreeze();
+});
+document.getElementById('berserkChip').addEventListener('click',()=>{settings.berserk=!settings.berserk;saveSettings();renderHome();toast(settings.berserk?'berserk on · clock runs: half the time, ×2 points':'berserk off');track('setting',{key:'berserk',value:settings.berserk});});
+document.getElementById('setRemind').addEventListener('click',async()=>{
+  if(!prog.notif.on){
+    const LN=nativePlugin('LocalNotifications');if(!LN)return;
+    try{const r=await LN.requestPermissions();prog.notif.on=r&&r.display==='granted';}catch(e){prog.notif.on=false;}
+    if(!prog.notif.on)toast('allow notifications for tempo in your phone settings','bad');
+  }else prog.notif.on=false;
+  prog.notif.asked=true;saveProg(true);renderSettings();
+  if(prog.notif.on)scheduleReminders();else{const LN=nativePlugin('LocalNotifications');if(LN)LN.cancel({notifications:REMIND_IDS.map(id=>({id}))}).catch(()=>{});}
+});
+document.getElementById('setRemindTime').addEventListener('change',e=>{prog.notif.time=+e.target.value;saveProg(true);scheduleReminders();});
+document.getElementById('setNick').addEventListener('click',async()=>{await askNick();renderSettings();});
+document.getElementById('setAdPrivacy').addEventListener('click',()=>Ads.privacyForm());
 document.getElementById('resetRecordsBtn').addEventListener('click',resetRecords);
 document.querySelectorAll('[data-home]').forEach(e=>e.addEventListener('click',goHome));
 window.addEventListener('pointerdown',kickMusic,{passive:true});      // browsers only allow audio after a tap
@@ -3584,7 +4173,7 @@ async function boot(){
    TEMPO v19 meta layer: looks (themes, pieces, boards), Pro, ads, analytics, transitions.
    Loaded after app.js in the same script; the boot calls are at the end.
    ===================================================================== */
-const APP_VERSION='19';
+const APP_VERSION='20';
 
 /* ---------- lifetime counters (skin unlocks, ad pacing) ---------- */
 let life=Object.assign({solved:0,played:0,runs:0,peak:0,installed:Date.now()},loadJSON('tempo.life.v1',{}));
@@ -3632,7 +4221,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){flushEvent
 window.addEventListener('error',e=>track('error',{msg:String(e.message||'').slice(0,200),line:e.lineno||0}));
 function setConsent(v){consent=!!v;saveJSON('tempo.consent.v1',consent);track('consent',{value:consent});if(!consent)evQueue=[];}
 function askConsent(){
-  if(consent!==null)return;
+  if(consent!==null||!ANALYTICS.key)return;                  // no analytics set up: nothing to ask
   const el=document.getElementById('consentSheet');el.classList.remove('hidden');
   const done=v=>{el.classList.add('hidden');setConsent(v);};
   document.getElementById('consentYes').onclick=()=>done(true);
@@ -3670,6 +4259,7 @@ const MONEY={
   interstitialEvery:3,    // after that, at most one ad every 3 finished runs
   minAdGapSec:180         // and never two within 3 minutes
 };
+const LEGAL={privacy:'https://nezrkaan.com/tempo/privacy.html',terms:'https://nezrkaan.com/tempo/terms.html'};
 let pro=loadJSON('tempo.pro.v1',false);
 function isPro(){return !!pro;}
 function setPro(v){
@@ -3691,7 +4281,10 @@ const Store=(function(){
       renderProPlans();
     }catch(e){console.warn('store',e);}
   }
-  const pkgFor=id=>packages.find(p=>(p.product&&p.product.identifier)===id||p.identifier===id);
+  // Google Play subscriptions come back as "productId:basePlanId"; the package type is a second key
+  const PKG_TYPE={tempo_pro_yearly:'ANNUAL',tempo_pro_monthly:'MONTHLY',tempo_pro_lifetime:'LIFETIME'};
+  const pkgFor=id=>packages.find(p=>{const pid=(p.product&&p.product.identifier)||'';return pid===id||pid.split(':')[0]===id||p.identifier===id;})
+    ||packages.find(p=>p.packageType&&p.packageType===PKG_TYPE[id]);
   function price(plan){const p=pkgFor(plan.id);return (p&&p.product&&p.product.priceString)||plan.price;}
   async function buy(plan){
     track('pro_buy_start',{plan:plan.id});
@@ -3701,7 +4294,7 @@ const Store=(function(){
     try{
       const r=await P.purchasePackage({aPackage:pkg});
       const ok=hasPro(r&&r.customerInfo);setPro(ok);track('pro_buy',{plan:plan.id,ok});return ok?'ok':'no';
-    }catch(e){if(e&&(e.userCancelled||String(e.code)==='1'))return 'cancel';throw e;}
+    }catch(e){if(e&&(e.userCancelled||(e.data&&e.data.userCancelled)||String(e.code)==='1'))return 'cancel';throw e;}
   }
   async function restore(){
     track('pro_restore');
@@ -3713,14 +4306,24 @@ const Store=(function(){
 })();
 let MOCK_AD_SECONDS={rewarded:5,interstitial:3};           // web placeholder ad length
 const Ads=(function(){
-  let A=null,ready=false;
+  let A=null,ready=false,privacy=false;
   const st=Object.assign({runs:0,last:0},loadJSON('tempo.ads.v1',{}));
   const save=()=>saveJSON('tempo.ads.v1',st);
+  /* the store app: consent first (UMP, EEA/UK), then App Tracking Transparency on iOS, then the SDK */
   async function init(){
     if(!NATIVE||isPro())return;
     try{
       A=cap.registerPlugin('AdMob');
-      try{const c=await A.requestConsentInfo();if(c&&c.isConsentFormAvailable&&c.status==='REQUIRED')await A.showConsentForm();}catch(e){}
+      let c=null;
+      try{
+        c=await A.requestConsentInfo();
+        if(c&&c.isConsentFormAvailable&&c.status==='REQUIRED')c=await A.showConsentForm();
+      }catch(e){console.warn('ad consent',e);}
+      privacy=!!(c&&c.privacyOptionsRequirementStatus==='REQUIRED');
+      if(PLATFORM==='ios'){
+        try{const t=await A.trackingAuthorizationStatus();if(t&&t.status==='notDetermined')await A.requestTrackingAuthorization();}catch(e){}
+      }
+      if(c&&c.canRequestAds===false){track('ads_off',{why:'consent'});return;}
       await A.initialize({});
       ready=true;prepare();
     }catch(e){console.warn('ads',e);}
@@ -3730,11 +4333,30 @@ const Ads=(function(){
     A.prepareInterstitial({adId:MONEY.admob.interstitial[PLATFORM]}).catch(()=>{});
     A.prepareRewardVideoAd({adId:MONEY.admob.rewarded[PLATFORM]}).catch(()=>{});
   }
+  /* show a native ad and wait until it is closed. resolves {earned, shown} */
+  function showNative(kind){
+    return new Promise(res=>{
+      const ev=kind==='rewarded'?{done:'onRewardedVideoAdDismissed',fail:'onRewardedVideoAdFailedToShow',earn:'onRewardedVideoAdReward'}
+                               :{done:'interstitialAdDismissed',fail:'interstitialAdFailedToShow'};
+      let earned=false,over=false;const hs=[];
+      const fin=shown=>{if(over)return;over=true;hs.forEach(h=>{try{h.remove();}catch(e){}});res({earned,shown});};
+      const on=(name,fn)=>name?A.addListener(name,fn).then(h=>{hs.push(h);}).catch(()=>{}):Promise.resolve();
+      Promise.all([on(ev.earn,()=>{earned=true;}),on(ev.done,()=>setTimeout(()=>fin(true),200)),on(ev.fail,()=>fin(false))]).then(()=>{
+        const show=kind==='rewarded'?A.showRewardVideoAd():A.showInterstitial();
+        show.then(()=>{if(kind==='rewarded')earned=true;},()=>fin(false));   // not loaded: nothing to show
+      });
+    });
+  }
   async function rewarded(placement){
     track('ad_rewarded',{placement});
     let ok=false;
-    if(!NATIVE)ok=await mockAd('rewarded');
-    else if(ready){try{ok=!!(await A.showRewardVideoAd());}catch(e){ok=false;}prepare();}
+    if(!NATIVE)ok=await mockAd('rewarded',placement);
+    else if(!ready)ok=true;                                  // no ads in this session (consent, no network): it's on us
+    else{
+      const r=await showNative('rewarded');
+      ok=r.shown?r.earned:true;                              // no fill: on us too; closed early: no reward
+      prepare();
+    }
     track('ad_rewarded_done',{placement,ok});
     return ok;
   }
@@ -3748,22 +4370,25 @@ const Ads=(function(){
     track('ad_interstitial',{placement});
     if(!NATIVE)return mockAd('interstitial');
     if(!ready)return false;
-    try{await A.showInterstitial();}catch(e){}
-    prepare();return true;
+    const r=await showNative('interstitial');
+    prepare();return r.shown;
   }
-  return {init,rewarded,interstitial,runEnded,due,get state(){return st;}};
+  /* GDPR: a way back into the consent choices, when the region needs one */
+  async function privacyForm(){if(!A)return;try{await A.showPrivacyOptionsForm();}catch(e){console.warn(e);}}
+  return {init,rewarded,interstitial,runEnded,due,privacyForm,get privacy(){return privacy;},get state(){return st;}};
 })();
 /* the web stand-in for an ad: a labelled screen with a countdown */
-function mockAd(type){
+function mockAd(type,placement){
+  const prize=placement==='freeze'?'collect +1 freeze':placement==='repair'?'repair my streak':'collect +1 life';
   return new Promise(res=>{
     const el=document.getElementById('adMock'),cnt=document.getElementById('adMockCount'),btn=document.getElementById('adMockClose');
     let left=MOCK_AD_SECONDS[type]||0;
     el.classList.remove('hidden');el.dataset.type=type;
     document.getElementById('adMockKind').textContent=type==='rewarded'?'rewarded ad':'ad';
-    btn.disabled=left>0;btn.textContent=left>0?'wait':type==='rewarded'?'collect +1 life':'close';cnt.textContent=left;
+    btn.disabled=left>0;btn.textContent=left>0?'wait':type==='rewarded'?prize:'close';cnt.textContent=left;
     const t=setInterval(()=>{
       left--;cnt.textContent=Math.max(left,0);
-      if(left<=0){clearInterval(t);btn.disabled=false;btn.textContent=type==='rewarded'?'collect +1 life':'close';}
+      if(left<=0){clearInterval(t);btn.disabled=false;btn.textContent=type==='rewarded'?prize:'close';}
     },1000);
     btn.onclick=()=>{if(btn.disabled)return;clearInterval(t);el.classList.add('hidden');res(true);};
   });
@@ -3799,8 +4424,8 @@ function offerContinue(yes,no){
    ===================================================================== */
 const THEMES=[
   {key:'tempo',    bg:'#0E1624',deep:'#0A111C',surface:'#15212F',rule:'#1F2D40',bone:'#F1E8D2',soft:'#B5A98F',mute:'#5C6878',accent:'#F5C518',accentDark:'#C99C0C',red:'#D62828',teal:'#2A8E8E',board:'navy',  pieces:'classic',unlock:null},
-  {key:'noir',     bg:'#0E0E10',deep:'#08080A',surface:'#18181B',rule:'#2A2A30',bone:'#F2F2F2',soft:'#B4B4B8',mute:'#66666E',accent:'#F2F2F2',accentDark:'#BDBDBD',red:'#E63946',teal:'#7F93A3',hl:'#E63946',board:'marble',pieces:'classic',unlock:null},
-  {key:'forest',   bg:'#0F1A14',deep:'#09110D',surface:'#15241B',rule:'#22382B',bone:'#EFE8D2',soft:'#B0A98E',mute:'#62756A',accent:'#E9B44C',accentDark:'#B9862A',red:'#C8553D',teal:'#3C9D7A',board:'green', pieces:'wood',   unlock:null},
+  {key:'noir',     bg:'#0E0E10',deep:'#08080A',surface:'#18181B',rule:'#2A2A30',bone:'#F2F2F2',soft:'#B4B4B8',mute:'#66666E',accent:'#F2F2F2',accentDark:'#BDBDBD',red:'#E63946',teal:'#7F93A3',hl:'#E63946',board:'marble',pieces:'classic',unlock:{level:3}},
+  {key:'forest',   bg:'#0F1A14',deep:'#09110D',surface:'#15241B',rule:'#22382B',bone:'#EFE8D2',soft:'#B0A98E',mute:'#62756A',accent:'#E9B44C',accentDark:'#B9862A',red:'#C8553D',teal:'#3C9D7A',board:'green', pieces:'wood',   unlock:{level:6}},
   {key:'ocean',    bg:'#08171F',deep:'#051018',surface:'#0F222D',rule:'#1A3644',bone:'#E4F2F4',soft:'#9DB9BF',mute:'#557079',accent:'#4FD8CB',accentDark:'#2BA89C',red:'#FF6B5B',teal:'#3BA7FF',board:'ocean', pieces:'aqua',   unlock:{solved:50}},
   {key:'ember',    bg:'#170E0A',deep:'#100906',surface:'#22150F',rule:'#3A2419',bone:'#F6E7D4',soft:'#C7A98C',mute:'#7F6555',accent:'#FF8A1F',accentDark:'#D06A0C',red:'#E5383B',teal:'#E9B44C',board:'amber', pieces:'ember',  unlock:{rating:1700}},
   {key:'synthwave',bg:'#140F26',deep:'#0C0919',surface:'#1D1636',rule:'#2E2552',bone:'#F4ECFF',soft:'#B7A9D6',mute:'#6F6297',accent:'#2DE2E6',accentDark:'#1BB3B7',red:'#FF2E8B',teal:'#A36BFF',board:'arcade',pieces:'neon',   unlock:{pro:true}},
@@ -3811,8 +4436,8 @@ const THEMES=[
 const PIECE_SKINS=[
   {key:'classic', unlock:null},
   {key:'letters', unlock:null},
-  {key:'wood',    unlock:null,             ink:'#C98A47'},
-  {key:'jade',    unlock:null,             ink:'#2FBF84'},
+  {key:'wood',    unlock:{level:2},        ink:'#C98A47'},
+  {key:'jade',    unlock:{level:5},        ink:'#2FBF84'},
   {key:'aqua',    unlock:{solved:50},      ink:'#27B9D9'},
   {key:'ruby',    unlock:{solved:100},     ink:'#E2365F'},
   {key:'ember',   unlock:{rating:1700},    ink:'#FF8A1F'},
@@ -3827,10 +4452,10 @@ const BOARD_SKINS=[
   {key:'navy',    l:'#E5D7B0',d:'#1B2A3C',unlock:null},
   {key:'wood',    l:'#F0D9B5',d:'#B58863',unlock:null},
   {key:'green',   l:'#EEEED2',d:'#769656',unlock:null},
-  {key:'grape',   l:'#E6DDF5',d:'#7B61A8',unlock:null},
-  {key:'marble',  l:'#ECEAE5',d:'#8E8B85',unlock:null},
-  {key:'mint',    l:'#E7F4EC',d:'#4E9F80',unlock:null},
-  {key:'slate',   l:'#CDD3D9',d:'#4A5561',unlock:null},
+  {key:'grape',   l:'#E6DDF5',d:'#7B61A8',unlock:{level:2}},
+  {key:'marble',  l:'#ECEAE5',d:'#8E8B85',unlock:{level:3}},
+  {key:'mint',    l:'#E7F4EC',d:'#4E9F80',unlock:{level:4}},
+  {key:'slate',   l:'#CDD3D9',d:'#4A5561',unlock:{level:7}},
   {key:'ice',     l:'#DEE3E6',d:'#8CA2AD',unlock:{solved:50}},
   {key:'ocean',   l:'#D5E8EC',d:'#3B7D92',unlock:{solved:50}},
   {key:'coral',   l:'#F8E5D8',d:'#DD7A5E',unlock:{solved:150}},
@@ -3849,13 +4474,14 @@ const SETTING_OF={themes:'theme',pieces:'pieces',boards:'board'};
 /* earned by playing (Pro aside) */
 function earned(s){
   const u=s.unlock;if(!u)return true;
-  return !!((u.solved&&life.solved>=u.solved)||(u.rating&&Math.max(rating.value,life.peak||0)>=u.rating)||(u.bot&&raceState().best[u.bot]));
+  return !!((u.solved&&life.solved>=u.solved)||(u.rating&&Math.max(rating.value,life.peak||0)>=u.rating)||(u.bot&&raceState().best[u.bot])||(u.level&&typeof xpLevel==='function'&&(prog.legacyLooks||xpLevel().level>=u.level)));
 }
 function skinState(s){
   const u=s.unlock;
   if(!u||isPro()||earned(s))return {ok:true};
   if(u.solved)return {ok:false,why:`solve ${u.solved} puzzles`,progress:`${Math.min(life.solved,u.solved)}/${u.solved}`};
   if(u.rating)return {ok:false,why:`reach a ${u.rating} rating`,progress:`best ${Math.max(rating.value,life.peak||0)}`};
+  if(u.level)return {ok:false,why:`reach level ${u.level}`,progress:`level ${xpLevel().level}`};
   return {ok:false,pro:true,why:u.bot?`pro · or beat the ${u.bot} bot`:'pro'};
 }
 /* a toast when playing earns a look (keys are per kind: a board and a theme can share a name) */
@@ -3864,7 +4490,7 @@ function checkUnlocks(quiet){
   const fresh=[];
   Object.keys(LOOK_KIND).forEach(kind=>LOOK_KIND[kind].forEach(s=>{
     const u=s.unlock,id=kind+':'+s.key;
-    if(u&&(u.solved||u.rating||u.bot)&&earned(s)&&!seen.has(id)){
+    if(u&&(u.solved||u.rating||u.bot||u.level)&&earned(s)&&!seen.has(id)){
       seen.add(id);
       if(kind!=='themes'&&seen.has(s.key))return;              // announced by v18 under its bare name
       fresh.push(s.key+(kind==='themes'?' theme':kind==='boards'?' board':' pieces'));
@@ -4086,8 +4712,9 @@ function renderProBits(){
   const row=document.getElementById('setProState');if(row)row.textContent=p?'active ✓':'get pro ›';
   const rm=document.getElementById('setProTestOff');if(rm)rm.classList.toggle('hidden',!(p&&!NATIVE));
   const fine=document.getElementById('proFine');
-  if(fine)fine.textContent=NATIVE?'Payment is charged to your '+(PLATFORM==='ios'?'App Store':'Google Play')+' account. Subscriptions renew automatically unless cancelled at least 24 hours before the period ends; manage them in your account settings.'
-    :'Web version: test mode. Nothing is charged; Pro unlocks on this device only. Real purchases work in the App Store and Google Play app.';
+  if(fine)fine.innerHTML=(NATIVE?'Payment is charged to your '+(PLATFORM==='ios'?'App Store':'Google Play')+' account. Subscriptions renew automatically unless cancelled at least 24 hours before the period ends; manage them in your account settings.'
+    :'Web version: test mode. Nothing is charged; Pro unlocks on this device only. Real purchases work in the App Store and Google Play app.')+
+    `<br><a href="${LEGAL.terms}" target="_blank" rel="noopener">terms of use</a> · <a href="${LEGAL.privacy}" target="_blank" rel="noopener">privacy policy</a>`;
 }
 
 /* =====================================================================
@@ -4142,16 +4769,1200 @@ document.getElementById('setProTestOff').addEventListener('click',()=>{setPro(fa
 document.getElementById('setData').addEventListener('click',()=>{setConsent(!consent);renderSettings();});
 document.getElementById('setExport').addEventListener('click',exportData);
 
-/* ---------- boot ---------- */
+/* =====================================================================
+   TEMPO v20 progress layer: the reasons to come back tomorrow.
+   XP and levels, a days-in-a-row streak with freezes, three daily missions,
+   badges, the mistake review queue (spaced repetition), today's focus,
+   modes that open as you play, a ghost of your best run, and local
+   reminders in the store app. Everything lives on the device.
+   ===================================================================== */
+
+/* ---------- state ---------- */
+const PROG_KEY='tempo.prog.v1';
+const PROG_STORED=loadJSON(PROG_KEY,null);
+let prog=Object.assign({xp:0,days:{streak:0,best:0,last:null,freezes:0,frozen:[],log:{},lost:0,lostOn:null},
+  missions:null,ach:{},counts:{},ghost:{},seenModes:{},opened:{},onboard:null,notif:{asked:false,on:false,time:19},
+  proRefill:null,grandfathered:false,adFreezeOn:null,repairOn:null},PROG_STORED||{});
+prog.counts=Object.assign({themes:{},fast3:0,fast2:0,reviewFixed:0,missions:0,dailies:0,mine:0,duels:0,runs:0,berserk:0},prog.counts||{});
+let progSaveT=null;
+function saveProg(now){clearTimeout(progSaveT);if(now)saveJSON(PROG_KEY,prog);else progSaveT=setTimeout(()=>saveJSON(PROG_KEY,prog),250);}
+/* players who already played a lot keep every mode open */
+if(!prog.grandfathered&&(life.solved>=50||hist.length>=50)){prog.grandfathered=true;saveProg(true);}
+/* players from before levels keep the looks that used to be free */
+if(!PROG_STORED&&(life.played>0||hist.length>0)){prog.legacyLooks=true;saveProg(true);}
+
+/* ---------- dates (local calendar days) ---------- */
+function dayNum(key){const [y,m,d]=key.split('-').map(Number);return Math.round(Date.UTC(y,m-1,d)/864e5);}
+function keyOfNum(n){const d=new Date(n*864e5);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0');}
+function addDays(key,n){return keyOfNum(dayNum(key)+n);}
+function daysBetween(a,b){return dayNum(b)-dayNum(a);}
+/* a small seeded generator (the same day gives the same missions) */
+function seededRng(seed){let s=seed>>>0;return ()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+function hashStr(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+
+/* ---------- toasts queue: several things can happen on one move ---------- */
+const toastQueue=[];let toastShownAt=0,toastTimer=null;
+const toastNow=toast;
+const TOAST_MIN=1500;                      // a toast stays at least this long before a queued one replaces it
+toast=function(msg,kind){toastQueue.push([msg,kind]);pumpToasts();};
+function pumpToasts(){
+  if(toastTimer||!toastQueue.length)return;
+  const wait=toastShownAt+TOAST_MIN-Date.now();
+  if(wait>0){toastTimer=setTimeout(()=>{toastTimer=null;pumpToasts();},wait);return;}
+  const [m,k]=toastQueue.shift();toastNow(m,k);toastShownAt=Date.now();
+  if(toastQueue.length)pumpToasts();
+}
+
+/* =====================================================================
+   XP AND LEVELS
+   ===================================================================== */
+function xpNeed(l){return 100+(l-1)*30;}                   // xp from level l to l+1
+function xpLevel(xp){
+  let l=1,left=xp==null?prog.xp:xp;
+  while(left>=xpNeed(l)){left-=xpNeed(l);l++;}
+  return {level:l,into:left,need:xpNeed(l)};
+}
+/* what a level brings: looks with unlock {level:n} */
+function levelRewards(l){if(prog.legacyLooks)return [];return Object.keys(LOOK_KIND).flatMap(k=>LOOK_KIND[k].filter(s=>s.unlock&&s.unlock.level===l).map(s=>s.key+(k==='themes'?' theme':k==='boards'?' board':' pieces')));}
+function addXP(n,why){
+  if(!n)return;
+  const before=xpLevel().level;
+  prog.xp+=n;
+  if(typeof run==='object'&&run&&gameActive)run.xp=(run.xp||0)+n;
+  const after=xpLevel().level;
+  if(after>before){
+    for(let l=before+1;l<=after;l++){
+      const r=levelRewards(l);
+      toast('level '+l+(r.length?' · unlocked: '+r.join(', '):''),'good');
+      track('level_up',{level:l});
+    }
+    try{sndEnter();}catch(e){}
+    checkUnlocks(true);checkAchievements();
+  }
+  saveProg();
+}
+/* XP for one puzzle: harder and faster pays more */
+function puzzleXP(e){
+  if(!e.win)return 2;
+  let x=10+Math.max(0,Math.round((e.p.rating-800)/150));
+  if(e.clean&&e.secs!=null&&e.secs<5)x+=5;
+  if(e.mode==='review')x=Math.round(x*0.6);
+  return x;
+}
+
+/* =====================================================================
+   DAYS IN A ROW (any puzzle counts), freezes keep it alive
+   ===================================================================== */
+const FREEZE_MAX=2;
+const DAY_MILESTONES=[3,7,14,30,50,100,200,365];
+/* where the streak stands right now, without changing anything */
+function dayState(){
+  const d=prog.days,today=todayKey();
+  if(!d.last)return {state:'none',streak:0};
+  const gap=daysBetween(d.last,today);
+  if(gap<=0)return {state:'done',streak:d.streak};
+  if(gap===1)return {state:'pending',streak:d.streak};
+  const miss=gap-1;
+  if(miss<=d.freezes)return {state:'frozen',streak:d.streak,miss};
+  return {state:'broken',streak:0,lost:d.streak,miss};
+}
+/* the first puzzle of a day: the streak moves on (freezes cover missed days) */
+function dayTick(){
+  const d=prog.days,today=todayKey();
+  if(d.last===today)return null;
+  let ev='up';
+  if(!d.last)d.streak=1;
+  else{
+    const gap=daysBetween(d.last,today);
+    if(gap===1)d.streak++;
+    else if(gap>1){
+      const miss=gap-1;
+      if(miss<=d.freezes){
+        d.freezes-=miss;for(let i=1;i<=miss;i++)d.frozen.push(addDays(d.last,i));
+        d.frozen=d.frozen.slice(-60);d.streak++;ev='frozen';
+      }else{d.lost=d.streak;d.lostOn=today;d.streak=1;ev='reset';}
+    }
+  }
+  d.last=today;d.best=Math.max(d.best,d.streak);
+  d.log[today]=(d.log[today]||0);
+  const keys=Object.keys(d.log).sort();if(keys.length>120)keys.slice(0,keys.length-120).forEach(k=>delete d.log[k]);
+  saveProg();
+  if(ev==='frozen')toast('a freeze saved your '+d.streak+'-day streak ❄','good');
+  else if(d.streak>1)toast(d.streak+' days in a row 🔥','good');
+  if(DAY_MILESTONES.includes(d.streak)){addXP(d.streak>=30?150:d.streak>=7?75:30);track('day_streak',{days:d.streak});}
+  scheduleReminders();
+  return {streak:d.streak,ev};
+}
+function addFreeze(why){
+  const d=prog.days;if(d.freezes>=FREEZE_MAX)return false;
+  d.freezes++;saveProg();toast('+1 streak freeze ❄ ('+d.freezes+'/'+FREEZE_MAX+')','good');track('freeze',{why});
+  return true;
+}
+/* Pro: a free freeze every Monday */
+function proFreezeRefill(){
+  if(!isPro())return;
+  const t=todayKey(),dow=new Date().getDay();
+  const monday=addDays(t,-((dow+6)%7));
+  if(prog.proRefill!==monday){prog.proRefill=monday;if(prog.days.freezes<1){prog.days.freezes=1;saveProg();}}
+}
+/* a broken streak (one uncovered day) can be repaired once with a rewarded ad */
+function canRepair(){const s=dayState();return s.state==='broken'&&s.miss-prog.days.freezes===1&&s.lost>=2&&prog.repairOn!==todayKey();}
+async function repairStreak(){
+  if(!canRepair())return;
+  const ok=isPro()?true:await Ads.rewarded('repair');
+  if(!ok)return;
+  prog.repairOn=todayKey();
+  prog.days.freezes++;                                        // the ad buys the missing day
+  saveProg();toast('streak repaired · play a puzzle to keep it','good');track('streak_repair',{days:prog.days.streak});
+  renderHome();
+}
+async function adFreeze(){
+  if(prog.adFreezeOn===todayKey()||prog.days.freezes>=FREEZE_MAX)return;
+  const ok=await Ads.rewarded('freeze');
+  if(ok){prog.adFreezeOn=todayKey();addFreeze('ad');renderHome();}
+}
+
+/* =====================================================================
+   DAILY MISSIONS: three a day, picked from the date, sized to your level
+   ===================================================================== */
+const MISSION_THEMES=['fork','pin','skewer','discoveredAttack','mateIn2','backRankMate','hangingPiece','deflection','sacrifice','attraction','doubleCheck','trappedPiece'];
+const MODE_TARGETS={survival:[5,8,11],ticktock:[4,6,9],materush:[6,9,12],memory:[3,4,6],tower:[3,5,7],sprint:[1,1,1],streak:[5,8,12]};
+function missionText(m){
+  switch(m.k){
+    case 'solve':return `solve ${m.goal} puzzles`;
+    case 'rated':return `solve ${m.goal} rated puzzles`;
+    case 'theme':return `solve ${m.goal} ${themeLabel(m.t)} puzzle${m.goal>1?'s':''}`;
+    case 'fast':return `solve ${m.goal} puzzles in under 5 seconds`;
+    case 'streak':return `get ${m.goal} in a row`;
+    case 'hard':return m.goal>1?`solve ${m.goal} puzzles 200+ above your rating`:'solve a puzzle 200+ above your rating';
+    case 'daily':return 'solve the daily puzzle';
+    case 'race':return 'win a race against a bot';
+    case 'review':return `fix ${m.goal} missed puzzles in review`;
+    case 'berserk':return 'finish a clock run in berserk';
+    case 'run':{const md=modeByKey(m.mode);return m.mode==='sprint'?'finish a sprint (10 puzzles)':`reach ${m.goal} in one ${md?modeTitle(md):m.mode} run`;}
+  }
+  return m.k;
+}
+function makeMissions(day){
+  const rnd=seededRng(hashStr('missions:'+day));
+  const tier=Math.min(2,Math.floor((xpLevel().level-1)/5));
+  const pick=a=>a[Math.floor(rnd()*a.length)];
+  const g=a=>a[Math.min(tier,a.length-1)];
+  const weak=focusTheme();
+  const easy=pick([{k:'solve',goal:g([8,12,16]),xp:60},{k:'rated',goal:g([5,8,10]),xp:60}]);
+  const skills=[{k:'theme',t:rnd()<0.5&&weak?weak:pick(MISSION_THEMES),goal:g([2,3,5]),xp:80},{k:'fast',goal:g([2,3,5]),xp:80},{k:'streak',goal:g([4,6,8]),xp:80},{k:'hard',goal:g([1,1,2]),xp:100}];
+  const skill=pick(skills);
+  const open=Object.keys(MODE_TARGETS).filter(k=>modeOpen(k));
+  const runs=open.map(k=>({k:'run',mode:k,goal:g(MODE_TARGETS[k]),xp:k==='sprint'?100:80}));
+  runs.push({k:'daily',goal:1,xp:60});
+  if(modeOpen('race'))runs.push({k:'race',goal:1,xp:100});
+  if(reviewDue().length>=3)runs.push({k:'review',goal:3,xp:80});
+  runs.push({k:'berserk',goal:1,xp:90});
+  const third=pick(runs);
+  return {date:day,list:[easy,skill,third].map((m,i)=>Object.assign({id:i,have:0,done:false},m)),bonus:false};
+}
+function missions(){
+  const t=todayKey();
+  if(!prog.missions||prog.missions.date!==t){prog.missions=makeMissions(t);saveProg();}
+  return prog.missions;
+}
+/* progress from one event: e.type 'puzzle' or 'run' */
+function missionEvent(e){
+  const ms=missions();let changed=false;
+  ms.list.forEach(m=>{
+    if(m.done)return;
+    let inc=0,set=null;
+    if(e.type==='puzzle'){
+      if(m.k==='solve'&&e.win)inc=1;
+      if(m.k==='rated'&&e.win&&e.mode==='rated'&&e.clean)inc=1;
+      if(m.k==='theme'&&e.win&&e.p.themes.includes(m.t))inc=1;
+      if(m.k==='fast'&&e.win&&e.clean&&e.secs!=null&&e.secs<5)inc=1;
+      if(m.k==='streak')set=e.streak||0;
+      if(m.k==='hard'&&e.win&&e.clean&&e.p.rating>=e.level+200)inc=1;
+      if(m.k==='daily'&&e.win&&e.mode==='daily')inc=1;
+      if(m.k==='review'&&e.win&&e.mode==='review')inc=1;
+    }else if(e.type==='run'){
+      if(m.k==='race'&&e.mode==='race'&&e.win)inc=1;
+      if(m.k==='berserk'&&e.berserk&&e.finished)inc=1;
+      if(m.k==='run'&&e.mode===m.mode){
+        if(m.mode==='sprint')inc=e.win?1:0;
+        else set=e.score||0;
+      }
+    }
+    const before=m.have;
+    if(set!=null)m.have=Math.max(m.have,Math.min(set,m.goal));else m.have=Math.min(m.goal,m.have+inc);
+    if(m.have!==before)changed=true;
+    if(m.have>=m.goal&&!m.done){
+      m.done=true;prog.counts.missions++;
+      toast('mission done · '+missionText(m)+' · +'+m.xp+' xp','good');
+      addXP(m.xp,'mission');track('mission',{k:m.k,goal:m.goal});
+    }
+  });
+  if(!ms.bonus&&ms.list.every(m=>m.done)){
+    ms.bonus=true;changed=true;
+    if(!addFreeze('missions'))toast('all missions done · +50 xp','good');
+    addXP(50,'missions');
+  }
+  if(changed){saveProg();checkAchievements();}
+}
+
+/* =====================================================================
+   REVIEW: missed puzzles come back after 1, 3, 7 and 14 days
+   ===================================================================== */
+const REVIEW_KEY='tempo.review.v1';
+const REVIEW_GAPS=[1,3,7,14];
+let reviewQ=loadJSON(REVIEW_KEY,[]);
+function saveReview(){saveJSON(REVIEW_KEY,reviewQ);}
+function slimPuzzle(p){return {id:p.id,fen:p.fen,moves:p.moves,rating:p.rating,themes:p.themes,url:p.url,ok:p.ok,src:p.src,game:p.game};}
+function addReview(p){
+  if(!p||!p.id)return;
+  const t=todayKey(),i=reviewQ.findIndex(r=>r.p.id===p.id);
+  if(i>=0){reviewQ[i].box=0;reviewQ[i].due=addDays(t,1);reviewQ[i].miss=(reviewQ[i].miss||1)+1;}
+  else reviewQ.push({p:slimPuzzle(p),box:0,due:addDays(t,1),miss:1,added:t});
+  if(reviewQ.length>300){reviewQ.sort((a,b)=>a.added<b.added?-1:1);reviewQ.splice(0,reviewQ.length-300);}
+  saveReview();
+}
+function reviewDue(){const t=todayKey();return reviewQ.filter(r=>r.due<=t).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0);}
+function reviewResult(id,win){
+  const i=reviewQ.findIndex(r=>r.p.id===id);if(i<0)return;
+  const r=reviewQ[i],t=todayKey();
+  if(win){
+    r.box++;
+    if(r.box>=REVIEW_GAPS.length){reviewQ.splice(i,1);prog.counts.reviewFixed++;}
+    else r.due=addDays(t,REVIEW_GAPS[r.box]);
+    if(r.box===1)prog.counts.reviewFixed++;
+  }else{r.box=0;r.due=addDays(t,1);r.miss=(r.miss||1)+1;}
+  saveReview();saveProg();
+}
+
+/* =====================================================================
+   TODAY'S FOCUS: your weakest pattern (or one from the rotation)
+   ===================================================================== */
+function themeStats(minN){
+  const agg={};
+  hist.slice(-600).forEach(h=>(h[4]||'').split(' ').forEach(t=>{
+    if(!t||STAT_SKIP.has(t)||/^mateIn|^(opening|middlegame|endgame|mate)$/.test(t))return;
+    const a=agg[t]||(agg[t]={n:0,w:0});a.n++;if(h[3])a.w++;
+  }));
+  return Object.keys(agg).filter(t=>agg[t].n>=(minN||5)).map(t=>({t,n:agg[t].n,w:agg[t].w,p:agg[t].w/agg[t].n}));
+}
+function focusTheme(){
+  const m=data&&data.manifest;
+  const ok=t=>!m||!m.shards||!!m.shards[t];
+  const rows=themeStats(5).filter(r=>ok(r.t)&&r.p<0.85).sort((a,b)=>a.p-b.p||b.n-a.n);
+  if(rows.length)return rows[0].t;
+  const rot=MISSION_THEMES.filter(ok);
+  return rot.length?rot[dayNum(todayKey())%rot.length]:null;
+}
+
+/* =====================================================================
+   MODES THAT OPEN AS YOU PLAY (players with 50+ solves keep them all)
+   ===================================================================== */
+const MODE_UNLOCK={ticktock:5,sprint:10,race:15,memory:25,gauntlet:35,tower:50};
+function modeOpen(key){return prog.grandfathered||!MODE_UNLOCK[key]||life.solved>=MODE_UNLOCK[key];}
+function checkModeUnlocks(quiet){
+  Object.keys(MODE_UNLOCK).forEach(k=>{
+    if(modeOpen(k)&&!prog.opened[k]){
+      prog.opened[k]=todayKey();
+      if(!quiet&&!prog.grandfathered){const m=modeByKey(k);toast('new mode unlocked: '+(m?m.name:k),'good');track('mode_unlock',{mode:k});}
+    }
+  });
+  saveProg();
+}
+function modeIsNew(key){return !!prog.opened[key]&&!prog.seenModes[key]&&!prog.grandfathered&&!!MODE_UNLOCK[key];}
+
+/* =====================================================================
+   BADGES
+   ===================================================================== */
+const SPECIAL_THEMES={smotheredMate:'smothered',underPromotion:'underdog',enPassant:'en passant',castling:'castle crasher'};
+function themeCount(t){return prog.counts.themes[t]||0;}
+function bestOf(k){return highScores[k]||0;}
+const ACHIEVEMENTS=[
+  {id:'first',  name:'first blood',     desc:'solve your first puzzle',               icon:'p',  xp:20,  goal:1,    have:()=>life.solved},
+  {id:'s100',   name:'centurion',       desc:'solve 100 puzzles',                     icon:'p',  xp:100, goal:100,  have:()=>life.solved},
+  {id:'s1000',  name:'thousand club',   desc:'solve 1,000 puzzles',                   icon:'q',  xp:300, goal:1000, have:()=>life.solved},
+  {id:'fever',  name:'on fire',         desc:'5 clean solves in a row',               icon:'crown',xp:30,goal:5,  have:()=>prog.counts.bestRun||0},
+  {id:'run15',  name:'unstoppable',     desc:'15 clean solves in a row',              icon:'crown',xp:120,goal:15,have:()=>prog.counts.bestRun||0},
+  {id:'d7',     name:'week one',        desc:'play 7 days in a row',                  icon:'flame',xp:75, goal:7,   have:()=>prog.days.best},
+  {id:'d30',    name:'habit',           desc:'play 30 days in a row',                 icon:'flame',xp:200,goal:30,  have:()=>prog.days.best},
+  {id:'d100',   name:'centenary',       desc:'play 100 days in a row',                icon:'flame',xp:500,goal:100, have:()=>prog.days.best},
+  {id:'fast2',  name:'bullet brain',    desc:'solve a 1200+ puzzle in under 2 seconds',icon:'watch',xp:60,goal:1,   have:()=>prog.counts.fast2},
+  {id:'fast25', name:'pattern machine', desc:'25 solves in under 3 seconds',          icon:'watch',xp:120,goal:25,  have:()=>prog.counts.fast3},
+  {id:'r1800',  name:'rising star',     desc:'reach a 1800 rating',                   icon:'b',  xp:120, goal:1800, have:()=>Math.max(rating.value,life.peak||0)},
+  {id:'r2200',  name:'master class',    desc:'reach a 2200 rating',                   icon:'k',  xp:300, goal:2200, have:()=>Math.max(rating.value,life.peak||0)},
+  {id:'p2500',  name:'superhuman',      desc:'solve a puzzle rated 2500+',            icon:'k',  xp:150, goal:1,    have:()=>prog.counts.p2500||0},
+  {id:'smother',name:'smothered',       desc:'solve a smothered mate',                icon:'n',  xp:60,  goal:1,    have:()=>themeCount('smotheredMate')},
+  {id:'backrank',name:'back rank bandit',desc:'solve 10 back rank mates',             icon:'r',  xp:80,  goal:10,   have:()=>themeCount('backRankMate')},
+  {id:'under',  name:'underdog',        desc:'solve an underpromotion',               icon:'n',  xp:80,  goal:1,    have:()=>themeCount('underPromotion')},
+  {id:'ep',     name:'en passant',      desc:'solve an en passant puzzle',            icon:'p',  xp:60,  goal:1,    have:()=>themeCount('enPassant')},
+  {id:'fork50', name:'fork lift',       desc:'solve 50 forks',                        icon:'n',  xp:100, goal:50,   have:()=>themeCount('fork')},
+  {id:'pin50',  name:'pinned down',     desc:'solve 50 pins',                         icon:'b',  xp:100, goal:50,   have:()=>themeCount('pin')},
+  {id:'mate100',name:'checkmate artist',desc:'deliver 100 mates',                     icon:'q',  xp:120, goal:100,  have:()=>themeCount('mate')},
+  {id:'king',   name:'kingslayer',      desc:'beat the king bot',                     icon:'flag',xp:200,goal:1,    have:()=>raceState().best.king?1:0},
+  {id:'tower',  name:'top floor',       desc:'clear the tower',                       icon:'tower',xp:150,goal:10,  have:()=>bestOf('tower')},
+  {id:'gaunt',  name:'flawless',        desc:'find all 8 in the gauntlet',            icon:'swords',xp:150,goal:8,  have:()=>bestOf('gauntlet')},
+  {id:'bomb',   name:'bomb squad',      desc:'solve 15 in tick tock',                 icon:'bomb',xp:120,goal:15,   have:()=>bestOf('ticktock')},
+  {id:'blind',  name:'photographic',    desc:'solve 10 in memory',                    icon:'eye', xp:120,goal:10,   have:()=>bestOf('memory')},
+  {id:'mates',  name:'mate machine',    desc:'12 mates in one mate rush',             icon:'crown',xp:100,goal:12,  have:()=>prog.counts.rushMates||0},
+  {id:'berserk',name:'berserker',       desc:'finish 5 clock runs in berserk',        icon:'watch',xp:80,goal:5,    have:()=>prog.counts.berserk},
+  {id:'ghost',  name:'ghostbuster',     desc:'beat your own best run',                icon:'flag',xp:60, goal:1,    have:()=>prog.counts.ghostBeat||0},
+  {id:'miss30', name:'dutiful',         desc:'complete 30 daily missions',            icon:'flame',xp:150,goal:30,  have:()=>prog.counts.missions},
+  {id:'fix50',  name:'lesson learned',  desc:'fix 50 missed puzzles in review',       icon:'b',  xp:150, goal:50,   have:()=>prog.counts.reviewFixed},
+  {id:'daily30',name:'daily devotion',  desc:'solve 30 daily puzzles',                icon:'q',  xp:150, goal:30,   have:()=>prog.counts.dailies},
+  {id:'duel',   name:'duelist',         desc:'win a friend challenge',                icon:'swords',xp:80,goal:1,   have:()=>prog.counts.duels},
+  {id:'mine10', name:'know thyself',    desc:'solve 10 puzzles from your own games',  icon:'k',  xp:120, goal:10,   have:()=>prog.counts.mine},
+  {id:'lvl10',  name:'veteran',         desc:'reach level 10',                        icon:'r',  xp:0,   goal:10,   have:()=>xpLevel().level},
+  {id:'lvl25',  name:'legend',          desc:'reach level 25',                        icon:'k',  xp:0,   goal:25,   have:()=>xpLevel().level},
+  {id:'looks10',name:'collector',       desc:'unlock 10 looks',                       icon:'q',  xp:80,  goal:10,   have:()=>lookCount()}
+];
+function lookCount(){return Object.keys(LOOK_KIND).reduce((n,k)=>n+LOOK_KIND[k].filter(s=>s.unlock&&skinState(s).ok&&!(s.unlock.pro&&isPro()&&!earned(s))).length,0);}
+let achChecking=false;
+function checkAchievements(){
+  if(achChecking)return;achChecking=true;
+  try{
+    ACHIEVEMENTS.forEach(a=>{
+      if(prog.ach[a.id])return;
+      let have=0;try{have=a.have();}catch(e){}
+      if(have>=a.goal){
+        prog.ach[a.id]=Date.now();
+        toast('badge · '+a.name,'good');track('badge',{id:a.id});
+        if(typeof run==='object'&&run&&gameActive)(run.badges=run.badges||[]).push(a.id);
+        if(a.xp)addXP(a.xp,'badge');
+      }
+    });
+    saveProg();
+  }finally{achChecking=false;}
+}
+const BADGE_ICONS={flame:'<path d="M12 21c-3.9 0-6.5-2.7-6.5-6.2 0-3.3 2.4-5.4 3.9-7.6.6 1.9 1.6 3 2.8 3.4C12.4 7.6 13.6 5 13.2 2.5c3.2 2.4 5.3 6 5.3 10.3 0 4.6-2.7 8.2-6.5 8.2z"/>'};
+function badgeIcon(a){
+  if('kqrbnp'.includes(a.icon)&&a.icon.length===1)return pieceMarkup(a.icon,'w');
+  const body=BADGE_ICONS[a.icon]||MODE_ICONS[a.icon]||'';
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+}
+
+/* =====================================================================
+   HOOKS FROM THE GAME
+   ===================================================================== */
+/* one finished puzzle (called by recordOnce) */
+function progressPuzzle(e){
+  e.level=e.level||level();
+  dayTick();
+  const d=prog.days,t=todayKey();d.log[t]=(d.log[t]||0)+1;
+  if(e.win){
+    e.p.themes.forEach(th=>{prog.counts.themes[th]=(prog.counts.themes[th]||0)+1;});
+    if(e.clean&&e.secs!=null&&e.secs<3)prog.counts.fast3++;
+    if(e.clean&&e.secs!=null&&e.secs<2&&e.p.rating>=1200)prog.counts.fast2++;
+    if(e.p.rating>=2500)prog.counts.p2500=(prog.counts.p2500||0)+1;
+    if(e.mode==='daily')prog.counts.dailies++;
+    if(e.mode==='mine')prog.counts.mine++;
+  }
+  prog.counts.bestRun=Math.max(prog.counts.bestRun||0,e.streak||0);
+  if(!e.win&&e.mode!=='review'&&e.mode!=='placement')addReview(e.p);
+  if(e.mode==='review')reviewResult(e.p.id,e.win&&e.clean);
+  addXP(puzzleXP(e),'puzzle');
+  missionEvent(Object.assign({type:'puzzle'},e));
+  checkModeUnlocks(false);
+  checkAchievements();
+  saveProg();
+}
+/* one finished run (called by endGame) */
+function progressRun(e){
+  prog.counts.runs++;
+  if(e.berserk&&e.finished)prog.counts.berserk++;
+  if(e.mode==='materush')prog.counts.rushMates=Math.max(prog.counts.rushMates||0,e.solved||0);
+  if(e.finished)addXP(10,'run');
+  missionEvent(Object.assign({type:'run'},e));
+  checkAchievements();
+  saveProg(true);
+  scheduleReminders();
+}
+
+/* =====================================================================
+   GHOST: the timeline of your best run, raced in clock modes and sprint
+   ===================================================================== */
+function ghostKey(m){return m.key+(run&&run.berserk?'b':'');}
+function ghostAt(m,t){
+  const g=prog.ghost[ghostKey(m)];if(!g||!g.length)return null;
+  let v=0;for(const [gt,gv] of g){if(gt<=t)v=gv;else break;}
+  return v;
+}
+function ghostSave(m,timeline){prog.ghost[ghostKey(m)]=timeline.slice(0,400);saveProg(true);}
+
+/* =====================================================================
+   HOME: the progress band and today's cards
+   ===================================================================== */
+function renderProgressBand(){
+  const lv=xpLevel(),ds=dayState();
+  const el=document.getElementById('meDays');if(!el)return;
+  el.textContent=ds.state==='broken'?0:ds.streak;
+  const cell=document.getElementById('meDaysCell');
+  cell.classList.toggle('lit',ds.state==='done');
+  cell.classList.toggle('pending',ds.state==='pending'||ds.state==='frozen');
+  document.getElementById('meDaysL').textContent=ds.state==='pending'?'play today':ds.state==='frozen'?'frozen ❄':ds.state==='broken'?'start again':'day streak';
+  document.getElementById('meLevel').textContent=lv.level;
+  document.getElementById('meXpBar').style.width=Math.round(100*lv.into/lv.need)+'%';
+  document.getElementById('meXpL').textContent=lv.into+'/'+lv.need+' xp';
+}
+function renderToday(){
+  const box=document.getElementById('todayBox');if(!box)return;
+  const ms=missions(),d=prog.days,ds=dayState();
+  const fz=document.getElementById('freezeChip');
+  fz.innerHTML=`<b>❄ ${d.freezes}/${FREEZE_MAX}</b> ${d.freezes?'freeze'+(d.freezes>1?'s':''):'no freezes'}`;
+  fz.classList.toggle('can',prog.adFreezeOn!==todayKey()&&d.freezes<FREEZE_MAX);
+  const rows=ms.list.map(m=>{
+    const pct=Math.round(100*m.have/m.goal);
+    return `<div class="ms-row${m.done?' done':''}"><span class="ms-ck">${m.done?'✓':''}</span><span class="ms-t">${esc(missionText(m))}</span>`+
+      `<span class="ms-n">${m.done?'done':m.have+'/'+m.goal}</span><span class="ms-x">+${m.xp}</span><i class="ms-bar"><b style="width:${pct}%"></b></i></div>`;
+  }).join('');
+  const all=ms.list.every(m=>m.done);
+  let note=all?'all done today ✓ · new missions tomorrow':'finish all 3 → +1 streak freeze ❄';
+  let repair='';
+  if(canRepair())repair=`<button class="ms-repair" id="repairBtn">your ${ds.lost}-day streak broke · ${isPro()?'repair it':'watch an ad to repair it'} ›</button>`;
+  box.innerHTML=rows+`<div class="ms-note">${note}</div>`+repair;
+  const rb=document.getElementById('repairBtn');if(rb)rb.addEventListener('click',repairStreak);
+  // review + focus + your games
+  const due=reviewDue().length,rc=document.getElementById('reviewCard');
+  rc.classList.toggle('hidden',!due&&!reviewQ.length);
+  document.getElementById('reviewN').textContent=due;
+  document.getElementById('reviewSub').textContent=due?'missed puzzles are back':reviewQ.length?'next ones in '+Math.max(1,daysBetween(todayKey(),reviewQ.map(r=>r.due).sort()[0]))+'d':'';
+  rc.classList.toggle('empty',!due);
+  const ft=focusTheme(),fc=document.getElementById('focusCard');
+  fc.classList.toggle('hidden',!ft);
+  if(ft){
+    const st=themeStats(5).find(r=>r.t===ft);
+    document.getElementById('focusName').textContent=themeLabel(ft);
+    document.getElementById('focusSub').textContent=st?Math.round(100*st.p)+'% solved · train 10':'train 10 puzzles';
+  }
+  const mine=loadJSON('tempo.mine.v1',null);
+  document.getElementById('mineSub').textContent=mine&&mine.list&&mine.list.length?mine.list.filter(p=>!p.solved).length+' to solve · @'+mine.user:'puzzles from your own blunders';
+}
+/* arcade cards: locked ones say when they open */
+function lockLine(key){const n=MODE_UNLOCK[key];return `🔒 ${Math.min(life.solved,n)}/${n} solves`;}
+
+/* =====================================================================
+   BADGES SCREEN
+   ===================================================================== */
+function openBadges(){renderBadges();showScreen('badges');}
+function renderBadges(){
+  const got=ACHIEVEMENTS.filter(a=>prog.ach[a.id]).length;
+  document.getElementById('badgeCount').textContent=got+'/'+ACHIEVEMENTS.length;
+  const lv=xpLevel();
+  document.getElementById('badgeLevel').textContent='level '+lv.level+' · '+prog.xp.toLocaleString()+' xp';
+  const grid=document.getElementById('badgeGrid');grid.innerHTML='';
+  ACHIEVEMENTS.slice().sort((a,b)=>(prog.ach[b.id]?1:0)-(prog.ach[a.id]?1:0)).forEach(a=>{
+    let have=0;try{have=a.have();}catch(e){}
+    const on=!!prog.ach[a.id],pct=Math.min(100,Math.round(100*have/a.goal));
+    const el=document.createElement('div');el.className='badge'+(on?' on':'');
+    el.innerHTML=`<span class="bg-ic">${badgeIcon(a)}</span><span class="bg-n">${esc(a.name)}</span><span class="bg-d">${esc(a.desc)}</span>`+
+      (on?`<span class="bg-s">✓ ${new Date(prog.ach[a.id]).toLocaleDateString()}</span>`:a.goal>1?`<i class="bg-bar"><b style="width:${pct}%"></b></i><span class="bg-s">${Math.min(have,a.goal).toLocaleString()}/${a.goal.toLocaleString()}</span>`:'<span class="bg-s">locked</span>');
+    grid.appendChild(el);
+  });
+}
+
+/* =====================================================================
+   GAME OVER: XP earned, level bar, and the "one more" line
+   ===================================================================== */
+function runHooks(s){
+  const lines=[];
+  // close to the record
+  const k=mode.key,hi=highScores[k];
+  if(!s.isNew&&hi&&s.score!=null&&mode.kind!=='rated'&&k!=='sprint'&&!mode.bot){
+    const gap=hi-s.score;
+    if(gap>0&&gap<=Math.max(2,Math.round(hi*0.15)))lines.push(`${gap.toLocaleString()} away from your record`);
+  }
+  // nearest unfinished mission
+  const ms=missions().list.filter(m=>!m.done).sort((a,b)=>(b.have/b.goal)-(a.have/a.goal))[0];
+  if(ms&&ms.have>0)lines.push(`mission: ${missionText(ms)} · ${ms.have}/${ms.goal}`);
+  // next level reward
+  const lv=xpLevel();
+  for(let l=lv.level+1;l<=lv.level+4;l++){const r=levelRewards(l);if(r.length){lines.push(`level ${l} unlocks ${r[0]}`);break;}}
+  // next mode
+  const nextMode=Object.keys(MODE_UNLOCK).filter(x=>!modeOpen(x)).sort((a,b)=>MODE_UNLOCK[a]-MODE_UNLOCK[b])[0];
+  if(nextMode){const left=MODE_UNLOCK[nextMode]-life.solved;if(left<=10)lines.push(`${left} more solve${left>1?'s':''} opens ${modeByKey(nextMode).name}`);}
+  return lines.slice(0,2);
+}
+function renderRunXP(){
+  const el=document.getElementById('goXp');if(!el)return;
+  const got=run.xp||0,lv=xpLevel(),before=xpLevel(prog.xp-got);
+  el.classList.toggle('hidden',!got);
+  if(!got)return;
+  const up=lv.level>before.level;
+  el.innerHTML=`<span class="gx-n">+${got} xp</span><span class="gx-l">${up?'level up · ':''}level ${lv.level}</span><i class="gx-bar"><b style="width:${Math.round(100*(up?0:before.into)/(up?lv.need:before.need))}%"></b></i>`;
+  const bar=el.querySelector('.gx-bar b');
+  setTimeout(()=>{bar.style.width=Math.round(100*lv.into/lv.need)+'%';},420);
+}
+
+/* =====================================================================
+   REMINDERS (store app only): local notifications, rescheduled on every open
+   ===================================================================== */
+const REMIND_IDS=[101,102,103,104];
+async function scheduleReminders(){
+  if(!NATIVE||!prog.notif.on)return;
+  const LN=nativePlugin('LocalNotifications');if(!LN)return;
+  try{
+    await LN.cancel({notifications:REMIND_IDS.map(id=>({id}))});
+    const now=new Date(),today=todayKey(),played=prog.days.last===today,st=prog.days.streak;
+    const at=(dayOff,h,m)=>{const d=new Date();d.setDate(d.getDate()+dayOff);d.setHours(h,m||0,0,0);return d;};
+    const list=[];
+    const hr=prog.notif.time||19;
+    if(!played){
+      const t=at(0,hr);
+      if(t>now)list.push({id:101,title:st>=2?`keep your ${st}-day streak 🔥`:'your daily puzzle is waiting',body:st>=2?'one puzzle keeps it alive':'three new missions too · tempo.',schedule:{at:t}});
+      const w=at(0,21,30);
+      if(st>=2&&w>now)list.push({id:102,title:`${st}-day streak ends at midnight`,body:prog.days.freezes?`you have ${prog.days.freezes} freeze${prog.days.freezes>1?'s':''} · or play one puzzle`:'one puzzle saves it',schedule:{at:w}});
+    }
+    list.push({id:103,title:'new daily puzzle',body:'and three new missions · tempo.',schedule:{at:at(1,hr)}});
+    list.push({id:104,title:'your rating misses you',body:'a quick 1:00 run?',schedule:{at:at(3,hr)}});
+    await LN.schedule({notifications:list});
+  }catch(e){console.warn('reminders',e);}
+}
+/* the soft ask: after the first day counted, once */
+function maybeAskReminders(){
+  if(!NATIVE||prog.notif.asked||prog.days.streak<1)return false;
+  prog.notif.asked=true;saveProg(true);
+  const el=document.getElementById('remindSheet');el.classList.remove('hidden');
+  const done=async yes=>{
+    el.classList.add('hidden');
+    if(!yes){track('reminders',{on:false});return;}
+    const LN=nativePlugin('LocalNotifications');
+    try{const r=await LN.requestPermissions();prog.notif.on=r&&r.display==='granted';}catch(e){prog.notif.on=false;}
+    saveProg(true);track('reminders',{on:prog.notif.on});
+    if(prog.notif.on){toast('reminders on · '+prog.notif.time+':00','good');scheduleReminders();}
+  };
+  document.getElementById('remindYes').onclick=()=>done(true);
+  document.getElementById('remindNo').onclick=()=>done(false);
+  return true;
+}
+
+/* =====================================================================
+   TEMPO v20 social layer, no server: a score card to share, and friend
+   challenges. A challenge link carries the exact puzzles of a run (their
+   place in the shards), so a friend plays the same ones and the scores
+   line up. Links open the web version, so nobody needs the app to answer.
+   ===================================================================== */
+const CHALLENGE_BASE='https://nezrkaan.com/tempo/';                  // where the web version lives
+const CHALLENGE_MODES=new Set(['1','3','5','10','materush','survival','ticktock','sprint','memory','tower','gauntlet','streak']);
+let pendingChallenge=null;
+
+function b64urlEncode(str){const b=btoa(unescape(encodeURIComponent(str)));return b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b64urlDecode(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)));}
+function dataVersion(){const m=data.manifest;return m?(m.built||'')+'/'+(m.unique||m.eligible||0):'';}
+/* shard refs, short: mix/1500_3.json#217 -> m1500_3:217 */
+function packRef(ref){if(!ref)return '';const [path,i]=ref.split('#');return path.replace(/^mix\//,'m').replace(/^t\//,'t').replace(/^o\//,'o').replace(/\.json$/,'')+':'+i;}
+function unpackRef(s){const [p,i]=s.split(':');if(i==null)return null;const path=p[0]==='m'?'mix/'+p.slice(1):p[0]==='t'?'t/'+p.slice(1):p[0]==='o'?'o/'+p.slice(1):null;return path?path+'.json#'+i:null;}
+
+/* what a run scored, comparably: higher is better, except sprint times */
+function runScore(s){
+  if(mode.key==='sprint')return run.final!=null?{v:Math.round(run.final*10),lower:true,text:fmtWatch(run.final)}:null;
+  if(mode.kind==='clock')return {v:run.score,text:run.score.toLocaleString()};
+  if(mode.kind==='streak')return {v:run.solved,text:String(run.solved)};
+  if(mode.kind==='arcade'&&!mode.bot)return {v:arcadeScore(),text:String(arcadeScore())};
+  return null;
+}
+function challengeable(){return mode&&CHALLENGE_MODES.has(mode.key)&&run.trace&&run.trace.length>0&&!!runScore();}
+function makeChallenge(){
+  const sc=runScore();if(!sc)return null;
+  const ch={m:mode.key,sc:sc.v,n:(settings.nick||'').slice(0,18),v:dataVersion(),s:run.seed,r:run.base,t:run.trace.map(packRef).join(','),b:run.berserk?1:0};
+  if(run.plan)ch.p=run.plan;
+  return CHALLENGE_BASE+'#c='+b64urlEncode(JSON.stringify(ch));
+}
+function parseChallenge(hash){
+  const m=/[#&]c=([A-Za-z0-9_-]+)/.exec(hash||'');if(!m)return null;
+  try{
+    const ch=JSON.parse(b64urlDecode(m[1]));
+    if(!ch||!CHALLENGE_MODES.has(ch.m)||typeof ch.sc!=='number')return null;
+    ch.refs=(ch.t||'').split(',').filter(Boolean).map(unpackRef);
+    return ch;
+  }catch(e){return null;}
+}
+/* a challenge link opened the app: offer it once the puzzles are ready */
+function offerChallenge(ch){
+  const md=modeByKey(ch.m);if(!md)return;
+  const el=document.getElementById('duelSheet');
+  const who=ch.n?esc(ch.n):'a friend';
+  const scoreTxt=ch.m==='sprint'?fmtWatch(ch.sc/10):Number(ch.sc).toLocaleString();
+  document.getElementById('duelTitle').innerHTML=`${who} challenges you`;
+  document.getElementById('duelText').innerHTML=`${esc(modeTitle(md))}${ch.b?' · berserk':''} · same puzzles · ${ch.m==='sprint'?'time to beat':'score to beat'} <b>${scoreTxt}</b>`+
+    (ch.v&&ch.v!==dataVersion()?'<br><small>your puzzle set is a different version: the puzzles may differ</small>':'');
+  el.classList.remove('hidden');
+  document.getElementById('duelNo').onclick=()=>{el.classList.add('hidden');history.replaceState(null,'',location.pathname+location.search);};
+  document.getElementById('duelYes').onclick=()=>{
+    el.classList.add('hidden');history.replaceState(null,'',location.pathname+location.search);
+    if(md.kind==='arcade'&&!modeOpen(md.key)){prog.opened[md.key]=prog.opened[md.key]||todayKey();}
+    pendingChallenge=ch;track('duel_start',{mode:ch.m});
+    startGame(md);
+  };
+}
+/* the line on the game-over card when a run answered a challenge */
+function duelResult(){
+  const ch=run.ch;if(!ch)return null;
+  const mine=runScore();if(!mine)return {text:'no score this time',win:false};
+  const theirs=ch.sc,lower=ch.m==='sprint';
+  const win=lower?mine.v<theirs:mine.v>theirs,tie=mine.v===theirs;
+  const who=ch.n||'your friend';
+  const fmt=v=>lower?fmtWatch(v/10):Number(v).toLocaleString();
+  if(win){prog.counts.duels++;saveProg(true);checkAchievements();}
+  track('duel_end',{mode:ch.m,win,tie});
+  return {win,text:tie?`tie with ${who} · ${fmt(theirs)}`:win?`you beat ${who} · ${fmt(mine.v)} vs ${fmt(theirs)}`:`${who} wins · ${fmt(theirs)} vs ${fmt(mine.v)}`};
+}
+
+/* ---------- the score card (1080x1350) ---------- */
+function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+/* a piece of the player's set, as an image the canvas can draw */
+function svgImage(markup,size){
+  let svg=markup.replace('<svg ',`<svg width="${size}" height="${size}" `);
+  if(!/xmlns=/.test(svg))svg=svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" ');
+  return new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);});
+}
+async function drawShareCard(){
+  try{await document.fonts.load("900 100px 'Big Shoulders Display'");await document.fonts.load("700 20px 'IBM Plex Mono'");}catch(e){}
+  let art=null;try{art=await svgImage(pieceMarkup('n','w'),660);}catch(e){}
+  let c=paintShareCard(art);
+  // some browsers taint a canvas that has drawn an SVG: then the card goes without the knight
+  if(art){try{c.getContext('2d').getImageData(0,0,1,1);}catch(e){c=paintShareCard(null);}}
+  return c;
+}
+function paintShareCard(art){
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;
+  const g=c.getContext('2d');
+  const bg=cssVar('--bg')||'#0E1624',acc=cssVar('--yellow')||'#F5C518',red=cssVar('--red')||'#D62828',bone=cssVar('--bone')||'#F1E8D2',soft=cssVar('--bone-soft')||'#B5A98F';
+  g.fillStyle=bg;g.fillRect(0,0,W,H);
+  g.fillStyle='rgba(255,255,255,0.05)';for(let y=12;y<H;y+=28)for(let x=12;x<W;x+=28){g.beginPath();g.arc(x,y,2.2,0,6.283);g.fill();}
+  const gl=g.createRadialGradient(140,0,0,140,0,900);gl.addColorStop(0,'rgba(245,197,24,0.16)');gl.addColorStop(1,'rgba(245,197,24,0)');g.fillStyle=gl;g.fillRect(0,0,W,H);
+  if(art){g.save();g.globalAlpha=0.12;g.drawImage(art,W-560,300,660,660);g.restore();}
+  const BSD=w=>`900 ${w}px 'Big Shoulders Display', Impact, sans-serif`,PLEX=w=>`700 ${w}px 'IBM Plex Mono', monospace`;
+  const sc=runScore()||{text:String(run.solved)};
+  g.textBaseline='alphabetic';
+  // logo
+  g.font=BSD(150);g.fillStyle=acc;g.fillText('TEMPO',84,210);
+  const lw=g.measureText('TEMPO').width;g.fillStyle=red;g.fillRect(84+lw+10,172,34,34);
+  g.font=PLEX(24);g.fillStyle=soft;g.fillText('C H E S S   P U Z Z L E   A R C A D E',88,262);
+  // mode
+  g.fillStyle=acc;g.fillRect(84,330,W-168,8);
+  g.font=PLEX(30);g.fillStyle=soft;g.fillText((mode.kind==='clock'&&mode.label?mode.label+' · ':'')+modeTitle(mode).toUpperCase()+(run.berserk?' · BERSERK':''),88,410);
+  // score
+  let size=330;g.font=BSD(size);while(g.measureText(sc.text).width>W-168&&size>120){size-=10;g.font=BSD(size);}
+  g.fillStyle=bone;g.fillText(sc.text,80,410+size*0.86);
+  const lbl=mode.key==='sprint'?'10 PUZZLES':mode.kind==='clock'?'POINTS':mode.floors?'FLOORS':mode.rounds?'TACTICS FOUND':'PUZZLES';
+  g.font=PLEX(30);g.fillStyle=soft;g.fillText(lbl,88,410+size*0.86+60);
+  // stats
+  const stats=[[String(run.solved),'SOLVED'],[String(run.best||0),'BEST STREAK'],[rating.label(),'RATING']];
+  const y0=1010;g.fillStyle='rgba(255,255,255,0.08)';g.fillRect(84,y0-80,W-168,2);
+  stats.forEach(([v,l],i)=>{const x=88+i*(W-168)/3;g.font=BSD(90);g.fillStyle=i===2?acc:bone;g.fillText(v,x,y0+40);g.font=PLEX(20);g.fillStyle=soft;g.fillText(l,x+4,y0+82);});
+  // call to action
+  g.fillStyle=acc;g.fillRect(84,H-190,W-168,110);
+  g.font=BSD(64);g.fillStyle=bg;g.fillText('BEAT ME →',118,H-112);
+  g.font=PLEX(26);g.textAlign='right';g.fillText('nezrkaan.com/tempo',W-118,H-120);g.textAlign='left';
+  return c;
+}
+async function shareRun(withChallenge){
+  if(withChallenge&&!settings.nick){const n=await askNick();if(n===null)return;}
+  const link=withChallenge&&challengeable()?makeChallenge():CHALLENGE_BASE;
+  const sc=runScore();
+  const text=withChallenge&&sc?`${modeTitle(mode)}: ${sc.text}. same puzzles, can you beat me? ${link}`:`${modeTitle(mode)} on TEMPO: ${sc?sc.text:run.solved} · ${link}`;
+  track('share',{mode:mode.key,challenge:!!withChallenge});
+  let file=null;
+  try{const c=await drawShareCard();file=await new Promise(r=>c.toBlob(b=>r(b),'image/png'));}catch(e){console.warn(e);}
+  if(await nativeShare({title:'TEMPO',text,url:link,blob:file}))return;
+  try{
+    const f=file&&new File([file],'tempo.png',{type:'image/png'});
+    if(f&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text,title:'TEMPO'});return;}
+    if(navigator.share){await navigator.share({text,title:'TEMPO',url:link});return;}
+  }catch(e){if(e&&e.name==='AbortError')return;}
+  if(await copyText(text))toast('link copied · paste it to a friend','good');
+  else window.prompt('copy this link',link);
+  if(file){const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download='tempo-score.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+}
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);return true;}catch(e){}
+  try{                                                        // older browsers and plain http
+    const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return !!ok;
+  }catch(e){return false;}
+}
+/* the name that goes on your challenges (asked once) */
+function askNick(){
+  return new Promise(res=>{
+    const el=document.getElementById('nickSheet'),inp=document.getElementById('nickInput');
+    inp.value=settings.nick||'';el.classList.remove('hidden');setTimeout(()=>inp.focus(),60);
+    const done=v=>{el.classList.add('hidden');if(v!==null){settings.nick=v.trim().slice(0,18);saveSettings();}res(v);};
+    document.getElementById('nickOk').onclick=()=>done(inp.value||'');
+    document.getElementById('nickNo').onclick=()=>done(null);
+  });
+}
+
+/* =====================================================================
+   TEMPO v20 replay: step through a puzzle's solution move by move.
+   Opens from a finished puzzle ("replay") and from the missed puzzles on
+   the game-over card. The board uses the current theme and pieces.
+   ===================================================================== */
+let rp=null;
+function openReplay(p,at){
+  if(!p)return;
+  const g=new Chess(p.fen),fens=[g.fen()],sans=[],moves=[];
+  for(const u of p.moves){
+    const m=g.move({from:u.slice(0,2),to:u.slice(2,4),promotion:u[4]||'q'});
+    if(!m)break;
+    fens.push(g.fen());sans.push(m.san);moves.push([m.from,m.to,m.color]);
+  }
+  const userSide=p.fen.split(' ')[1]==='w'?'b':'w';            // the opponent moves first
+  rp={p,fens,sans,moves,i:at==null?sans.length:Math.max(0,Math.min(at,sans.length)),flip:userSide==='b',userSide};
+  const el=document.getElementById('replay');
+  document.getElementById('rpTitle').textContent=p.game?'your game · move '+p.game.moveNo:(p.rating?'puzzle '+p.rating:'puzzle');
+  document.getElementById('rpSub').textContent=p.game?(p.game.played?'you played '+p.game.played+' · '+(p.game.opp?'vs '+p.game.opp:''):''):(p.themes||[]).filter(t=>!STAT_SKIP.has(t)).slice(0,3).map(themeLabel).join(' · ');
+  const link=document.getElementById('rpLink');
+  link.href=p.url||'#';link.classList.toggle('hidden',!p.url);
+  link.textContent=p.game?(p.game.site==='chesscom'?'game on chess.com ↗':'game on lichess ↗'):'lichess ↗';
+  el.classList.remove('hidden');
+  renderReplay();
+  track('replay',{id:p.id});
+}
+function closeReplay(){document.getElementById('replay').classList.add('hidden');rp=null;}
+function renderReplay(){
+  if(!rp)return;
+  const b=document.getElementById('rpBoard'),g=new Chess(rp.fens[rp.i]),last=rp.i>0?rp.moves[rp.i-1]:null;
+  let html='';
+  for(let r=0;r<8;r++)for(let f=0;f<8;f++){
+    const fi=rp.flip?7-f:f,ri=rp.flip?7-r:r,sq=FILES[fi]+RANKS[ri];
+    const light=(fi+ri)%2===0,pc=g.get(sq);
+    let cls='sq '+(light?'light':'dark');
+    if(last&&(sq===last[0]||sq===last[1]))cls+=(sq===last[0]?' last-from':' last-to')+(last[2]==='b'?' lb':' lw');
+    html+=`<div class="${cls}">${pc?`<span class="piece ${pc.color==='w'?'white':'black'}">${pieceMarkup(pc.type,pc.color)}</span>`:''}</div>`;
+  }
+  b.innerHTML=html;
+  const list=document.getElementById('rpMoves');
+  list.innerHTML=rp.sans.map((s,k)=>{
+    const who=rp.moves[k][2]===rp.userSide?'you':'they';
+    return `<button class="rp-mv${k===rp.i-1?' on':''}${who==='they'?' they':''}" data-k="${k+1}"><small>${k===0?'they':who==='you'?'find':'reply'}</small>${esc(s)}</button>`;
+  }).join('');
+  list.querySelectorAll('.rp-mv').forEach(x=>x.addEventListener('click',()=>{rp.i=+x.dataset.k;renderReplay();}));
+  document.getElementById('rpStep').textContent=rp.i+'/'+rp.sans.length;
+  document.getElementById('rpPrev').disabled=rp.i<=0;document.getElementById('rpFirst').disabled=rp.i<=0;
+  document.getElementById('rpNext').disabled=rp.i>=rp.sans.length;document.getElementById('rpLast').disabled=rp.i>=rp.sans.length;
+}
+function replayStep(d){if(!rp)return;rp.i=Math.max(0,Math.min(rp.sans.length,d==='first'?0:d==='last'?rp.sans.length:rp.i+d));renderReplay();try{sndMove(false);}catch(e){}}
+document.getElementById('rpFirst').addEventListener('click',()=>replayStep('first'));
+document.getElementById('rpPrev').addEventListener('click',()=>replayStep(-1));
+document.getElementById('rpNext').addEventListener('click',()=>replayStep(1));
+document.getElementById('rpLast').addEventListener('click',()=>replayStep('last'));
+document.getElementById('rpClose').addEventListener('click',closeReplay);
+document.getElementById('replay').addEventListener('click',e=>{if(e.target.id==='replay')closeReplay();});
+document.addEventListener('keydown',e=>{
+  if(!rp)return;
+  if(e.key==='ArrowLeft')replayStep(-1);else if(e.key==='ArrowRight')replayStep(1);else if(e.key==='Escape')closeReplay();
+});
+
+/* =====================================================================
+   TEMPO v20 "your games": puzzles from your own blunders.
+   Your recent Lichess or Chess.com games are downloaded straight from their
+   public APIs, a chess engine (Stockfish, loaded on demand from a CDN and
+   run on the device) finds the moves where you missed something, and each
+   one becomes a "find the better move" puzzle. No server of ours.
+   ===================================================================== */
+const ENGINE_JS='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-lite-single.js';
+const ENGINE_WASM='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-lite-single.wasm';
+const MINE_KEY='tempo.mine.v1';
+const MINE_GAMES=20,MINE_DEPTH=11,MINE_MAX=24;
+let mine=loadJSON(MINE_KEY,null);
+let mineScan=null;                                            // the scan in progress
+
+/* ---------- HTTP: native requests in the app (no CORS), fetch on the web ---------- */
+async function getText(url,headers){
+  const CH=NATIVE?nativePlugin('CapacitorHttp'):null;
+  if(CH){
+    const r=await CH.get({url,headers:headers||{},responseType:'text'});
+    if(r.status===404)throw new Error('notfound');
+    if(r.status<200||r.status>=300)throw new Error('http '+r.status);
+    return typeof r.data==='string'?r.data:JSON.stringify(r.data);
+  }
+  const r=await fetch(url,{headers:headers||{}});
+  if(r.status===404)throw new Error('notfound');
+  if(!r.ok)throw new Error('http '+r.status);
+  return r.text();
+}
+
+/* ---------- the engine: Stockfish in a web worker, one search at a time ---------- */
+function Engine(){
+  let w=null,listener=null;
+  const lines=[];
+  async function start(){
+    const src=await getText(ENGINE_JS);
+    const url=URL.createObjectURL(new Blob([src],{type:'text/javascript'}));
+    w=new Worker(url+'#'+encodeURIComponent(ENGINE_WASM));
+    w.onmessage=e=>{const s=String(e.data);if(listener)listener(s);};
+    await cmd('uci',s=>s==='uciok');
+    w.postMessage('setoption name Hash value 16');
+    await cmd('isready',s=>s==='readyok');
+  }
+  function cmd(c,done){return new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('engine timeout')),60000);listener=s=>{lines.push(s);if(done(s)){clearTimeout(t);listener=null;res(s);}};w.postMessage(c);});}
+  /* best line(s) for a position: [{move, cp}] from the side to move (mate = ±(100000-n)) */
+  async function analyse(fen,depth,multipv){
+    w.postMessage('setoption name MultiPV value '+(multipv||1));
+    w.postMessage('position fen '+fen);
+    const best={};
+    await cmd('go depth '+depth,s=>{
+      if(s.startsWith('info')&&/ pv /.test(s)){
+        const mp=+((/ multipv (\d+)/.exec(s)||[0,1])[1]),d=+((/ depth (\d+)/.exec(s)||[0,0])[1]);
+        const cp=/ score cp (-?\d+)/.exec(s),mt=/ score mate (-?\d+)/.exec(s);
+        const mv=(/ pv (\S+)/.exec(s)||[])[1];
+        if(mv&&(cp||mt))best[mp]={move:mv,cp:cp?+cp[1]:(+mt[1]>0?100000-+mt[1]:-100000-+mt[1]),depth:d,mate:mt?+mt[1]:null};
+      }
+      return s.startsWith('bestmove');
+    });
+    return Object.keys(best).sort((a,b)=>a-b).map(k=>best[k]);
+  }
+  function stop(){if(w){try{w.terminate();}catch(e){}w=null;}}
+  return {start,analyse,stop};
+}
+const capCp=v=>Math.max(-3000,Math.min(3000,v));
+
+/* ---------- games ---------- */
+async function lichessGames(user,n){
+  const q='max='+n+'&moves=true&pgnInJson=false&clocks=false&evals=false&opening=false&perfType=ultraBullet,bullet,blitz,rapid,classical';
+  const txt=await getText('https://lichess.org/api/games/user/'+encodeURIComponent(user)+'?'+q,{Accept:'application/x-ndjson'});
+  return txt.split('\n').filter(Boolean).map(l=>{try{return JSON.parse(l);}catch(e){return null;}}).filter(g=>g&&g.variant==='standard'&&g.moves).map(g=>{
+    const wn=((g.players.white.user||{}).name||'').toLowerCase(),me=user.toLowerCase();
+    const color=wn===me?'w':'b',opp=color==='w'?(g.players.black.user||{}).name:(g.players.white.user||{}).name;
+    return {id:g.id,site:'lichess',url:'https://lichess.org/'+g.id,speed:g.speed,color,opp:opp||'ai',start:g.initialFen||null,sans:g.moves.split(' ')};
+  });
+}
+async function chesscomGames(user,n){
+  const arch=JSON.parse(await getText('https://api.chess.com/pub/player/'+encodeURIComponent(user.toLowerCase())+'/games/archives'));
+  const urls=(arch.archives||[]).slice(-3).reverse();
+  const out=[];
+  for(const u of urls){
+    if(out.length>=n)break;
+    const j=JSON.parse(await getText(u));
+    (j.games||[]).filter(g=>g.rules==='chess'&&g.pgn).reverse().forEach(g=>{
+      if(out.length>=n)return;
+      const me=user.toLowerCase(),color=(g.white.username||'').toLowerCase()===me?'w':'b';
+      const ch=new Chess();if(!ch.load_pgn(g.pgn,{sloppy:true}))return;
+      const h=ch.header()||{},start=h.SetUp==='1'&&h.FEN?h.FEN:null;   // games from a set-up position
+      out.push({id:(g.url||'').split('/').pop()||String(out.length),site:'chesscom',url:g.url,speed:g.time_class,color,opp:color==='w'?g.black.username:g.white.username,start,sans:ch.history()});
+    });
+  }
+  return out;
+}
+
+/* ---------- scan: every position once; your moves that lost a lot become puzzles ---------- */
+async function scanGames(site,user,progress){
+  const games=site==='chesscom'?await chesscomGames(user,MINE_GAMES):await lichessGames(user,MINE_GAMES);
+  if(!games.length)throw new Error('nogames');
+  progress({phase:'engine',games:games.length});
+  const eng=Engine();await eng.start();
+  mineScan.engine=eng;
+  const found=[];
+  try{
+    for(let gi=0;gi<games.length;gi++){
+      if(mineScan.cancel)break;
+      const gm=games[gi],ch=new Chess(gm.start||undefined),fens=[ch.fen()],uci=[],sans=[];
+      for(const s of gm.sans){const m=ch.move(s,{sloppy:true});if(!m)break;fens.push(ch.fen());uci.push(m.from+m.to+(m.promotion||''));sans.push(m.san);}
+      const evals=[];                                         // from the side to move in fens[i]
+      for(let i=8;i<fens.length-1&&!mineScan.cancel;i++){
+        const side=fens[i].split(' ')[1];
+        if(side!==gm.color)continue;                           // only positions where you were to move
+        evals[i]=evals[i]||(await eng.analyse(fens[i],MINE_DEPTH,1))[0];
+        evals[i+1]=evals[i+1]||(await eng.analyse(fens[i+1],MINE_DEPTH,1))[0];
+        const a=evals[i],b=evals[i+1];if(!a||!b)continue;
+        const before=capCp(a.cp),after=capCp(-b.cp),loss=before-after;
+        if(a.move===uci[i])continue;
+        const missedWin=before>=150&&loss>=200&&!(before>=1000&&after>=500);
+        const blunder=before>=-100&&after<=-250;
+        if(!missedWin&&!blunder)continue;
+        // which first moves are as good as the best (within 50 cp)
+        const top=await eng.analyse(fens[i],MINE_DEPTH+1,3);
+        const best=top[0]||a,ok=top.filter(t=>capCp(t.cp)>=capCp(best.cp)-50&&capCp(t.cp)>=Math.min(150,capCp(best.cp))).map(t=>t.move);
+        if(ok.includes(uci[i]))continue;
+        found.push({id:'g:'+gm.id+':'+i,fen:fens[i-1],moves:[uci[i-1],best.move],ok,rating:null,
+          themes:best.mate!=null&&best.mate>0?['mate']:[],url:gm.site==='lichess'?gm.url+'#'+i:gm.url,
+          game:{site:gm.site,opp:gm.opp,speed:gm.speed,color:gm.color,moveNo:Math.floor(i/2)+1,played:sans[i],loss,kind:missedWin?'missed win':'blunder'},solved:false});
+      }
+      progress({phase:'scan',done:gi+1,games:games.length,found:found.length});
+    }
+  }finally{eng.stop();}
+  found.sort((x,y)=>y.game.loss-x.game.loss);
+  return {games:games.length,list:found.slice(0,MINE_MAX)};
+}
+
+/* ---------- the screen ---------- */
+function openMine(){renderMine();showScreen('mine');}
+function renderMine(){
+  const site=(mine&&mine.site)||settings.mineSite||'lichess';
+  document.querySelectorAll('#mineSite .f-chip').forEach(b=>b.classList.toggle('active',b.dataset.site===site));
+  const inp=document.getElementById('mineUser');if(!inp.value)inp.value=(mine&&mine.user)||settings.mineUser||'';
+  const st=document.getElementById('mineStatus'),list=document.getElementById('mineList'),play=document.getElementById('minePlay');
+  document.getElementById('mineScanBtn').textContent=mineScan?'cancel':'scan my last '+MINE_GAMES+' games';
+  if(mineScan){list.innerHTML='';play.classList.add('hidden');return;}
+  if(!mine||!mine.list){st.textContent='your games stay on this phone. the engine runs here too.';list.innerHTML='';play.classList.add('hidden');return;}
+  const left=mine.list.filter(p=>!p.solved).length;
+  const pl=(n,w)=>n+' '+w+(n===1?'':'s');
+  st.textContent=`@${mine.user} · ${pl(mine.games,'game')} · ${pl(mine.list.length,'moment')} found · ${new Date(mine.at).toLocaleDateString()}`;
+  play.classList.toggle('hidden',!left);
+  play.textContent=`play ${left} puzzle${left===1?'':'s'}`;
+  list.innerHTML=mine.list.map((p,k)=>`<button class="mine-row${p.solved?' done':''}" data-k="${k}"><span class="mr-a">${p.solved?'✓':esc(p.game.kind)}</span>`+
+    `<span class="mr-b">move ${p.game.moveNo} · you played <b>${esc(p.game.played)}</b></span><span class="mr-c">vs ${esc(p.game.opp||'?')} · ${esc(p.game.speed||'')}</span></button>`).join('')||
+    '<div class="empty-note">no big misses found in these games. nice.</div>';
+  list.querySelectorAll('.mine-row').forEach(b=>b.addEventListener('click',()=>{const p=mine.list[+b.dataset.k];if(p.solved)openReplay(p,0);else startMine(+b.dataset.k);}));
+}
+async function toggleScan(){
+  if(mineScan){mineScan.cancel=true;if(mineScan.engine)mineScan.engine.stop();mineScan=null;renderMine();return;}
+  const user=document.getElementById('mineUser').value.trim().replace(/^@/,'');
+  const site=document.querySelector('#mineSite .f-chip.active').dataset.site;
+  if(!/^[A-Za-z0-9_-]{2,30}$/.test(user)){toast('type your username first','bad');return;}
+  settings.mineUser=user;settings.mineSite=site;saveSettings();
+  mineScan={cancel:false};renderMine();
+  const st=document.getElementById('mineStatus'),bar=document.getElementById('mineBar');
+  bar.classList.remove('hidden');bar.firstElementChild.style.width='4%';
+  st.textContent='downloading your games...';
+  track('mine_scan',{site});
+  try{
+    const res=await scanGames(site,user,pr=>{
+      if(!mineScan)return;
+      if(pr.phase==='engine')st.textContent=`${pr.games} games · starting the engine...`;
+      else{st.textContent=`analysing ${pr.done}/${pr.games} · ${pr.found} found`;bar.firstElementChild.style.width=Math.round(100*pr.done/pr.games)+'%';}
+    });
+    if(!mineScan||mineScan.cancel)return;
+    mine={site,user,at:Date.now(),games:res.games,list:res.list};saveJSON(MINE_KEY,mine);
+    track('mine_done',{site,found:res.list.length});
+  }catch(e){
+    console.warn(e);
+    st.textContent=e.message==='notfound'?'no such player on '+(site==='chesscom'?'chess.com':'lichess'):e.message==='nogames'?'no standard games found':"couldn't reach "+(site==='chesscom'?'chess.com':'lichess')+' · check your connection';
+    mineScan=null;bar.classList.add('hidden');document.getElementById('mineScanBtn').textContent='scan my last '+MINE_GAMES+' games';return;
+  }
+  mineScan=null;bar.classList.add('hidden');renderMine();renderHome();
+}
+function startMine(k){
+  if(!mine||!mine.list)return;
+  MINE_MODE.order=k!=null?[k,...mine.list.map((_,i)=>i).filter(i=>i!==k&&!mine.list[i].solved)]:mine.list.map((_,i)=>i).filter(i=>!mine.list[i].solved);
+  startGame(MINE_MODE);
+}
+function mineSolved(id,win){
+  if(!mine||!mine.list)return;
+  const p=mine.list.find(x=>x.id===id);if(p&&win){p.solved=true;saveJSON(MINE_KEY,mine);}
+}
+document.querySelectorAll('#mineSite .f-chip').forEach(b=>b.addEventListener('click',()=>{if(mineScan)return;document.querySelectorAll('#mineSite .f-chip').forEach(x=>x.classList.toggle('active',x===b));}));
+document.getElementById('mineScanBtn').addEventListener('click',toggleScan);
+document.getElementById('minePlay').addEventListener('click',()=>startMine(null));
+document.getElementById('mineBack').addEventListener('click',()=>showScreen('home'));
+
+/* =====================================================================
+   TEMPO v20 first run: what are you here for, six placement puzzles to
+   find your level, then the modes that fit. Skippable at every step.
+   ===================================================================== */
+const GOALS={
+  bullet:{name:'faster in bullet & blitz',modes:['1','ticktock','materush']},
+  tactics:{name:'better at tactics',modes:['rated','focus','streak']},
+  fun:{name:'just for fun',modes:['survival','materush','ticktock']}
+};
+function needsOnboarding(){return !prog.onboard&&hist.length===0&&life.played===0;}
+function showOnboard(step){
+  const el=document.getElementById('onboard');el.classList.remove('hidden');
+  el.querySelectorAll('.ob-step').forEach(s=>s.classList.toggle('hidden',s.dataset.step!==step));
+}
+function hideOnboard(){document.getElementById('onboard').classList.add('hidden');setTimeout(askConsent,500);}
+function startOnboarding(){showOnboard('goal');track('onboard',{step:'goal'});}
+function chooseGoal(goal){
+  prog.onboard={done:false,goal};saveProg(true);
+  track('onboard',{step:'placement',goal});
+  showOnboard('place');
+}
+function skipOnboarding(){
+  prog.onboard=Object.assign({goal:null},prog.onboard||{},{done:true,skipped:true});saveProg(true);
+  hideOnboard();track('onboard',{step:'skip'});renderHome();
+}
+/* placement: start 1200, move by big steps that shrink */
+function placementInit(){run.place={r:1200,step:350,results:[]};}
+function placementNext(){return {theme:'mix',rating:run.place.r,exclude:runSeen};}
+function placementResult(win){
+  const pl=run.place;pl.results.push({r:pl.r,win});
+  pl.r=Math.max(600,Math.min(2600,Math.round(pl.r+(win?pl.step:-pl.step))));
+  pl.step=Math.max(90,Math.round(pl.step*0.68));
+}
+function placementEstimate(){
+  const pl=run.place;if(!pl||!pl.results.length)return 1500;
+  // the middle of the last two targets: where you started to miss
+  const tail=pl.results.slice(-2).map(x=>x.r);
+  return Math.round((tail.reduce((a,b)=>a+b,0)/tail.length+pl.r)/2/10)*10;
+}
+function finishPlacement(){
+  const est=Math.max(600,Math.min(2600,placementEstimate()));
+  if(!hist.filter(h=>h[5]!=='placement').length){
+    rating=TempoRating.create({rating:est,rd:180,vol:0.06});saveJSON('tempo.rating.v1',rating.state);
+    modeRatings={};saveJSON('tempo.mratings.v1',modeRatings);
+  }
+  const solved=run.place.results.filter(x=>x.win).length;
+  prog.onboard=Object.assign({},prog.onboard||{},{done:true,placed:est});saveProg(true);
+  track('onboard',{step:'done',placed:est,solved});
+  addXP(40,'placement');
+  document.getElementById('obLevel').textContent=est;
+  document.getElementById('obLevelSub').textContent=`${solved} of ${run.place.results.length} solved · this is your starting rating`;
+  const goal=GOALS[(prog.onboard&&prog.onboard.goal)||'fun']||GOALS.fun;
+  const box=document.getElementById('obModes');box.innerHTML='';
+  goal.modes.forEach(k=>{
+    const m=k==='focus'?FOCUS_MODE:modeByKey(k);if(!m)return;
+    const b=document.createElement('button');b.className='ob-mode';
+    b.style.setProperty('--c',m.color||'#F5C518');
+    b.innerHTML=`<b>${esc(m.kind==='clock'&&m.label?m.label+' '+m.name:k==='rated'?'rated puzzles':k==='focus'?'today\'s focus':m.name)}</b><span>${esc(m.tag||(m.kind==='clock'?'beat the clock':k==='streak'?'one mistake ends it':k==='rated'?'your level, every theme':'your weakest pattern'))}</span>`;
+    b.addEventListener('click',()=>{hideOnboard();gameOverEl.classList.add('hidden');if(k==='focus')startFocus();else startGame(m);});
+    box.appendChild(b);
+  });
+  gameActive=false;
+  showOnboard('done');
+}
+document.querySelectorAll('#onboard [data-goal]').forEach(b=>b.addEventListener('click',()=>chooseGoal(b.dataset.goal)));
+document.querySelectorAll('#onboard [data-skip]').forEach(b=>b.addEventListener('click',skipOnboarding));
+document.getElementById('obPlace').addEventListener('click',()=>{hideOnboard();startGame(PLACE_MODE);});
+document.getElementById('obHome').addEventListener('click',()=>{hideOnboard();goHome();});
+
+/* =====================================================================
+   TEMPO v20 native layer (Capacitor). In the store app: haptics, the
+   Android back button, status bar colours, a backup of everything in
+   localStorage (iOS can clear web storage when the phone is full), native
+   sharing of the score card, and the splash screen. On the web all of
+   this quietly does nothing.
+   ===================================================================== */
+const NATIVE_PLUGINS={};
+function nativePlugin(name){
+  if(!NATIVE)return null;
+  if(!(name in NATIVE_PLUGINS)){
+    try{
+      const avail=!cap.isPluginAvailable||cap.isPluginAvailable(name);   // installed in this build?
+      NATIVE_PLUGINS[name]=avail?((cap.Plugins&&cap.Plugins[name])||(cap.registerPlugin?cap.registerPlugin(name):null)):null;
+    }catch(e){NATIVE_PLUGINS[name]=null;}
+  }
+  return NATIVE_PLUGINS[name];
+}
+
+/* haptics: the web's vibrate patterns, mapped onto native taps */
+const buzzWeb=buzz;
+buzz=function(pattern){
+  if(!settings.haptics)return;
+  const H=nativePlugin('Haptics');
+  if(!H){buzzWeb(pattern);return;}
+  try{
+    const p=Array.isArray(pattern)?H.notification({type:pattern.length>3?'SUCCESS':'WARNING'})
+      :pattern>=150?H.notification({type:'ERROR'})
+      :H.impact({style:pattern>=60?'HEAVY':pattern>=30?'MEDIUM':'LIGHT'});
+    if(p&&p.catch)p.catch(()=>{});
+  }catch(e){}
+};
+
+/* light status bar icons on the dark app (Capacitor 8 SystemBars; the old StatusBar plugin as a fallback).
+   Android draws edge to edge: the page pads itself with env(safe-area-inset-*) */
+function nativeStatusBar(){
+  const SB=nativePlugin('SystemBars')||nativePlugin('StatusBar');if(!SB)return;
+  try{Promise.resolve(SB.setStyle({style:'DARK'})).catch(()=>{});}catch(e){}
+}
+
+/* backup: localStorage <-> Preferences */
+const BACKUP_KEY='tempo.backup.v1';
+function backupNow(){
+  if(HOLD_SAVES)return;                                       // never back up a wiped storage over a good backup
+  const P=nativePlugin('Preferences');if(!P)return;
+  try{
+    const dump={};
+    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('tempo'))dump[k]=localStorage.getItem(k);}
+    Promise.resolve(P.set({key:BACKUP_KEY,value:JSON.stringify({at:Date.now(),data:dump})})).catch(()=>{});
+  }catch(e){}
+}
+/* runs once at start: only while saves are on hold, i.e. the marker key is missing */
+async function restoreIfWiped(){
+  if(!HOLD_SAVES)return false;
+  let have=false;                                             // data from before this start (nothing was written since)
+  try{have=!!(localStorage.getItem('tempo.prog.v1')||localStorage.getItem('tempo.hist.v1')||localStorage.getItem('tempo.life.v1'));}catch(e){}
+  const P=nativePlugin('Preferences');
+  if(!have&&P){
+    try{
+      const r=await P.get({key:BACKUP_KEY});
+      const b=r&&r.value?JSON.parse(r.value):null;
+      if(b&&b.data&&(b.data['tempo.prog.v1']||b.data['tempo.hist.v1'])){
+        Object.keys(b.data).forEach(k=>{try{localStorage.setItem(k,b.data[k]);}catch(e){}});
+        localStorage.setItem(STORAGE_MARK,'1');localStorage.setItem('tempo.restored.v1',String(b.at||Date.now()));
+        location.reload();return true;
+      }
+    }catch(e){console.warn('restore',e);}
+  }
+  // a first start (or nothing to restore): lift the hold and save what the start set up
+  HOLD_SAVES=false;
+  try{localStorage.setItem(STORAGE_MARK,'1');}catch(e){}
+  saveProg(true);saveLife();saveSettings();
+  return false;
+}
+/* after a restore: say so once */
+function restoredNotice(){
+  try{const at=localStorage.getItem('tempo.restored.v1');if(!at)return;localStorage.removeItem('tempo.restored.v1');
+    toast('progress restored from this phone\'s backup','good');track('restored',{age_h:Math.round((Date.now()-(+at))/36e5)});}catch(e){}
+}
+
+/* share a file (the score card) through the system sheet */
+async function nativeShare({title,text,url,blob}){
+  const S=nativePlugin('Share');if(!S)return false;
+  try{
+    let files;
+    const FS=nativePlugin('Filesystem');
+    if(blob&&FS){
+      const b64=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(String(fr.result).split(',')[1]);fr.readAsDataURL(blob);});
+      const w=await FS.writeFile({path:'tempo-score.png',data:b64,directory:'CACHE'});
+      files=[w.uri];
+    }
+    await S.share({title,text,url:files?undefined:url,files,dialogTitle:'challenge a friend'});
+    return true;
+  }catch(e){return !!(e&&/cancel/i.test(String(e.message||e)));}
+}
+
+/* Android back: overlays, then screens, then leave */
+function nativeBack(){
+  const open=['replay','duelSheet','nickSheet','remindSheet','onboard','contSheet','consentSheet'].map(id=>document.getElementById(id)).find(el=>el&&!el.classList.contains('hidden'));
+  if(open){if(open.id==='replay')closeReplay();else if(open.id==='onboard')return;else open.classList.add('hidden');return;}
+  if(!gameOverEl.classList.contains('hidden')){document.getElementById('goHome').click();return;}
+  if(currentScreen==='game'){goHome();return;}
+  if(currentScreen!=='home'){showScreen('home');return;}
+  const A=nativePlugin('App');if(A)A.exitApp();
+}
+
+function nativeInit(){
+  if(!NATIVE)return;
+  document.body.classList.add('native',PLATFORM);
+  const A=nativePlugin('App');
+  if(A){
+    A.addListener('backButton',nativeBack);
+    A.addListener('appStateChange',s=>{if(!s.isActive){backupNow();scheduleReminders();}});
+    A.addListener('appUrlOpen',ev=>{const ch=parseChallenge(String(ev.url||''));if(ch&&DATA_READY)offerChallenge(ch);else if(ch)pendingLink=ch;});
+  }
+  nativeStatusBar();
+  setInterval(backupNow,60000);
+}
+let pendingLink=null;
+
+/* =====================================================================
+   TEMPO v20 boot: runs last, after every module has loaded.
+   ===================================================================== */
+/* XP for players from before v20: their history counts */
+if(!prog.backfilled){
+  if(!prog.xp&&life.solved>0)prog.xp=life.solved*12+Math.max(0,life.played-life.solved)*2;
+  prog.backfilled=true;saveProg(true);
+}
+nativeInit();
+setTimeout(()=>{const S=nativePlugin('SplashScreen');if(S)Promise.resolve(S.hide()).catch(()=>{});},6000);   // never stuck on the splash
+proFreezeRefill();
+checkModeUnlocks(true);
 applySettings();
 renderHome();
 renderProBits();
-boot().then(()=>{
-  track('app_open',{days:Math.floor((Date.now()-life.installed)/864e5),played:life.played,puzzles:data.manifest?(data.manifest.unique||data.manifest.eligible):0});
-  askConsent();
-  checkUnlocks(true);
+restoreIfWiped().then(restoring=>{if(!restoring)start();});
+function start(){boot().then(()=>{
+  track('app_open',{days:Math.floor((Date.now()-life.installed)/864e5),played:life.played,puzzles:data.manifest?(data.manifest.unique||data.manifest.eligible):0,
+    level:xpLevel().level,streak:dayState().streak,v:APP_VERSION});
+  checkUnlocks(true);checkAchievements();
   Store.init();Ads.init();
-});
+  const ch=parseChallenge(location.hash)||pendingLink;
+  if(ch&&DATA_READY){offerChallenge(ch);}
+  else if(needsOnboarding()&&DATA_READY)startOnboarding();
+  else askConsent();
+  scheduleReminders();restoredNotice();
+  const S=nativePlugin('SplashScreen');if(S)Promise.resolve(S.hide()).catch(()=>{});
+});}
+window.addEventListener('hashchange',()=>{const ch=parseChallenge(location.hash);if(ch&&DATA_READY&&!gameActive)offerChallenge(ch);});
 </script>
 </body>
 </html>
