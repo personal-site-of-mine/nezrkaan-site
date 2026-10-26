@@ -30,3 +30,9 @@
 # TEMPO puzzle data: changes rarely (a new build every few months)
 /tempo/data/*
   Cache-Control: public, max-age=86400
+
+# TEMPO chess engine (Stockfish, versioned file names): cache for a year
+/tempo/engine/*
+  Cache-Control: public, max-age=31536000, immutable
+/tempo/engine/*.wasm
+  Content-Type: application/wasm

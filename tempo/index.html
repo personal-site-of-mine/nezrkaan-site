@@ -5555,12 +5555,13 @@ document.addEventListener('keydown',e=>{
 /* =====================================================================
    TEMPO v20 "your games": puzzles from your own blunders.
    Your recent Lichess or Chess.com games are downloaded straight from their
-   public APIs, a chess engine (Stockfish, loaded on demand from a CDN and
-   run on the device) finds the moves where you missed something, and each
+   public APIs, a chess engine (Stockfish, loaded on demand from the website,
+   or a CDN as a fallback, and run on the device) finds the moves where you missed something, and each
    one becomes a "find the better move" puzzle. No server of ours.
    ===================================================================== */
 const ENGINE_JS='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-lite-single.js';
 const ENGINE_WASM='https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-lite-single.wasm';
+const ENGINE_LOCAL='engine/stockfish-19-lite-single.js';      // the same files next to the page (website): no CDN, no blob
 const MINE_KEY='tempo.mine.v1';
 const MINE_GAMES=20,MINE_DEPTH=11,MINE_MAX=24;
 let mine=loadJSON(MINE_KEY,null);
@@ -5587,24 +5588,36 @@ async function getText(url,headers){
 
 /* ---------- the engine: Stockfish in a web worker, one search at a time ---------- */
 function Engine(){
-  let w=null,listener=null;
+  let w=null,listener=null,url=null;
   const lines=[];
-  async function start(){
-    const src=await getText(ENGINE_JS);
-    /* the engine reads where its .wasm is from the worker's #hash; write it into the code instead,
-       so it does not depend on how a browser treats a #hash on a blob: URL */
-    const hook='self.location.hash.substr(1)',wasm=JSON.stringify(encodeURIComponent(ENGINE_WASM));
-    const code=src.includes(hook)?src.split(hook).join(wasm):src;
-    const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
-    w=new Worker(code===src?url+'#'+encodeURIComponent(ENGINE_WASM):url);
+  /* one way to start the engine: a worker from this script URL, answered with "uciok" */
+  async function boot(src,limit){
+    w=new Worker(src);
     w.onmessage=e=>{const s=String(e.data);if(listener)listener(s);};
-    const broke=new Promise((_,rej)=>{w.onerror=e=>{if(e&&e.preventDefault)e.preventDefault();rej(new Error('engine'));};});
+    const broke=new Promise((_,rej)=>{w.onerror=e=>{if(e&&e.preventDefault)e.preventDefault();rej(new Error('crash'));};});
     broke.catch(()=>{});                                     // an error after a good start is handled by the timeouts
-    await Promise.race([cmd('uci',s=>s==='uciok'),broke]);
+    await Promise.race([cmd('uci',s=>s==='uciok',limit),broke]);
     w.postMessage('setoption name Hash value 16');
-    await cmd('isready',s=>s==='readyok');
+    await Promise.race([cmd('isready',s=>s==='readyok',limit),broke]);
   }
-  function cmd(c,done){return new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('engine timeout')),60000);listener=s=>{lines.push(s);if(done(s)){clearTimeout(t);listener=null;res(s);}};w.postMessage(c);});}
+  async function start(){
+    let why='';
+    /* 1. the copy on our own website: a plain same-origin worker, it finds its .wasm next to it */
+    if(!NATIVE&&/^https?:$/.test(location.protocol)){
+      try{await boot(new URL(ENGINE_LOCAL,location.href).href,20000);return;}catch(e){why=e.message;stop();}
+    }
+    /* 2. the CDN: the script comes in as text and runs from a blob: URL (workers must be same-origin).
+       The engine reads where its .wasm is from the worker's #hash; write that into the code instead,
+       so it does not depend on how a browser treats a #hash on a blob: URL */
+    try{
+      const src=await getText(ENGINE_JS);
+      const hook='self.location.hash.substr(1)',wasm=JSON.stringify(encodeURIComponent(ENGINE_WASM));
+      const code=src.includes(hook)?src.split(hook).join(wasm):src;
+      url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
+      await boot(code===src?url+'#'+encodeURIComponent(ENGINE_WASM):url,30000);
+    }catch(e){stop();throw new Error(e.message==='busy'?'busy':'engine '+(why?why+'/':'')+e.message);}
+  }
+  function cmd(c,done,limit){return new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('timeout')),limit||60000);listener=s=>{lines.push(s);if(done(s)){clearTimeout(t);listener=null;res(s);}};w.postMessage(c);});}
   /* best line(s) for a position: [{move, cp}] from the side to move (mate = ±(100000-n)) */
   async function analyse(fen,depth,multipv){
     w.postMessage('setoption name MultiPV value '+(multipv||1));
@@ -5621,7 +5634,7 @@ function Engine(){
     });
     return Object.keys(best).sort((a,b)=>a-b).map(k=>best[k]);
   }
-  function stop(){if(w){try{w.terminate();}catch(e){}w=null;}}
+  function stop(){if(w){try{w.terminate();}catch(e){}w=null;}listener=null;if(url){try{URL.revokeObjectURL(url);}catch(e){}url=null;}}
   return {start,analyse,stop};
 }
 const capCp=v=>Math.max(-3000,Math.min(3000,v));
@@ -5663,7 +5676,7 @@ async function scanGames(site,user,progress){
   if(!games.length)throw new Error('nogames');
   progress({phase:'engine',games:games.length});
   const eng=Engine();
-  try{await eng.start();}catch(e){eng.stop();throw new Error(e.message==='busy'?'busy':'engine');}
+  try{await eng.start();}catch(e){eng.stop();track('engine_fail',{why:e.message});throw e;}
   mineScan.engine=eng;
   const found=[];
   try{
@@ -5723,7 +5736,8 @@ function scanError(e,site){
   if(m==='notfound')return 'no such player on '+where;
   if(m==='nogames')return 'no standard games found';
   if(m==='busy')return where+' is busy · try again in a minute';
-  if(/^engine/.test(m))return "couldn't run the engine · try again";
+  if(/^engine/.test(m))return "couldn't run the engine · try again"+(m.length>6?' ('+m.slice(7,40)+')':'');
+  if(m==='timeout')return 'the engine took too long · try again';
   if(m==='network')return "couldn't reach "+where+' · check your connection';
   if(/^http \d+$/.test(m))return where+' said no ('+m.slice(5)+') · try again later';
   return 'something went wrong · '+m.slice(0,60);
