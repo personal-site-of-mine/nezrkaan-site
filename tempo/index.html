@@ -2814,7 +2814,8 @@ function attemptUserMove(move){
   if(!made){selected=null;renderPosition();return;}
   const uci=made.from+made.to+(made.promotion||'');
   const mate=game.in_checkmate();               // like Lichess: any mating move solves it
-  const alt=!!(cur.p.ok&&step===1&&cur.p.ok.includes(uci));   // your games: equally good moves count
+  const okHere=step===1?cur.p.ok:(cur.p.okAt&&cur.p.okAt[step]);
+  const alt=!!(okHere&&okHere.includes(uci));                  // your games: equally good moves count
   if(uci===expected||mate||alt){
     if(alt&&uci!==expected){step=cur.p.moves.length-1;}
     lastMove={from:made.from,to:made.to};selected=null;step++;
@@ -5013,7 +5014,7 @@ const REVIEW_KEY='tempo.review.v1';
 const REVIEW_GAPS=[1,3,7,14];
 let reviewQ=loadJSON(REVIEW_KEY,[]);
 function saveReview(){saveJSON(REVIEW_KEY,reviewQ);}
-function slimPuzzle(p){return {id:p.id,fen:p.fen,moves:p.moves,rating:p.rating,themes:p.themes,url:p.url,ok:p.ok,src:p.src,game:p.game};}
+function slimPuzzle(p){return {id:p.id,fen:p.fen,moves:p.moves,rating:p.rating,themes:p.themes,url:p.url,ok:p.ok,okAt:p.okAt,src:p.src,game:p.game};}
 function addReview(p){
   if(!p||!p.id)return;
   const t=todayKey(),i=reviewQ.findIndex(r=>r.p.id===p.id);
@@ -5627,8 +5628,8 @@ function Engine(){
       if(s.startsWith('info')&&/ pv /.test(s)){
         const mp=+((/ multipv (\d+)/.exec(s)||[0,1])[1]),d=+((/ depth (\d+)/.exec(s)||[0,0])[1]);
         const cp=/ score cp (-?\d+)/.exec(s),mt=/ score mate (-?\d+)/.exec(s);
-        const mv=(/ pv (\S+)/.exec(s)||[])[1];
-        if(mv&&(cp||mt))best[mp]={move:mv,cp:cp?+cp[1]:(+mt[1]>0?100000-+mt[1]:-100000-+mt[1]),depth:d,mate:mt?+mt[1]:null};
+        const pv=((/ pv (.+)$/.exec(s)||[])[1]||'').trim().split(/\s+/).filter(Boolean),mv=pv[0];
+        if(mv&&(cp||mt))best[mp]={move:mv,pv,cp:cp?+cp[1]:(+mt[1]>0?100000-+mt[1]:-100000-+mt[1]),depth:d,mate:mt?+mt[1]:null};
       }
       return s.startsWith('bestmove');
     });
@@ -5670,6 +5671,42 @@ async function chesscomGames(user,n){
   return out;
 }
 
+/* ---------- after the first move: keep going while the next move is worth finding ---------- */
+function uciMove(ch,u){return ch.move({from:u.slice(0,2),to:u.slice(2,4),promotion:u.length>4?u[4]:undefined});}
+/* which moves count in a position, given the engine's top moves there (best first) */
+function goodEnough(opts){
+  const b=opts[0];
+  if(b.mate!=null&&b.mate>0)return opts.filter(t=>t.mate!=null&&t.mate>0).map(t=>t.move);   // any mate is a mate
+  const top=capCp(b.cp),margin=top>=300?Math.max(100,Math.round(top/4)):50;
+  return opts.filter(t=>capCp(t.cp)>=top-margin).map(t=>t.move);
+}
+/* The opponent's best reply, then your best move again, as long as that move matters: a mate, a capture,
+   a check, a promotion, or a move where the alternatives are clearly worse. Up to 2 moves of yours
+   (3 when it is a mating attack). Moves as good as the best count at each of your turns (okAt). */
+async function extendLine(eng,fen,first){
+  const out={moves:[],okAt:{}};
+  const pos=new Chess(fen);
+  if(!uciMove(pos,first.move))return out;
+  const yours=first.mate!=null&&first.mate>0?3:2;
+  for(let k=1;k<yours;k++){
+    if(pos.game_over()||mineScan&&mineScan.cancel)break;
+    const reply=(await eng.analyse(pos.fen(),MINE_DEPTH,1))[0];
+    const after=new Chess(pos.fen());
+    if(!reply||!uciMove(after,reply.move)||after.game_over()||after.moves().length<2)break;
+    const opts=await eng.analyse(after.fen(),MINE_DEPTH,4);
+    if(!opts.length)break;
+    const probe=new Chess(after.fen()),m=uciMove(probe,opts[0].move);if(!m)break;
+    const ok=goodEnough(opts);
+    const forcing=(opts[0].mate!=null&&opts[0].mate>0)||!!m.captured||!!m.promotion||probe.in_check();
+    const matters=opts.length>1&&ok.length<opts.length;      // some of the top moves are not good enough
+    if(!forcing&&!matters)break;                             // any calm move would do: the puzzle ends here
+    out.moves.push(reply.move,opts[0].move);out.okAt[2*k+1]=ok;
+    if(probe.in_checkmate())break;
+    pos.load(probe.fen());
+  }
+  return out;
+}
+
 /* ---------- scan: every position once; your moves that lost a lot become puzzles ---------- */
 async function scanGames(site,user,progress){
   const games=site==='chesscom'?await chesscomGames(user,MINE_GAMES):await lichessGames(user,MINE_GAMES);
@@ -5700,7 +5737,8 @@ async function scanGames(site,user,progress){
         const top=await eng.analyse(fens[i],MINE_DEPTH+1,3);
         const best=top[0]||a,ok=top.filter(t=>capCp(t.cp)>=capCp(best.cp)-50&&capCp(t.cp)>=Math.min(150,capCp(best.cp))).map(t=>t.move);
         if(ok.includes(uci[i]))continue;
-        found.push({id:'g:'+gm.id+':'+i,fen:fens[i-1],moves:[uci[i-1],best.move],ok,rating:null,
+        const more=await extendLine(eng,fens[i],best);           // the follow-up: usually one more move of yours
+        found.push({id:'g:'+gm.id+':'+i,fen:fens[i-1],moves:[uci[i-1],best.move,...more.moves],ok,okAt:more.okAt,rating:null,
           themes:best.mate!=null&&best.mate>0?['mate']:[],url:gm.site==='lichess'?gm.url+'#'+i:gm.url,
           game:{site:gm.site,opp:gm.opp,speed:gm.speed,color:gm.color,moveNo:Math.floor(i/2)+1,played:sans[i],loss,kind:missedWin?'missed win':'blunder'},solved:false});
       }
