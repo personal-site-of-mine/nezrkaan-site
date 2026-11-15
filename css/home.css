@@ -177,6 +177,7 @@ section.section:last-of-type { border-bottom: none; }
 section.section:nth-of-type(1) { animation-delay: 0.35s; }
 section.section:nth-of-type(2) { animation-delay: 0.45s; }
 section.section:nth-of-type(3) { animation-delay: 0.55s; }
+section.section:nth-of-type(4) { animation-delay: 0.65s; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero > *, section.section { animation: none; }
@@ -260,3 +261,15 @@ section.section:nth-of-type(3) { animation-delay: 0.55s; }
   .latest-card .latest-title { font-size: 1.25rem; }
   .latest-card .latest-excerpt { font-size: 0.94rem; }
 }
+
+/* ─── FOUNDER LINK IN HERO LABEL ─── */
+.hero-label a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--t);
+}
+.hero-label a:hover { color: var(--accent-purple); }
+
+/* ─── LAVIRENT CARD (reuses .latest-card) ─── */
+.lavirent-card { margin-bottom: 0; }
