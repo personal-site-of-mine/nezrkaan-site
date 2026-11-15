@@ -4,9 +4,18 @@ description: "Nezr Kaan is a student and developer. Building custom websites, in
 keywords: "Developer, student, OSINT researcher, Stripe integration, API, web development, open source intelligence, Nezr Kaan"
 ogTitle: "Nezr Kaan — Developer & OSINT Researcher"
 ogDescription: "Student building custom web applications and exploring open-source intelligence (OSINT)."
+heroFounderOf: "Lavirent"
+heroFounderUrl: "https://lavirent.com"
 heroLabel: "Student, Developer & OSINT Researcher"
 heroTitle: "Nezr Kaan."
 heroDescription: "I'm a student who loves building and investigating. I develop custom web applications by connecting complex systems like Stripe, databases, and external APIs. Alongside web development, I spend my time exploring open-source intelligence (OSINT)."
+lavirentLabel: "Lavirent"
+lavirentText: "Lavirent is a small brand I started for people in OSINT and cybersecurity. We run OSINT CTF challenges and design artwork and hoodies for the same crowd. If you solve a challenge, there is a reward waiting for you."
+lavirentKicker: "Challenge 0.1 · Opens 1 December"
+lavirentCardTitle: "Can you solve it?"
+lavirentCardText: "Photo location finding, then a longer trail that takes real digging. Make an account, pick a username, and get your name on the board."
+lavirentCardUrl: "https://lavirent.com"
+lavirentCardLink: "Visit lavirent.com →"
 whatIDoLabel: "What I Do"
 whatIDoText: "I enjoy tackling technical challenges, whether that means building a seamless web integration from scratch or digging into public data for an investigation."
 focusList:
@@ -24,9 +33,20 @@ contactText: "Whether you need help building a custom web project, integrating A
 <main>
 
   <section class="hero container">
-    <p class="hero-label">{{ heroLabel }}</p>
+    <p class="hero-label"><span>{% if heroFounderOf %}Founder of <a href="{{ heroFounderUrl }}" target="_blank" rel="noopener">{{ heroFounderOf }}</a> · {% endif %}{{ heroLabel }}</span></p>
     <h1>{{ heroTitle | safe }}</h1>
     <p class="hero-description">{{ heroDescription }}</p>
+  </section>
+
+  <section class="section container">
+    <p class="section-label">{{ lavirentLabel }}</p>
+    <p class="bio">{{ lavirentText }}</p>
+    <a href="{{ lavirentCardUrl }}" target="_blank" rel="noopener" class="latest-card lavirent-card">
+      <span class="latest-kicker">{{ lavirentKicker }}</span>
+      <h3 class="latest-title">{{ lavirentCardTitle }}</h3>
+      <p class="latest-excerpt">{{ lavirentCardText }}</p>
+      <span class="latest-read">{{ lavirentCardLink }}</span>
+    </a>
   </section>
 
   <section class="section container">

@@ -121,9 +121,18 @@ collections:
         label: "Ana Sayfa"
         name: "home"
         fields:
+          - { label: "Founder of (marka adı)", name: "heroFounderOf", widget: "string", required: false, hint: "Boş bırakırsan 'Founder of' kısmı görünmez" }
+          - { label: "Founder of linki", name: "heroFounderUrl", widget: "string", required: false }
           - { label: "Üst etiket", name: "heroLabel", widget: "string", hint: "Büyük başlığın üstündeki küçük satır" }
           - { label: "Büyük başlık", name: "heroTitle", widget: "string", hint: "Bir kelimeyi eğik yazmak için <em>kelime</em> kullanabilirsin" }
           - { label: "Giriş paragrafı", name: "heroDescription", widget: "text" }
+          - { label: "Lavirent bölüm etiketi", name: "lavirentLabel", widget: "string" }
+          - { label: "Lavirent metni", name: "lavirentText", widget: "text" }
+          - { label: "Lavirent kartı üst satır", name: "lavirentKicker", widget: "string" }
+          - { label: "Lavirent kartı başlık", name: "lavirentCardTitle", widget: "string" }
+          - { label: "Lavirent kartı metni", name: "lavirentCardText", widget: "text" }
+          - { label: "Lavirent kartı linki", name: "lavirentCardUrl", widget: "string" }
+          - { label: "Lavirent kartı link yazısı", name: "lavirentCardLink", widget: "string" }
           - { label: "'Ne yapıyorum' bölüm etiketi", name: "whatIDoLabel", widget: "string" }
           - { label: "'Ne yapıyorum' metni", name: "whatIDoText", widget: "text" }
           - label: "Uzmanlık listesi"
