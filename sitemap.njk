@@ -14,6 +14,26 @@ eleventyExcludeFromCollections: true
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>{{ site.url }}/bank-privacy/</loc>
+    <lastmod>{{ bankPrivacy.lastChecked }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>{{ site.url }}/bank-privacy/method/</loc>
+    <lastmod>{{ bankPrivacy.rubric.published }}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+{%- for b in bankPrivacy.banks %}
+  <url>
+    <loc>{{ site.url }}/bank-privacy/{{ b.slug }}/</loc>
+    <lastmod>{{ b.checked }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+{%- endfor %}
 {%- for w in collections.writeups %}
   <url>
     <loc>{{ site.url }}/writeups/{{ w.fileSlug }}</loc>

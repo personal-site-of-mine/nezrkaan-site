@@ -1,0 +1,168 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: bankPrivacy.banks
+  size: 1
+  alias: bank
+permalink: "/bank-privacy/{{ bank.slug }}/index.html"
+eleventyComputed:
+  title: "{{ bank.name }}: privacy score — Bank Privacy Index — Nezr Kaan"
+  description: "{{ bank.name }} scores {{ bank.totalShown }} out of 10 in the Bank Privacy Index. Who it shares your data with and why, its serious incidents, its website and app, and what its privacy policy says. Every fact is sourced."
+  ogTitle: "{{ bank.name }}: {{ bank.totalShown }} out of 10 for privacy"
+  ogDescription: "Who {{ bank.name }} shares your data with and why, its serious incidents, and what its policy says. Every fact is sourced."
+ogType: article
+showFieldNotesNav: true
+headerMark: "NK / Bank Privacy"
+headerHomeHref: "/bank-privacy/"
+footerBackHref: "/bank-privacy/"
+footerBackLabel: "← All banks"
+extraStyles:
+  - /css/article.css
+  - /css/bank-privacy.css
+---
+
+{%- set rubric = bankPrivacy.rubric -%}
+<main>
+  <article class="container">
+
+    <header class="article-header prose">
+      <p class="article-kicker">Bank Privacy Index · {{ bank.country }}</p>
+      <h1 class="article-title">{{ bank.name }}</h1>
+      <p class="article-dek">How {{ bank.name }} treats your data, scored out of 10.</p>
+      <div class="article-meta">
+        <span class="tag">{{ bank.totalShown }} / 10{% if bank.provisional %}, provisional{% endif %}</span>
+        <span class="sep"></span><span>{{ bank.type }}</span>
+        <span class="sep"></span><span>Checked {{ bank.checked | longDate }}</span>
+      </div>
+    </header>
+
+    <div class="body prose">
+
+      <section class="bpi-card" aria-label="Score">
+        <div class="bpi-card-top">
+          <p class="bpi-big"><span class="bpi-big-num">{{ bank.totalShown }}</span><span class="bpi-big-of">/ 10</span></p>
+          {%- if bank.provisional %}
+          <p class="bpi-provisional">Provisional. {{ bank.pendingShown }} {{ "point is" if bank.pendingMax == 1 else "points are" }} still being measured, so the final score will be between {{ bank.totalShown }} and {{ bank.totalMaxShown }}.</p>
+          {%- endif %}
+        </div>
+        <ul class="bpi-bars">
+          {%- for c in bank.criteria %}
+          <li>
+            <a href="#part-{{ c.id | lower }}" class="bpi-bars-name">{{ c.title }}</a>
+            <span class="bpi-bars-track" aria-hidden="true"><i style="width: {{ (c.points / c.max * 100) | round(1) }}%"></i>{% if c.pending %}<b style="width: {{ (c.pending / c.max * 100) | round(1) }}%"></b>{% endif %}</span>
+            <span class="bpi-bars-pts">{{ c.pointsShown }} / {{ c.maxShown }}</span>
+          </li>
+          {%- endfor %}
+        </ul>
+        <p class="bpi-scope">{{ bank.scope }} The policy checked is the {{ bank.policy.title }}, in effect from {{ bank.policy.effective | longDate }} <a class="bpi-ref" href="#source-{{ bank.policyRef }}">[{{ bank.policyRef }}]</a>.</p>
+      </section>
+
+      {%- for c in bank.criteria %}
+      <div class="part-header" id="part-{{ c.id | lower }}">
+        <span class="part-label">Part <span class="part-num">0{{ loop.index }}</span> / 0{{ bank.criteria.length }} · {{ c.pointsShown }} of {{ c.maxShown }} {{ "point" if c.max == 1 else "points" }}</span>
+        <h2>{{ c.title }}</h2>
+      </div>
+      {%- if c.intro %}<p class="bpi-intro">{{ c.intro }}</p>{% endif %}
+
+      {%- if c.checks %}
+      <ol class="bpi-checks">
+        {%- for ch in c.checks %}
+        <li class="bpi-check{% if ch.pending %} is-pending{% endif %}">
+          <div class="bpi-check-head">
+            <p class="bpi-q">{{ ch.question }}</p>
+            <span class="bpi-pts">{% if ch.pending %}…{% else %}{{ ch.pointsShown }}{% endif %} / {{ ch.maxShown }}</span>
+          </div>
+          <p class="bpi-answer">{{ ch.answer }}</p>
+          {%- if ch.finding.quote %}
+          <blockquote class="bpi-quote"><p>“{{ ch.finding.quote }}”</p></blockquote>
+          {%- endif %}
+          <p class="bpi-finding">{{ ch.finding.finding }}{% for r in ch.refs %} <a class="bpi-ref" href="#source-{{ r }}">[{{ r }}]</a>{% endfor %}</p>
+          {%- if ch.finding.where %}<p class="bpi-where">{{ ch.finding.where }}</p>{% endif %}
+        </li>
+        {%- endfor %}
+      </ol>
+      {%- endif %}
+
+      {%- if c.id == "A" %}
+        {%- for note in bank.context %}
+        <div class="keypoint bpi-context">
+          <span class="keypoint-label">Also on record</span>
+          <p>{{ note.text }}{% for r in note.refs %} <a class="bpi-ref" href="#source-{{ r }}">[{{ r }}]</a>{% endfor %}</p>
+        </div>
+        {%- endfor %}
+
+        {%- if bank.sharingCount %}
+        <h3 class="bpi-h3">Who gets your data, and why</h3>
+        <p class="bpi-intro">{{ bank.name }}'s policy names {{ bank.sharingCount }} kinds of recipients. Each one is labelled with the reason the bank itself gives. Only commercial sharing can cost points.{% for r in bank.sharingRefs %} <a class="bpi-ref" href="#source-{{ r }}">[{{ r }}]</a>{% endfor %}</p>
+
+        <div class="bpi-split" aria-hidden="true">
+          {%- for g in bank.sharingGroups %}<span class="bpi-split-part is-{{ g.key }}" style="flex: {{ g.rows.length }}"></span>{%- endfor %}
+        </div>
+        <ul class="bpi-split-key">
+          {%- for g in bank.sharingGroups %}
+          <li class="is-{{ g.key }}"><strong>{{ g.rows.length }}</strong> {{ g.label | lower }}</li>
+          {%- endfor %}
+        </ul>
+
+        {%- for g in bank.sharingGroups %}
+        <div class="bpi-share-group">
+          <p class="bpi-share-head"><span class="bpi-reason is-{{ g.key }}">{{ g.label }}</span> <span class="bpi-share-explain">{{ g.text }}</span></p>
+          <ul class="bpi-share">
+            {%- for row in g.rows %}
+            <li>
+              <p class="bpi-share-who">{{ row.who }}</p>
+              <p class="bpi-share-why">{{ row.why }}.</p>
+              <p class="bpi-share-meta"><span>Gets: {{ row.what }}.</span> <span>{% if row.basis %}Reason the bank gives: {{ row.basis }}.{% else %}The policy gives no reason for this group.{% endif %}</span>{% if row.reasons.length > 1 %} <span>Also: {% for r in row.reasons %}{% if not loop.first %}{{ rubric.reasons[r].label | lower }}{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}.</span>{% endif %}</p>
+            </li>
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endfor %}
+        {%- endif %}
+      {%- endif %}
+
+      {%- if c.incidents %}
+        {%- for inc in c.incidents %}
+        <div class="bpi-incident{% if not inc.counts %} is-old{% endif %}">
+          <p class="bpi-incident-meta"><span>{{ inc.when }}</span><span class="bpi-level is-{{ inc.level }}">{{ inc.levelLabel }}{% if inc.counts %} · −{{ inc.minus }}{% else %} · too old to count{% endif %}</span></p>
+          <h3>{{ inc.title }}</h3>
+          <p>{{ inc.summary }}{% for r in inc.refs %} <a class="bpi-ref" href="#source-{{ r }}">[{{ r }}]</a>{% endfor %}</p>
+          <p class="bpi-where">Counted as {{ inc.levelLabel | lower }}: {{ inc.levelWhy }}.{% if inc.halved %} More than five years old, so it counts half.{% endif %}</p>
+        </div>
+        {%- else %}
+        <p>No incident found that meets the rule.</p>
+        {%- endfor %}
+
+        {%- if c.notCounted.length %}
+        <details class="method-detail bpi-notcounted">
+          <summary>Also checked, not counted ({{ c.notCounted.length }})</summary>
+          <div class="method-detail-body">
+            <ul class="bpi-nc-list">
+              {%- for n in c.notCounted %}
+              <li><strong>{{ n.when }}.</strong> {{ n.what }} Not counted: {{ n.why | lower }}.{% for r in n.refs %} <a class="bpi-ref" href="#source-{{ r }}">[{{ r }}]</a>{% endfor %}</li>
+              {%- endfor %}
+            </ul>
+          </div>
+        </details>
+        {%- endif %}
+      {%- endif %}
+      {%- endfor %}
+
+      <div class="part-header" id="sources">
+        <span class="part-label">{{ bank.sources.length }} sources</span>
+        <h2>Where every fact comes from</h2>
+      </div>
+      <ol class="references bpi-sources">
+        {%- for s in bank.sources %}
+        <li id="source-{{ loop.index }}"><em>{{ s.title }}</em>. {{ s.publisher }}{% if s.dateLabel %}, {{ s.dateLabel }}{% elif s.date %}, {{ s.date | looseDate }}{% endif %}. <a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.url | domain }}</a>{% if s.copy %} · <a href="{{ s.copy }}" target="_blank" rel="noopener">fixed copy (PDF)</a>{% endif %}</li>
+        {%- endfor %}
+      </ol>
+
+      <div class="keypoint">
+        <span class="keypoint-label">About this score</span>
+        <p>The score comes from a fixed method, the same for every bank, and every point is explained above. It is not advice on which bank to use. <a href="/bank-privacy/method/">Read the method</a>. Spotted a mistake? Email <a href="mailto:nezrkaan.business@gmail.com">nezrkaan.business@gmail.com</a> with a source and it will be fixed.</p>
+      </div>
+
+    </div>
+  </article>
+</main>

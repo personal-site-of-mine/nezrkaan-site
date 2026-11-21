@@ -1,0 +1,176 @@
+---
+layout: layouts/base.njk
+permalink: /bank-privacy/index.html
+title: "Bank Privacy Index — Nezr Kaan"
+description: "How the most-used banks in the UK, the US and Europe treat your data, scored out of 10 from their own privacy policies, their serious incidents and what their websites and apps do."
+ogTitle: "Bank Privacy Index"
+ogDescription: "Your bank knows what you spend your money on. The most-used banks in the UK, the US and Europe, scored out of 10 on how they treat your data."
+keywords: "bank privacy, privacy policy, data sharing, data breach, banks, UK banks, US banks, European banks, privacy index"
+showFieldNotesNav: true
+headerMark: "NK / Bank Privacy"
+headerHomeHref: "/"
+extraStyles:
+  - /css/archive.css
+  - /css/bank-privacy.css
+---
+
+{%- set criteria = bankPrivacy.rubric.criteria -%}
+<main>
+
+  <section class="hero bpi-hero container">
+    <p class="hero-label">Bank Privacy Index</p>
+    <h1>How banks treat your data</h1>
+    <p class="hero-description">Online, companies track what you do to guess what you'll buy. Your bank doesn't have to guess: it knows what you spend your money on, where and when. That makes it some of the most important data about you.</p>
+    <p class="hero-description">Here the most-used banks in the UK, the US and Europe are scored out of 10 on how they treat it. Each score comes from the bank's own privacy policy, its serious incidents in the last ten years, and what its website and app do.</p>
+
+    <div class="filters bpi-controls">
+      <div class="bpi-control">
+        <span class="filters-label" id="showLabel">Show</span>
+        <div class="filter-chips" id="regionChips" role="group" aria-labelledby="showLabel">
+          <button class="chip active" data-region="all" type="button" aria-pressed="true">All <span class="count">{{ bankPrivacy.total }}</span></button>
+          {%- for r in bankPrivacy.regions %}
+          <button class="chip" data-region="{{ r.name }}" type="button" aria-pressed="false">{{ r.name }} <span class="count">{{ r.count }}</span></button>
+          {%- endfor %}
+        </div>
+      </div>
+      <div class="bpi-control">
+        <label class="filters-label" for="sortBy">Sort by</label>
+        <select class="bpi-select" id="sortBy">
+          <option value="total">Score, best first</option>
+          <option value="total-asc">Score, worst first</option>
+          <option value="name">Name, A to Z</option>
+          {%- for c in criteria %}
+          <option value="{{ c.id }}">{{ c.short }}</option>
+          {%- endfor %}
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="bpi container">
+
+    <p class="bpi-key-line">
+      The 10 points:
+      {%- for c in criteria %} {{ c.keyName }} <b>{{ c.maxShown }}</b>{% if not loop.last %},{% else %}.{% endif %}{% endfor %}
+      <a href="/bank-privacy/method/">How the score works</a>
+    </p>
+
+    <div class="bpi-table-wrap">
+      <table class="bpi-table" id="bankTable">
+        <thead>
+          <tr>
+            <th class="bpi-rank" scope="col"><span class="visually-hidden">Rank</span>#</th>
+            <th class="bpi-bank" scope="col" data-sort="name"><button type="button">Bank</button></th>
+            <th class="bpi-score" scope="col" data-sort="total" aria-sort="descending"><button type="button">Score</button></th>
+            {%- for c in criteria %}
+            <th class="bpi-part" scope="col" data-sort="{{ c.id }}" title="{{ c.title }}"><button type="button">{{ c.short }} <span class="bpi-of">/{{ c.maxShown }}</span></button></th>
+            {%- endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for b in bankPrivacy.banks %}
+          <tr class="bpi-row" data-region="{{ b.region }}" data-name="{{ b.name | lower }}" data-total="{{ b.total }}"{% for c in b.criteria %} data-{{ c.id | lower }}="{{ c.points }}"{% endfor %}>
+            <td class="bpi-rank">{{ b.rank }}</td>
+            <td class="bpi-bank">
+              <a href="/bank-privacy/{{ b.slug }}/">{{ b.name }}</a>
+              <span class="bpi-sub">{{ b.region }} · {{ b.type }}</span>
+            </td>
+            <td class="bpi-score">
+              <span class="bpi-num">{{ b.totalShown }}</span>
+              <span class="bpi-bar" aria-hidden="true"><i style="width: {{ b.total * 10 }}%"></i></span>
+              {%- if b.provisional %}<span class="bpi-flag">Provisional</span>{% endif %}
+            </td>
+            {%- for c in b.criteria %}
+            <td class="bpi-part">{{ c.pointsShown }}{% if c.pending %}<span class="bpi-star" title="Part of this is still being measured">*</span>{% endif %}</td>
+            {%- endfor %}
+          </tr>
+          {%- endfor %}
+          {%- for p in bankPrivacy.planned %}
+          <tr class="bpi-row is-planned" data-region="{{ p.region }}" data-name="{{ p.name | lower }}">
+            <td class="bpi-rank">·</td>
+            <td class="bpi-bank">
+              <span class="bpi-name">{{ p.name }}</span>
+              <span class="bpi-sub">{{ p.region }} · {{ p.type }}</span>
+            </td>
+            <td class="bpi-score" colspan="{{ criteria.length + 1 }}"><span class="bpi-soon">Being scored</span></td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bpi-notes">
+      <p><span class="bpi-star">*</span> Part of this score is still being measured. A provisional score can only go up or stay the same when the rest is done.</p>
+      <p>The score comes from a fixed method, not from opinion. Sharing your data because the law requires it costs a bank nothing. Only sharing for commercial reasons does. <a href="/bank-privacy/method/">Read the method.</a></p>
+      <p>Last checked {{ bankPrivacy.lastChecked | longDate }}. Spotted a mistake? Email <a href="mailto:nezrkaan.business@gmail.com">nezrkaan.business@gmail.com</a> with a source and it will be fixed.</p>
+    </div>
+
+  </section>
+</main>
+
+<script>
+(function () {
+  var tbody = document.querySelector('#bankTable tbody');
+  var chips = document.querySelectorAll('#regionChips .chip');
+  var select = document.getElementById('sortBy');
+  var heads = document.querySelectorAll('#bankTable th[data-sort]');
+  var region = 'all';
+  var sort = 'total';
+
+  function num(row, key) { return parseFloat(row.getAttribute('data-' + key.toLowerCase())); }
+  function name(row) { return row.getAttribute('data-name'); }
+
+  function compare(a, b) {
+    if (sort === 'name') return name(a).localeCompare(name(b));
+    if (sort === 'total-asc') return num(a, 'total') - num(b, 'total') || name(a).localeCompare(name(b));
+    return num(b, sort) - num(a, sort) || num(b, 'total') - num(a, 'total') || name(a).localeCompare(name(b));
+  }
+
+  function update() {
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    var scored = rows.filter(function (r) { return !r.classList.contains('is-planned'); });
+    var planned = rows.filter(function (r) { return r.classList.contains('is-planned'); });
+
+    // Order: scored banks by the chosen sort, then the banks still being scored.
+    scored.sort(compare).concat(planned).forEach(function (r) { tbody.appendChild(r); });
+
+    // Show one region. The rank is always by total score among the banks shown.
+    rows.forEach(function (r) { r.hidden = !(region === 'all' || r.getAttribute('data-region') === region); });
+    var shown = scored.filter(function (r) { return !r.hidden; });
+    shown.forEach(function (r) {
+      var total = num(r, 'total');
+      var higher = shown.filter(function (o) { return num(o, 'total') > total; }).length;
+      r.querySelector('.bpi-rank').textContent = higher + 1;
+    });
+
+    heads.forEach(function (th) {
+      var key = th.getAttribute('data-sort');
+      var on = key === sort || (key === 'total' && sort === 'total-asc');
+      if (on) th.setAttribute('aria-sort', sort === 'name' || sort === 'total-asc' ? 'ascending' : 'descending');
+      else th.removeAttribute('aria-sort');
+    });
+    select.value = sort;
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      chip.classList.add('active');
+      chip.setAttribute('aria-pressed', 'true');
+      region = chip.getAttribute('data-region');
+      update();
+    });
+  });
+
+  select.addEventListener('change', function () { sort = select.value; update(); });
+
+  heads.forEach(function (th) {
+    th.querySelector('button').addEventListener('click', function () {
+      var key = th.getAttribute('data-sort');
+      // Clicking Score again flips between best first and worst first.
+      sort = key === 'total' && sort === 'total' ? 'total-asc' : key;
+      update();
+    });
+  });
+})();
+</script>

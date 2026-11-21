@@ -1,0 +1,121 @@
+---
+layout: layouts/base.njk
+permalink: /bank-privacy/method/index.html
+title: "How the score works — Bank Privacy Index — Nezr Kaan"
+description: "The method behind the Bank Privacy Index: five parts, ten points, fixed answers for every check, and a source for every fact."
+ogTitle: "How the Bank Privacy Index score works"
+ogDescription: "Five parts, ten points, the same rules for every bank, and a source for every fact."
+showFieldNotesNav: true
+headerMark: "NK / Bank Privacy"
+headerHomeHref: "/bank-privacy/"
+footerBackHref: "/bank-privacy/"
+footerBackLabel: "← All banks"
+extraStyles:
+  - /css/article.css
+  - /css/bank-privacy.css
+---
+
+{%- set rubric = bankPrivacy.rubric -%}
+<main>
+  <article class="container">
+
+    <header class="article-header prose">
+      <p class="article-kicker">Bank Privacy Index · Method</p>
+      <h1 class="article-title">How the score works</h1>
+      <p class="article-dek">Five parts, ten points, the same rules for every bank.</p>
+      <div class="article-meta">
+        <span class="tag">Version {{ rubric.version }}</span>
+        <span class="sep"></span><span>Published {{ rubric.published | longDate }}</span>
+      </div>
+    </header>
+
+    <div class="body prose">
+
+      <p class="lead">Every bank is checked against the same list of questions. Each question has a short list of possible answers, and each answer is worth a fixed number of points, set before any bank was scored. The points add up to a score out of 10. Every answer on a bank's page links to the source it came from.</p>
+
+      <ul class="bpi-key is-method">
+        {%- for c in rubric.criteria %}
+        <li><span class="bpi-key-pts">{{ c.maxShown }}</span><span class="bpi-key-name"><a href="#part-{{ c.id | lower }}">{{ c.title }}</a></span></li>
+        {%- endfor %}
+      </ul>
+
+      <div class="part-header" id="reasons">
+        <span class="part-label">Before the parts</span>
+        <h2>Required by law, or commercial?</h2>
+      </div>
+      <p>Banks have to share some of your data. The law tells them to report suspected fraud, answer the police and the tax office, and check who you are before you open an account. A bank that does this is following the law, so it loses nothing for it.</p>
+      <p>Other sharing is the bank's own business choice, such as marketing, advertising and partner deals. Only this sharing can cost points. Each bank's page sorts everyone it shares with into these four groups:</p>
+      <ul class="bpi-reason-list">
+        {%- for key, r in rubric.reasons %}
+        <li><span class="bpi-reason is-{{ key }}">{{ r.label }}</span> {{ r.text }}</li>
+        {%- endfor %}
+      </ul>
+      <p>The group comes from the reason the bank itself gives. UK and EU banks must state a legal basis for each use of your data. A "legal obligation" means required by law, a "contract" means needed to run your account, and "consent" means only if you agree. When a bank uses "legitimate interests", the group depends on what it is for: stopping fraud counts as running your account, while marketing and advertising count as commercial. US banks publish a standard table instead, and its rows map onto the same four groups.</p>
+
+      {%- for c in rubric.criteria %}
+      <div class="part-header" id="part-{{ c.id | lower }}">
+        <span class="part-label">Part <span class="part-num">0{{ loop.index }}</span> / 0{{ rubric.criteria.length }} · up to {{ c.maxShown }} points</span>
+        <h2>{{ c.title }}</h2>
+      </div>
+      {%- if c.intro %}<p>{{ c.intro }}</p>{% endif %}
+
+      {%- if c.checks.length %}
+      <div class="table-wrap">
+        <table class="data-table bpi-method-table">
+          <thead><tr><th>Check</th><th>Answers and points</th></tr></thead>
+          <tbody>
+            {%- for ch in c.checks %}
+            <tr>
+              <td>{{ ch.question }} <span class="bpi-of">(up to {{ ch.maxShown }})</span></td>
+              <td><ul class="bpi-answers">{% for row in ch.rows %}<li><span>{{ row.label }}</span><b>{{ row.points }}</b></li>{% endfor %}</ul></td>
+            </tr>
+            {%- endfor %}
+          </tbody>
+        </table>
+      </div>
+      {%- endif %}
+
+      {%- if c.levels %}
+      <p>A bank starts this part with {{ c.maxShown }} points and loses points for each incident in the {{ c.incidents.windowYears }} years before the date it was checked. Incidents more than {{ c.incidents.fullWeightYears }} years old count half. The score for this part can't go below zero.</p>
+      <div class="table-wrap">
+        <table class="data-table bpi-method-table">
+          <thead><tr><th>Level</th><th>Rule</th><th>Points lost</th></tr></thead>
+          <tbody>
+            {%- for l in c.levels %}
+            <tr><td>{{ l.label }}</td><td>{{ l.rule }}.</td><td>{{ l.pointsShown }}</td></tr>
+            {%- endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p>The level depends only on how many people were affected, the size of the fine and what kind of data was exposed. It does not depend on how well the bank handled it, because that can't be measured the same way for every bank.</p>
+      {%- endif %}
+      {%- endfor %}
+
+      <div class="part-header" id="measuring">
+        <span class="part-label">Measuring</span>
+        <h2>How websites and apps are checked</h2>
+      </div>
+      <p>For the website, we open the bank's home page and its login page in a normal browser in the UK and don't touch the cookie banner. We then list every server the pages contact. A server counts as a tracker if <a href="https://github.com/disconnectme/disconnect-tracking-protection" target="_blank" rel="noopener">Disconnect's public list</a> puts it under advertising, analytics, social or fingerprinting. Firefox uses the same list to block trackers. Each company counts once, however many of its servers the pages contact. The bank's own servers and the cookie banner's provider don't count. Tools that only report crashes and errors, like Sentry, are listed on the bank's page but don't count either.</p>
+      <p>For the app, we use the newest report from <a href="https://reports.exodus-privacy.eu.org/" target="_blank" rel="noopener">Exodus Privacy</a> on the bank's Android app. Exodus looks for tracking tools inside the app's code. That shows a tool is in the app, not how much it is used. Tools that only report crashes and errors are listed on the bank's page but don't count.</p>
+
+      <div class="part-header" id="scope">
+        <span class="part-label">Scope</span>
+        <h2>What each score covers</h2>
+      </div>
+      <ul>
+        <li>One privacy policy per bank: the one for personal accounts in the bank's home country or region. The bank's page names the policy and its date.</li>
+        <li>Incidents count wherever they happened in the bank's group, if they involve the same brand.</li>
+        <li>The banks are the most-used ones in the UK, the US and Europe, picked by number of customers and size.</li>
+        <li>The score is about privacy only. It says nothing about interest rates, fees, customer service or whether your money is safe, and it is not advice on which bank to use.</li>
+      </ul>
+
+      <div class="part-header" id="corrections">
+        <span class="part-label">Updates</span>
+        <h2>Updates and corrections</h2>
+      </div>
+      <p>Each bank's page shows the date it was checked. A bank is checked again when it changes its privacy policy or a new incident is reported. If a rule in this method changes, the version number goes up and every bank is scored again under the new rule.</p>
+      <p>Spotted a mistake? Email <a href="mailto:nezrkaan.business@gmail.com">nezrkaan.business@gmail.com</a> with a source and it will be fixed. Banks can use the same address.</p>
+
+    </div>
+  </article>
+</main>

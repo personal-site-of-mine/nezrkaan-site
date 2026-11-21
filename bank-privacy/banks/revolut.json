@@ -1,0 +1,419 @@
+{
+  "slug": "revolut",
+  "name": "Revolut",
+  "region": "UK",
+  "country": "United Kingdom",
+  "type": "Digital bank",
+  "checked": "2026-11-21",
+  "scope": "Revolut's privacy notice for personal accounts in the UK. Incidents count wherever they happened in the Revolut group.",
+  "policy": {
+    "title": "Customer Privacy Notice",
+    "effective": "2026-03-17",
+    "source": "notice"
+  },
+  "checks": {
+    "A1": {
+      "result": "consent",
+      "finding": "The notice says Revolut won't pass your details to companies outside the Revolut group for their own marketing without your permission.",
+      "where": "Section 8",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A2": {
+      "result": "optout",
+      "finding": "Revolut uses what you buy and how you use the app to personalise its marketing. In RevPoints, its rewards scheme, it ranks offers from other brands using your transaction history, and the reason it gives is its own legitimate interests. You can switch off Personalised Rewards in the app. You then get offers based on broad groups of customers instead.",
+      "where": "Sections 5 and 8; RevPoints Privacy Notice",
+      "sources": [
+        "notice",
+        "revpoints"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "Revolut sends your name, email address and app activity to social media and advertising companies, scrambled (hashed) first, so they can show its ads to you and to people like you. The reason it gives is its legitimate interests, so this happens unless you object.",
+      "where": "Section 11",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A4": {
+      "result": "never",
+      "quote": "We will never sell your personal data.",
+      "finding": "The promise is in the summary at the start of the notice.",
+      "where": "At a glance",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A5": {
+      "result": "yes",
+      "finding": "The notice says Revolut may share anonymous statistics with other companies. Shops on Revolut Shops and RevPoints also get figures on how their ads and offers did, which the notice says don't identify you. It doesn't say whether Revolut sells anonymous data.",
+      "where": "Sections 5 and 11",
+      "sources": [
+        "notice"
+      ]
+    },
+    "C1": {
+      "count": 1,
+      "finding": "Before you answer the cookie banner, the home page sends a page view to Google's advertising server, pagead2.googlesyndication.com. The message is marked as sent without your consent to cookies. Google Analytics page views also go to growth-performance.revolut.com, which is a Revolut server, so they don't count here. The login page loads Sentry, which reports errors, and hCaptcha, a bot check. Neither counts.",
+      "where": "Home page and login page, checked 21 November 2026",
+      "sources": [
+        "webcheck",
+        "disconnect"
+      ]
+    },
+    "C2": {
+      "count": 2,
+      "finding": "Exodus Privacy found three tracking tools in version 10.129.1 of the Android app: AppsFlyer and Google Firebase Analytics, which count, and Google Crashlytics, which reports crashes and doesn't count.",
+      "where": "Exodus report of 12 May 2026, the newest we could find",
+      "sources": [
+        "exodus"
+      ]
+    },
+    "C3": {
+      "result": "yes",
+      "finding": "The first screen of the banner has two buttons of the same size, \"Accept all\" and \"Reject non-essential cookies\". Each takes one click.",
+      "where": "Home page, checked 21 November 2026",
+      "sources": [
+        "webcheck"
+      ]
+    },
+    "C4": {
+      "result": "strong",
+      "finding": "To log in to the web app you enter your phone number and passcode, then approve the login in the mobile app. A code by email or text message also works, but Revolut then limits what you can do in the account.",
+      "sources": [
+        "webapp"
+      ]
+    },
+    "D1": {
+      "result": "specific",
+      "finding": "In the UK, Revolut says it keeps your data for no more than seven years after you stop being a customer. Fraud prevention agencies may keep it for up to six years.",
+      "where": "Section 14",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "It lists the types of companies it shares with, and names some of them: the credit reference agencies TransUnion, Equifax and Experian, and the card networks Visa and Mastercard.",
+      "where": "Sections 7 and 11",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D3": {
+      "result": "both",
+      "finding": "It lists the decisions it makes automatically, including credit decisions, checks when you open an account, fraud checks and closing accounts. It says you can ask for a person to review a decision and challenge it.",
+      "where": "Sections 6 and 9",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D4": {
+      "result": "yes",
+      "finding": "It says your data is used to develop, train and test Revolut's own models, and that some decisions are made by AI with no person involved at first.",
+      "where": "Sections 5 and 6",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E1": {
+      "result": "online",
+      "finding": "Where the law allows, marketing is on until you switch it off. You can switch it off in the app's privacy settings, with the unsubscribe link in an email, or by emailing Revolut.",
+      "where": "Sections 8 and 9",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E2": {
+      "result": "offline",
+      "finding": "You ask for a copy of your data by emailing Revolut's data protection officer. That is the way the notice gives. Revolut has up to one month to answer.",
+      "where": "Sections 9 and 10",
+      "sources": [
+        "notice"
+      ]
+    }
+  },
+  "context": [
+    {
+      "text": "In April 2024, Revolut's head of growth told the Financial Times that the company planned to earn money from targeted advertising and had held talks about selling advertising space in its app.",
+      "sources": [
+        "cityam2024"
+      ]
+    }
+  ],
+  "sharing": [
+    {
+      "who": "Fraud prevention agencies",
+      "what": "Identity details and records of suspected fraud",
+      "why": "Identity checks and stopping fraud and money laundering",
+      "reasons": [
+        "legal"
+      ],
+      "basis": "Legal obligations, public interest and Revolut's legitimate interests"
+    },
+    {
+      "who": "Police, courts, tax offices, regulators and emergency services",
+      "what": "Whatever the request covers",
+      "why": "When the law requires it, for investigations, and in emergencies",
+      "reasons": [
+        "legal"
+      ],
+      "basis": "Legal obligations, legitimate interests and vital interests"
+    },
+    {
+      "who": "Credit reference agencies: TransUnion, Equifax and Experian",
+      "what": "Identity, account, credit and repayment details",
+      "why": "Checking who you are and what you can afford, credit decisions, collecting debts",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": "Contract, legal obligations, legitimate interests, and consent where the law asks for it"
+    },
+    {
+      "who": "People you pay, and people who pay you",
+      "what": "Your name and IBAN",
+      "why": "To make the payment",
+      "reasons": [
+        "account"
+      ],
+      "basis": "Contract and legal obligations"
+    },
+    {
+      "who": "Suppliers: IT, AI, payment networks such as Visa and Mastercard, card making, delivery, ID checks, analytics, customer messages and debt collection",
+      "what": "What each supplier needs for its job",
+      "why": "To provide the service",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Other Revolut companies",
+      "what": "Not listed",
+      "why": "Running the service, fraud checks, building products and marketing",
+      "reasons": [
+        "commercial",
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Partners: insurers for plan benefits, reward and trial partners",
+      "what": "What the benefit or offer needs",
+      "why": "Plan benefits, rewards, commissions and trials",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Shops on Revolut Shops and RevPoints",
+      "what": "Figures on how their ads and offers did, which the notice says don't identify you",
+      "why": "Reporting to the shops that pay for offers",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Social media and advertising companies",
+      "what": "Your name, email address and app activity, hashed",
+      "why": "Showing Revolut's ads to you and to people like you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Legitimate interests, which the notice says are making Revolut's advertising work as well as possible"
+    },
+    {
+      "who": "Buyers of part of Revolut's business, or of its loans",
+      "what": "The customer records that go with it",
+      "why": "If Revolut sells a business or a group of loans",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Other banks and apps you connect",
+      "what": "What you agree to share",
+      "why": "Open banking, when you ask for it",
+      "reasons": [
+        "choice"
+      ],
+      "basis": "Your request"
+    },
+    {
+      "who": "Other Revolut users",
+      "what": "Your basic profile",
+      "why": "When you both sync your contacts",
+      "reasons": [
+        "choice"
+      ],
+      "basis": "Legitimate interests and consent"
+    }
+  ],
+  "sharingSources": [
+    "notice"
+  ],
+  "incidents": [
+    {
+      "date": "2022-09-11",
+      "when": "September 2022",
+      "title": "Attacker got into a customer database",
+      "summary": "An attacker got into a Revolut database by social engineering, which means tricking people into giving access. Revolut told Lithuania's data protection authority that 50,150 customers were affected, 20,687 of them in the European Economic Area. Depending on the customer, the data included names, home and email addresses, phone numbers, partial card details and account data. Revolut said no card details, PINs or passwords were accessed.",
+      "people": 50150,
+      "level": 2,
+      "levelWhy": "More than 10,000 people affected",
+      "sources": [
+        "tc2022",
+        "which2022"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "when": "September 2026",
+      "title": "Customer data sent to criminals after fake legal requests",
+      "summary": "Criminals used a hacked government email account to send Revolut fake legal requests for customer data. Revolut answered them over several months. About 680 customers were affected. The data sent included passports, driving licences, the selfies customers took to open their accounts, account statements and transaction histories. Revolut said its systems and customers' money were not affected. A group claiming to be behind it then demanded a ransom of 3 million dollars and threatened to sell the data. The UK's Information Commissioner's Office said it was looking into Revolut's breach report.",
+      "people": 680,
+      "level": 2,
+      "levelWhy": "Copies of ID documents and full account records exposed",
+      "sources": [
+        "tc2026",
+        "irish2026",
+        "ab2026",
+        "mlex2026"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2025-04-08",
+      "when": "April 2025",
+      "what": "The Bank of Lithuania fined Revolut 3.5 million euros over weak checks against money laundering.",
+      "why": "About money laundering controls, not privacy",
+      "sources": [
+        "sifted2025"
+      ]
+    },
+    {
+      "date": "2026-04-07",
+      "when": "April 2026",
+      "what": "Italy's competition authority fined Revolut companies a total of more than 11 million euros for unfair commercial practices.",
+      "why": "About consumer practices, not privacy",
+      "sources": [
+        "agcm2026"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "notice",
+      "publisher": "Revolut",
+      "title": "Customer Privacy Notice",
+      "date": "2026-03-17",
+      "dateLabel": "effective 17 March 2026",
+      "url": "https://www.revolut.com/legal/privacy/",
+      "copy": "https://cdn.revolut.com/terms_and_conditions/pdf/customer_privacy_notice_9b445a83_0.4.0_1774268746_en.pdf"
+    },
+    {
+      "id": "revpoints",
+      "publisher": "Revolut",
+      "title": "RevPoints Privacy Notice",
+      "date": "2026-09-30",
+      "dateLabel": "last updated 30 September 2026",
+      "url": "https://www.revolut.com/en-FR/legal/revpoints-privacy-notice/"
+    },
+    {
+      "id": "webapp",
+      "publisher": "Revolut Help",
+      "title": "Accessing the Retail Web App",
+      "url": "https://help.revolut.com/help/more/revolut-web-app/accessing-the-retail-web-app/"
+    },
+    {
+      "id": "webcheck",
+      "publisher": "Bank Privacy Index",
+      "title": "Our check of the Revolut home page and login page in a desktop browser",
+      "date": "2026-11-21",
+      "url": "https://www.revolut.com/en-GB/"
+    },
+    {
+      "id": "disconnect",
+      "publisher": "Disconnect",
+      "title": "Disconnect tracking protection list",
+      "url": "https://github.com/disconnectme/disconnect-tracking-protection"
+    },
+    {
+      "id": "exodus",
+      "publisher": "Exodus Privacy",
+      "title": "Report for com.revolut.revolut 10.129.1",
+      "date": "2026-05-12",
+      "url": "https://reports.exodus-privacy.eu.org/en/reports/739067/"
+    },
+    {
+      "id": "tc2022",
+      "publisher": "TechCrunch",
+      "title": "Revolut confirms cyberattack exposed personal data of tens of thousands of users",
+      "date": "2022-09-20",
+      "url": "https://techcrunch.com/2022/09/20/revolut-cyberattack-thousands-exposed"
+    },
+    {
+      "id": "which2022",
+      "publisher": "Which?",
+      "title": "Revolut data hack: what you need to know",
+      "date": "2022-09",
+      "url": "https://www.which.co.uk/news/article/revolut-data-hack-what-you-need-to-know-aARKk0q9jyPG"
+    },
+    {
+      "id": "tc2026",
+      "publisher": "TechCrunch",
+      "title": "Revolut confirms customer data breach through fake government requests",
+      "date": "2026-09-12",
+      "url": "https://techcrunch.com/2026/09/12/revolut-confirms-customer-data-breach-through-fake-government-requests/"
+    },
+    {
+      "id": "irish2026",
+      "publisher": "The Irish Times",
+      "title": "Hackers demand Revolut hand over $3m ransom amid data breach",
+      "date": "2026-09-17",
+      "url": "https://www.irishtimes.com/business/2026/09/17/hackers-demand-revolut-hand-over-3m-ransom-amid-data-breach/"
+    },
+    {
+      "id": "ab2026",
+      "publisher": "American Banker",
+      "title": "Revolut's breach began with a stolen government password",
+      "date": "2026",
+      "url": "https://www.americanbanker.com/news/revoluts-breach-began-with-a-stolen-government-password"
+    },
+    {
+      "id": "mlex2026",
+      "publisher": "MLex",
+      "title": "Revolut data breach report being assessed by UK's data protection watchdog",
+      "date": "2026-09-15",
+      "url": "https://www.mlex.com/mlex/articles/2525511"
+    },
+    {
+      "id": "cityam2024",
+      "publisher": "City AM, reporting the Financial Times",
+      "title": "Revolut plans advertising partnerships as it seeks new revenue streams",
+      "date": "2024-04-23",
+      "url": "https://cityam.com/?p=2158373"
+    },
+    {
+      "id": "sifted2025",
+      "publisher": "Sifted",
+      "title": "Revolut slapped with €3.5m fine after failing to tackle money laundering, regulator says",
+      "date": "2025-04-08",
+      "url": "https://sifted.eu/articles/revolut-fined-money-laundering-lithuania-fintech"
+    },
+    {
+      "id": "agcm2026",
+      "publisher": "Yahoo Finance",
+      "title": "Italy fines Revolut over consumer code breaches",
+      "date": "2026-04",
+      "url": "https://finance.yahoo.com/economy/policy/articles/italy-fines-revolut-over-consumer-112118417.html"
+    }
+  ]
+}

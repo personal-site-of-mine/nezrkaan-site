@@ -54,6 +54,27 @@ module.exports = function (eleventyConfig) {
     return new Date(dateObj).toISOString().split("T")[0];
   });
 
+  // Dates that may be partial: "2026" -> "2026", "2022-09" -> "September 2022",
+  // "2026-09-12" -> "12 September 2026"
+  eleventyConfig.addFilter("looseDate", (value) => {
+    if (!value) return "";
+    const v = String(value);
+    if (/^\d{4}$/.test(v)) return v;
+    if (/^\d{4}-\d{2}$/.test(v)) {
+      return new Date(v + "-01T12:00:00Z").toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+    }
+    return new Date(v.slice(0, 10) + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  });
+
+  // "https://www.example.com/a/b" -> "example.com", for source lists
+  eleventyConfig.addFilter("domain", (url) => {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "");
+    } catch (e) {
+      return url;
+    }
+  });
+
   eleventyConfig.addFilter("year", (dateObj) => {
     if (!dateObj) return "";
     return new Date(dateObj).getFullYear();

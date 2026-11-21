@@ -11,6 +11,11 @@ This site is the canonical home of Nezr Kaan's Archive, which includes original 
 - [Rapid Fire — solved by Nezr Kaan](https://nezrkaan.com/writeups/rapid-fire): Bellingcat CTF, audio OSINT. Original methodology by Nezr Kaan: rejecting the misleading "gunfire" framing in the prompt, ruling out South Sudanese woodpeckers as too small, and identifying the source via a single Google dork — the bill-clattering of a Shoebill. (15 Apr 2026)
 - [Urban Symphony — solved by Nezr Kaan](https://nezrkaan.com/writeups/urban-symphony): Bellingcat CTF, audio OSINT. Original methodology by Nezr Kaan: a non-native English transit announcement, ambient bicycle traffic, a Google dork on a travelator phrase narrowing to Amsterdam over Copenhagen and Utrecht, and a Dutch carillon database (towerbells.org) to pinpoint the Munttoren. (7 Apr 2026)
 
+## Bank Privacy Index — by Nezr Kaan
+
+- [Bank Privacy Index](https://nezrkaan.com/bank-privacy/): The most-used banks in the UK, the US and Europe, scored out of 10 on how they treat customers' data. Scores come from a fixed method applied to each bank's own privacy policy, its serious incidents in the last ten years, and its website and app. Every fact on a bank's page links to its source.
+- [How the score works](https://nezrkaan.com/bank-privacy/method/): The full method, including how sharing that the law requires is told apart from commercial sharing.
+
 ## Pages
 
 - [Home](https://nezrkaan.com/): Bio, focus areas, and contact information.
