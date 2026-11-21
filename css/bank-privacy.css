@@ -604,3 +604,91 @@ html[data-theme="dark"] .chip.active .count { color: var(--text-faint); }
 @media (prefers-reduced-motion: reduce) {
   .bpi-row, .bpi-bank a { transition: none; }
 }
+
+/* ─── QUICK ANSWERS: "DON'T SELL" LIST, QUESTIONS, "DOES IT SELL", OTHER BANKS ─── */
+.bpi-jump { margin-top: 1.25rem; }
+.bpi-jump a {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 0.15rem;
+}
+.bpi-jump a::after { content: ' ↓'; color: var(--accent-purple); }
+.bpi-jump a:hover { color: var(--accent-purple); }
+
+.bpi-more {
+  margin-top: 4rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+  max-width: 70ch;
+  scroll-margin-top: 1.5rem;
+}
+.bpi-more h2 {
+  font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.1rem;
+}
+.bpi-more h3 {
+  font-size: 1.15rem;
+  line-height: 1.35;
+  margin: 1.9rem 0 0.5rem;
+}
+.bpi-more p {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 0.9rem;
+}
+.bpi-more a, .bpi-others a, .bpi-sells a {
+  color: var(--text);
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}
+.bpi-more a:hover, .bpi-others a:hover, .bpi-sells a:hover { color: var(--accent-purple); }
+
+.bpi-plain-list { list-style: none; margin: 1rem 0 1.25rem; padding: 0; }
+.bpi-plain-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.02rem;
+}
+.bpi-plain-list li span {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  align-self: center;
+}
+
+.body .bpi-sells {
+  margin: 2.5rem 0 0;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-elevated);
+}
+.body .bpi-sells h2 {
+  font-size: 1.35rem;
+  line-height: 1.3;
+  margin: 0 0 0.6rem;
+}
+.body .bpi-sells p { margin: 0; font-size: 1.05rem; line-height: 1.7; }
+
+.body .bpi-others { margin-top: 3rem; }
+.body .bpi-others h2 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+.body .bpi-others .bpi-plain-list li { font-size: 1rem; }
+.body .bpi-others p { margin-top: 0.75rem; }
+
+@media (max-width: 600px) {
+  .bpi-more { margin-top: 3rem; padding-top: 2rem; }
+  .body .bpi-sells { padding: 1.2rem 1.1rem; }
+}

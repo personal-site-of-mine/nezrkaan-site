@@ -46,10 +46,10 @@ module.exports = {
           question: "Does it give your data to other companies for their own marketing?",
           max: 0.5,
           options: {
-            no: { points: 0.5, label: "No" },
-            consent: { points: 0.5, label: "Only if you agree first" },
-            optout: { points: 0.25, label: "Yes, unless you opt out" },
-            yes: { points: 0, label: "Yes, and you can't stop it" },
+            no: { points: 0.5, label: "No", says: "doesn't give your data to other companies for their own marketing" },
+            consent: { points: 0.5, label: "Only if you agree first", says: "gives your data to other companies for their own marketing only if you agree" },
+            optout: { points: 0.25, label: "Yes, unless you opt out", says: "gives your data to other companies for their own marketing unless you opt out" },
+            yes: { points: 0, label: "Yes, and you can't stop it", says: "gives your data to other companies for their own marketing, and you can't stop it" },
           },
         },
         {
@@ -57,10 +57,10 @@ module.exports = {
           question: "Does it use your spending to pick the ads and offers you see, including offers from other companies?",
           max: 1,
           options: {
-            no: { points: 1, label: "No" },
-            consent: { points: 1, label: "Only if you agree first" },
-            optout: { points: 0.5, label: "Yes, unless you switch it off" },
-            yes: { points: 0, label: "Yes, and you can't stop it" },
+            no: { points: 1, label: "No", says: "doesn't say it uses your spending to choose ads and offers" },
+            consent: { points: 1, label: "Only if you agree first", says: "uses your spending to choose ads and offers only if you agree" },
+            optout: { points: 0.5, label: "Yes, unless you switch it off", says: "uses your spending to choose ads and offers unless you switch it off" },
+            yes: { points: 0, label: "Yes, and you can't stop it", says: "uses your spending to choose ads and offers, and you can't stop it" },
           },
         },
         {
@@ -79,9 +79,9 @@ module.exports = {
           question: "Does it say whether it sells personal data?",
           max: 0.5,
           options: {
-            never: { points: 0.5, label: "Says it never sells it" },
-            silent: { points: 0.25, label: "Doesn't say" },
-            sells: { points: 0, label: "Says it sells it, or may" },
+            never: { points: 0.5, label: "Says it never sells it", says: "says it never sells your personal data" },
+            silent: { points: 0.25, label: "Doesn't say", says: "doesn't say whether it sells your personal data" },
+            sells: { points: 0, label: "Says it sells it, or may", says: "says it sells personal data, or may" },
           },
         },
         {
@@ -89,9 +89,10 @@ module.exports = {
           question: "Does it sell anonymous data about customers, or give it to other companies for their business?",
           max: 0.5,
           options: {
-            no: { points: 0.5, label: "No" },
-            silent: { points: 0.25, label: "Doesn't say" },
-            yes: { points: 0, label: "Yes, or says it may" },
+            no: { points: 0.5, label: "No", says: "doesn't sell anonymous data about customers or give it to other companies for their business" },
+            silent: { points: 0.25, label: "Doesn't say", says: "doesn't say what it does with anonymous data about customers" },
+            yes: { points: 0, label: "Gives it to other companies, or says it may", says: "may give anonymous data about customers to other companies for their business" },
+            sells: { points: 0, label: "Sells it, or says it may", says: "sells anonymous data about customers, or says it may" },
           },
         },
       ],

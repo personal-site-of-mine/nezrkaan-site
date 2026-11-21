@@ -1,8 +1,17 @@
 ---
 layout: layouts/base.njk
 permalink: /bank-privacy/method/index.html
-title: "How the score works — Bank Privacy Index — Nezr Kaan"
-description: "The method behind the Bank Privacy Index: five parts, ten points, fixed answers for every check, and a source for every fact."
+title: "How the Bank Privacy Index scores banks on privacy — Nezr Kaan"
+jsonLd:
+  "@context": "https://schema.org"
+  "@type": "BreadcrumbList"
+  itemListElement:
+    - { "@type": "ListItem", position: 1, name: "Home", item: "https://nezrkaan.com/" }
+    - { "@type": "ListItem", position: 2, name: "Bank Privacy Index", item: "https://nezrkaan.com/bank-privacy/" }
+    - { "@type": "ListItem", position: 3, name: "How the score works", item: "https://nezrkaan.com/bank-privacy/method/" }
+description: "How the Bank Privacy Index scores banks on privacy: selling and sharing data, serious incidents, website and app tracking, the privacy policy and your controls. Ten points, the same rules for every bank."
+eleventyComputed:
+  ogImage: "{{ bankPrivacy.ogImage }}"
 ogTitle: "How the Bank Privacy Index score works"
 ogDescription: "Five parts, ten points, the same rules for every bank, and a source for every fact."
 showFieldNotesNav: true
@@ -12,7 +21,7 @@ footerBackHref: "/bank-privacy/"
 footerBackLabel: "← All banks"
 extraStyles:
   - /css/article.css
-  - /css/bank-privacy.css
+  - /css/bank-privacy.css?v=1
 ---
 
 {%- set rubric = bankPrivacy.rubric -%}

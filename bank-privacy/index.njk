@@ -1,17 +1,20 @@
 ---
 layout: layouts/base.njk
 permalink: /bank-privacy/index.html
-title: "Bank Privacy Index — Nezr Kaan"
-description: "How the most-used banks in the UK, the US and Europe treat your data, scored out of 10 from their own privacy policies, their serious incidents and what their websites and apps do."
-ogTitle: "Bank Privacy Index"
-ogDescription: "Your bank knows what you spend your money on. The most-used banks in the UK, the US and Europe, scored out of 10 on how they treat your data."
-keywords: "bank privacy, privacy policy, data sharing, data breach, banks, UK banks, US banks, European banks, privacy index"
+eleventyComputed:
+  title: "Which banks sell your data? Bank Privacy Index {{ bankPrivacy.lastChecked.slice(0, 4) }} — Nezr Kaan"
+  description: "Do banks sell your data? {{ bankPrivacy.total }} of the most-used banks in the UK, the US and Europe, scored out of 10 on selling and sharing data, breaches and tracking."
+  ogImage: "{{ bankPrivacy.ogImage }}"
+  ogDescription: "Your bank knows what you spend your money on. {{ bankPrivacy.total }} of the most-used banks in the UK, the US and Europe, scored out of 10 on how they treat that data."
+ogTitle: "Which banks sell your data? The Bank Privacy Index"
+ogImageAlt: "Bank Privacy Index: which banks sell your data? The most-used banks in the UK, the US and Europe, scored out of 10."
+keywords: "which banks sell your data, banks that don't sell your data, do banks sell your data, bank privacy, best bank for privacy, bank data sharing, UK banks, US banks, European banks"
 showFieldNotesNav: true
 headerMark: "NK / Bank Privacy"
 headerHomeHref: "/"
 extraStyles:
   - /css/archive.css
-  - /css/bank-privacy.css
+  - /css/bank-privacy.css?v=1
 ---
 
 {%- set criteria = bankPrivacy.rubric.criteria -%}
@@ -22,6 +25,7 @@ extraStyles:
     <h1>How banks treat your data</h1>
     <p class="hero-description">Online, companies track what you do to guess what you'll buy. Your bank doesn't have to guess: it knows what you spend your money on, where and when. That makes it some of the most important data about you.</p>
     <p class="hero-description">Here the most-used banks in the UK, the US and Europe are scored out of 10 on how they treat it. Each score comes from the bank's own privacy policy, its serious incidents in the last ten years, and what its website and app do.</p>
+    <p class="bpi-jump"><a href="#dont-sell">Which banks don't sell your data?</a></p>
 
     <div class="filters bpi-controls">
       <div class="bpi-control">
@@ -57,6 +61,7 @@ extraStyles:
 
     <div class="bpi-table-wrap">
       <table class="bpi-table" id="bankTable">
+        <caption class="visually-hidden">Bank privacy scores, out of 10</caption>
         <thead>
           <tr>
             <th class="bpi-rank" scope="col"><span class="visually-hidden">Rank</span>#</th>
@@ -104,6 +109,29 @@ extraStyles:
       <p>The score comes from a fixed method, not from opinion. Sharing your data because the law requires it costs a bank nothing. Only sharing for commercial reasons does. <a href="/bank-privacy/method/">Read the method.</a></p>
       <p>Last checked {{ bankPrivacy.lastChecked | longDate }}. Spotted a mistake? Email <a href="mailto:nezrkaan.business@gmail.com">nezrkaan.business@gmail.com</a> with a source and it will be fixed.</p>
     </div>
+
+    <section class="bpi-more" id="dont-sell" aria-labelledby="dont-sell-title">
+      <h2 id="dont-sell-title">Banks that don't sell your data</h2>
+      <p>To be on this list, a bank's privacy policy has to say three things: that it never sells personal data, that it doesn't sell anonymous data or give it to other companies for their business, and that it only gives your data to other companies for marketing if you agree.</p>
+      {%- if bankPrivacy.noSell.length %}
+      <ul class="bpi-plain-list">
+        {%- for b in bankPrivacy.noSell %}
+        <li><a href="/bank-privacy/{{ b.slug }}/">{{ b.name }}</a> <span>{{ b.region }} · {{ b.totalShown }} / 10</span></li>
+        {%- endfor %}
+      </ul>
+      {%- else %}
+      <p>None of the {{ bankPrivacy.banks.length }} banks scored so far passes all three. Each bank's page says exactly where it falls short.</p>
+      {%- endif %}
+    </section>
+
+    <section class="bpi-more" aria-labelledby="faq-title">
+      <h2 id="faq-title">Questions people ask</h2>
+      {%- for item in bankPrivacy.faq %}
+      <h3>{{ item.q }}</h3>
+      <p>{{ item.a }}</p>
+      {%- endfor %}
+      <p><a href="/bank-privacy/method/">Read how the score works</a></p>
+    </section>
 
   </section>
 </main>

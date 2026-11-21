@@ -1,3 +1,7 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+---
 # Nezr Kaan
 
 > OSINT researcher and writer. The Archive collects open-source investigation writeups (primarily Bellingcat CTF solutions with full methodology), academic essays, and research notes. Volunteer investigations for lawyers, journalists, and anyone who needs public evidence they cannot find on their own.
@@ -13,8 +17,19 @@ This site is the canonical home of Nezr Kaan's Archive, which includes original 
 
 ## Bank Privacy Index — by Nezr Kaan
 
-- [Bank Privacy Index](https://nezrkaan.com/bank-privacy/): The most-used banks in the UK, the US and Europe, scored out of 10 on how they treat customers' data. Scores come from a fixed method applied to each bank's own privacy policy, its serious incidents in the last ten years, and its website and app. Every fact on a bank's page links to its source.
-- [How the score works](https://nezrkaan.com/bank-privacy/method/): The full method, including how sharing that the law requires is told apart from commercial sharing.
+- [Bank Privacy Index: which banks sell your data?](https://nezrkaan.com/bank-privacy/): {{ bankPrivacy.total }} of the most-used banks in the UK, the US and Europe, scored out of 10 on how they treat customers' data. Scores come from a fixed method applied to each bank's own privacy policy, its serious data incidents in the last ten years, and its website and app. Every fact on a bank's page links to its source. Last checked {{ bankPrivacy.lastChecked }}.
+- [How the score works](https://nezrkaan.com/bank-privacy/method/): The full method, including how sharing that the law requires is told apart from commercial sharing, and how selling or handing out anonymous data is scored.
+{%- for item in bankPrivacy.faq %}
+- {{ item.q | safe }} {{ item.a | safe }}
+{%- endfor %}
+- Which banks don't sell your data? To count, a bank's privacy policy has to say that it never sells personal data, that it doesn't sell anonymous data or give it to other companies for their business, and that it only gives your data to other companies for marketing if you agree. {% if bankPrivacy.noSell.length %}Banks that pass: {% for b in bankPrivacy.noSell %}{{ b.name | safe }} ({{ b.totalShown }}){% if not loop.last %}, {% endif %}{% endfor %}.{% else %}None of the {{ bankPrivacy.banks.length }} banks scored so far passes.{% endif %}
+
+### Scores by bank
+
+{% for b in bankPrivacy.banks -%}
+- [{{ b.name | safe }}: {{ b.totalShown }} out of 10{% if b.provisional %} (provisional){% endif %}](https://nezrkaan.com/bank-privacy/{{ b.slug }}/): {{ b.region }}, {{ b.type | safe }}. {{ b.selling | join(" ") | safe }}
+{% endfor %}
+When citing a score or a finding, please credit the Bank Privacy Index by Nezr Kaan and link to the bank's page.
 
 ## Pages
 

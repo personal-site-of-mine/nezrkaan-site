@@ -6,7 +6,9 @@
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const rubric = require("../bank-privacy/rubric.js");
+const site = require("./site.json");
 
 const ROOT = path.join(__dirname, "..", "bank-privacy");
 const YEAR_MS = 365.25 * 24 * 60 * 60 * 1000;
@@ -14,6 +16,29 @@ const YEAR_MS = 365.25 * 24 * 60 * 60 * 1000;
 // 2.25 -> "2.25", 1.5 -> "1.5", 1 -> "1"
 const fmt = (n) => String(Number(n.toFixed(2)));
 const round2 = (n) => Math.round(n * 100) / 100;
+
+// ["A", "B", "C"] -> "A, B and C"
+const listNames = (names) =>
+  names.length <= 1 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+
+const SHARING = rubric.criteria.find((c) => c.id === "A");
+
+// Share images are cached for a year (see _headers), so each URL carries a short hash of the file:
+// a new image gets a new URL.
+function imageUrl(rel) {
+  const file = path.join(__dirname, "..", rel);
+  if (!fs.existsSync(file)) return null;
+  const v = crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex").slice(0, 8);
+  return `${site.url}/${rel}?v=${v}`;
+}
+const INDEX_IMAGE = imageUrl("images/bank-privacy/og.png") || site.ogImage;
+
+// The plain sentence the method gives for a bank's answer to one of the sharing checks.
+function says(bank, id) {
+  const check = SHARING.checks.find((ch) => ch.id === id);
+  const option = check.options[(bank.checks[id] || {}).result];
+  return option ? option.says : "";
+}
 
 function fail(bank, message) {
   throw new Error(`Bank Privacy Index, ${bank}: ${message}`);
@@ -117,11 +142,53 @@ function scoreBank(bank, file) {
     .filter((g) => g.rows.length);
 
   const total = round2(criteria.reduce((sum, c) => sum + c.points, 0));
+  const totalShown = (Math.round(total * 10) / 10).toFixed(1);
+
+  // "Does it sell your data?" in four plain sentences, taken from the answers to A4, A5, A1 and A2.
+  const selling = [`${bank.name} ${says(bank, "A4")}.`, `It ${says(bank, "A5")}.`, `It ${says(bank, "A1")}.`, `It ${says(bank, "A2")}.`];
+  const answer = (id) => (bank.checks[id] || {}).result;
+  const doesNotSell = answer("A4") === "never" && answer("A5") === "no" && ["no", "consent"].includes(answer("A1"));
+
+  const url = `${site.url}/bank-privacy/${bank.slug}/`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${site.url}/` },
+          { "@type": "ListItem", position: 2, name: "Bank Privacy Index", item: `${site.url}/bank-privacy/` },
+          { "@type": "ListItem", position: 3, name: bank.name, item: url },
+        ],
+      },
+      {
+        "@type": "Review",
+        name: `${bank.name} privacy score`,
+        url,
+        datePublished: bank.checked,
+        itemReviewed: {
+          "@type": bank.type === "Banking app" ? "FinancialService" : "BankOrCreditUnion",
+          name: bank.name,
+          areaServed: bank.country,
+        },
+        reviewRating: { "@type": "Rating", ratingValue: Number(totalShown), bestRating: 10, worstRating: 0 },
+        reviewBody: selling.join(" "),
+        author: { "@type": "Person", name: site.author.name, url: site.author.url },
+        publisher: { "@type": "Person", name: site.author.name, url: site.author.url },
+      },
+    ],
+  };
+
   return {
     ...bank,
     criteria,
     total,
-    totalShown: (Math.round(total * 10) / 10).toFixed(1),
+    totalShown,
+    selling,
+    doesNotSell,
+    url,
+    ogImage: imageUrl(`images/bank-privacy/og/${bank.slug}.png`) || INDEX_IMAGE,
+    jsonLd,
     pendingMax: round2(pendingMax),
     pendingShown: fmt(pendingMax),
     provisional: pendingMax > 0,
@@ -159,6 +226,56 @@ module.exports = function () {
 
   const lastChecked = banks.map((b) => b.checked).sort().pop();
 
+  // Other banks in the same region, for the links at the bottom of each bank page.
+  banks.forEach((bank) => {
+    bank.others = banks
+      .filter((o) => o.region === bank.region && o.slug !== bank.slug)
+      .map((o) => ({ name: o.name, slug: o.slug, totalShown: o.totalShown }));
+  });
+
+  const faq = buildFaq(banks);
+  const noSell = banks.filter((b) => b.doesNotSell).map((b) => ({ name: b.name, slug: b.slug, totalShown: b.totalShown, region: b.region }));
+
+  const indexUrl = `${site.url}/bank-privacy/`;
+  const indexJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${site.url}/` },
+          { "@type": "ListItem", position: 2, name: "Bank Privacy Index", item: indexUrl },
+        ],
+      },
+      {
+        "@type": "Dataset",
+        name: "Bank Privacy Index",
+        description:
+          "Privacy scores out of 10 for the most-used banks in the UK, the US and Europe. Each bank is scored on selling and sharing customers' data, serious data incidents in the last ten years, tracking on its website and app, what its privacy policy says, and the controls it gives customers.",
+        url: indexUrl,
+        creator: { "@type": "Person", name: site.author.name, url: site.author.url },
+        datePublished: rubric.published,
+        dateModified: lastChecked,
+        isAccessibleForFree: true,
+        keywords: ["bank privacy", "banks that sell your data", "bank data sharing", "privacy policy", "data breach", "UK banks", "US banks", "European banks"],
+        spatialCoverage: ["United Kingdom", "United States", "Europe"].map((name) => ({ "@type": "Place", name })),
+        variableMeasured: rubric.criteria.map((c) => c.title),
+        measurementTechnique: "Each bank's privacy policy, regulators' decisions and national news reports, Exodus Privacy app reports and the Disconnect tracker list, scored with a fixed method.",
+      },
+      {
+        "@type": "ItemList",
+        name: "Bank privacy scores, out of 10",
+        itemListOrder: "https://schema.org/ItemListOrderDescending",
+        numberOfItems: banks.length,
+        itemListElement: banks.map((b, i) => ({ "@type": "ListItem", position: i + 1, name: b.name, url: b.url })),
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((q) => ({ "@type": "Question", name: q.q, acceptedAnswer: { "@type": "Answer", text: q.a } })),
+      },
+    ],
+  };
+
   return {
     rubric: {
       ...rubric,
@@ -184,8 +301,53 @@ module.exports = function () {
     regions,
     total: banks.length + planned.length,
     lastChecked,
+    faq,
+    noSell,
+    indexJsonLd,
+    ogImage: INDEX_IMAGE,
   };
 };
+
+// Questions people search for, answered from the scores themselves so the answers stay true
+// as banks are added or re-checked.
+function buildFaq(banks) {
+  const n = banks.length;
+  if (!n) return [];
+  const answer = (b, id) => (b.checks[id] || {}).result;
+  const count = (fn) => banks.filter(fn).length;
+  const never = count((b) => answer(b, "A4") === "never");
+  const sells = count((b) => answer(b, "A4") === "sells");
+  const anon = count((b) => ["yes", "sells"].includes(answer(b, "A5")));
+  const spending = count((b) => ["optout", "yes"].includes(answer(b, "A2")));
+
+  const faq = [];
+
+  let sell = never > n / 2
+    ? `Most say they don't sell your personal data: ${never} of the ${n} banks here say they never do.`
+    : `${never} of the ${n} banks here say they never sell your personal data.`;
+  if (sells) sell += sells === 1 ? " One says it sells personal data, or may." : ` ${sells} say they sell personal data, or may.`;
+  sell += ` But selling isn't the only way your data leaves a bank. Of the ${n}, ${anon} may sell anonymous data about customers or give it to other companies, and ${spending} use your spending to choose the ads and offers you see.`;
+  faq.push({ q: "Do banks sell your data?", a: sell });
+
+
+  const top = banks.filter((b) => b.total === banks[0].total);
+  let best = `On this index, ${listNames(top.map((b) => b.name))} ${top.length === 1 ? "has" : "share"} the highest score, ${top[0].totalShown} out of 10.`;
+  const leaders = ["UK", "US", "Europe"]
+    .map((r) => ({ region: r === "Europe" ? "Europe" : `the ${r}`, bank: banks.find((b) => b.region === r) }))
+    .filter((x) => x.bank)
+    .map((x, i) => `${i === 0 ? "The highest in" : "in"} ${x.region} is ${x.bank.name} (${x.bank.totalShown})`);
+  if (leaders.length > 1) best += ` ${leaders.slice(0, -1).join(", ")} and ${leaders[leaders.length - 1]}.`;
+  best += " A higher score means the bank shares less for commercial reasons, has had fewer serious incidents, tracks you less and tells you more.";
+  faq.push({ q: "Which bank is best for privacy?", a: best });
+
+  const parts = rubric.criteria.map((c) => `${c.keyName} (${fmt(c.max)})`);
+  faq.push({
+    q: "What does the score look at?",
+    a: `Five things, worth 10 points in total: ${listNames(parts)}. Sharing that the law requires costs nothing. Only sharing for commercial reasons, like marketing and advertising, loses points.`,
+  });
+
+  return faq;
+}
 
 // Used by the checking script that tests a single bank file before it is added.
 module.exports.scoreBank = scoreBank;

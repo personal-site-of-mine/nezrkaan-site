@@ -133,6 +133,12 @@ collections:
           - { label: "Lavirent kartı metni", name: "lavirentCardText", widget: "text" }
           - { label: "Lavirent kartı linki", name: "lavirentCardUrl", widget: "string" }
           - { label: "Lavirent kartı link yazısı", name: "lavirentCardLink", widget: "string" }
+          - { label: "Banka endeksi bölüm etiketi", name: "bankIndexLabel", widget: "string", required: false, hint: "Boş bırakırsan Bank Privacy Index bölümü görünmez" }
+          - { label: "Banka endeksi metni", name: "bankIndexText", widget: "text", required: false }
+          - { label: "Banka endeksi kartı üst satır", name: "bankIndexKicker", widget: "string", required: false }
+          - { label: "Banka endeksi kartı başlık", name: "bankIndexCardTitle", widget: "string", required: false }
+          - { label: "Banka endeksi kartı metni", name: "bankIndexCardText", widget: "text", required: false }
+          - { label: "Banka endeksi kartı link yazısı", name: "bankIndexCardLink", widget: "string", required: false }
           - { label: "'Ne yapıyorum' bölüm etiketi", name: "whatIDoLabel", widget: "string" }
           - { label: "'Ne yapıyorum' metni", name: "whatIDoText", widget: "text" }
           - label: "Uzmanlık listesi"

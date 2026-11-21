@@ -6,10 +6,13 @@ pagination:
   alias: bank
 permalink: "/bank-privacy/{{ bank.slug }}/index.html"
 eleventyComputed:
-  title: "{{ bank.name }}: privacy score — Bank Privacy Index — Nezr Kaan"
-  description: "{{ bank.name }} scores {{ bank.totalShown }} out of 10 in the Bank Privacy Index. Who it shares your data with and why, its serious incidents, its website and app, and what its privacy policy says. Every fact is sourced."
-  ogTitle: "{{ bank.name }}: {{ bank.totalShown }} out of 10 for privacy"
-  ogDescription: "Who {{ bank.name }} shares your data with and why, its serious incidents, and what its policy says. Every fact is sourced."
+  title: "Does {{ bank.name }} sell your data? Privacy score {{ bank.totalShown }}/10 — Bank Privacy Index"
+  description: "{{ bank.name }} scores {{ bank.totalShown }} out of 10 for privacy. {{ bank.selling[0] }} {{ bank.selling[1] }}"
+  ogTitle: "Does {{ bank.name }} sell your data? {{ bank.totalShown }} out of 10 for privacy"
+  ogDescription: "{{ bank.selling[0] }} {{ bank.selling[1] }} Who it shares your data with and why, its serious incidents, and what its policy says."
+  ogImage: "{{ bank.ogImage }}"
+  ogImageAlt: "{{ bank.name }}: {{ bank.totalShown }} out of 10 on the Bank Privacy Index"
+  keywords: "does {{ bank.name }} sell your data, {{ bank.name }} privacy, {{ bank.name }} data sharing, {{ bank.name }} data breach, {{ bank.name }} privacy policy"
 ogType: article
 showFieldNotesNav: true
 headerMark: "NK / Bank Privacy"
@@ -18,7 +21,7 @@ footerBackHref: "/bank-privacy/"
 footerBackLabel: "← All banks"
 extraStyles:
   - /css/article.css
-  - /css/bank-privacy.css
+  - /css/bank-privacy.css?v=1
 ---
 
 {%- set rubric = bankPrivacy.rubric -%}
@@ -54,7 +57,12 @@ extraStyles:
           </li>
           {%- endfor %}
         </ul>
-        <p class="bpi-scope">{{ bank.scope }} The policy checked is the {{ bank.policy.title }}, in effect from {{ bank.policy.effective | longDate }} <a class="bpi-ref" href="#source-{{ bank.policyRef }}">[{{ bank.policyRef }}]</a>.</p>
+        <p class="bpi-scope">{{ bank.scope }} The policy checked is the {{ bank.policy.title }}{% if bank.policy.effective %}, in effect from {{ bank.policy.effective | longDate }}{% endif %} <a class="bpi-ref" href="#source-{{ bank.policyRef }}">[{{ bank.policyRef }}]</a>.</p>
+      </section>
+
+      <section class="bpi-sells" aria-labelledby="sells-title">
+        <h2 id="sells-title">Does {{ bank.name }} sell your data?</h2>
+        <p>{{ bank.selling | join(" ") }} <a href="#part-a">See the details</a></p>
       </section>
 
       {%- for c in bank.criteria %}
@@ -162,6 +170,19 @@ extraStyles:
         <span class="keypoint-label">About this score</span>
         <p>The score comes from a fixed method, the same for every bank, and every point is explained above. It is not advice on which bank to use. <a href="/bank-privacy/method/">Read the method</a>. Spotted a mistake? Email <a href="mailto:nezrkaan.business@gmail.com">nezrkaan.business@gmail.com</a> with a source and it will be fixed.</p>
       </div>
+
+      {%- set where = "in Europe" if bank.region == "Europe" else "in the " + bank.region %}
+      <section class="bpi-others" aria-labelledby="others-title">
+        <h2 id="others-title">Other banks {{ where }}</h2>
+        {%- if bank.others.length %}
+        <ul class="bpi-plain-list">
+          {%- for o in bank.others %}
+          <li><a href="/bank-privacy/{{ o.slug }}/">{{ o.name }}</a> <span>{{ o.totalShown }} / 10</span></li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+        <p><a href="/bank-privacy/">See all banks and which ones don't sell your data</a></p>
+      </section>
 
     </div>
   </article>
