@@ -1,0 +1,374 @@
+{
+  "slug": "citizens",
+  "name": "Citizens",
+  "region": "US",
+  "country": "United States",
+  "type": "Regional bank",
+  "checked": "2026-11-21",
+  "scope": "Citizens' US consumer privacy notice and its online privacy policy, including the California privacy notice on the same page. Incidents count anywhere in the Citizens group if they involve the Citizens name.",
+  "policy": {
+    "title": "U.S. Consumer Privacy Notice",
+    "source": "table"
+  },
+  "checks": {
+    "A1": {
+      "result": "no",
+      "finding": "In its privacy notice table, Citizens says it doesn't share your information with companies outside its group so they can market to you.",
+      "where": "Table row: For nonaffiliates to market to you",
+      "sources": [
+        "table"
+      ]
+    },
+    "A2": {
+      "result": "optout",
+      "finding": "The online policy says Citizens studies how you use its websites and apps for marketing, and shows you ads on social media and other websites chosen to match your interests. Neither notice says it uses your transactions to pick ads or offers. You can opt out of these interest-based ads with the \"Do Not Sell or Share My Personal Information\" link or a Global Privacy Control signal (a setting in some browsers), one browser at a time.",
+      "where": "How we use your personal information; How to Opt-Out of Online Behavioral Advertising",
+      "sources": [
+        "online"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "The California section says that in the past 12 months Citizens shared identifiers and details of what you do on its websites with online advertising networks, marketing companies and social media companies, for cross-context behavioural advertising (ads based on what you do across different sites and apps). It says it may keep doing so. You can opt out with the \"Do Not Sell or Share My Personal Information\" link, and Citizens says it will try to honour Global Privacy Control signals.",
+      "where": "California Consumer Privacy Act Notice: Selling and Sharing of CA Personal Information; How to Opt-Out of Online Behavioral Advertising",
+      "sources": [
+        "ccpa",
+        "online"
+      ]
+    },
+    "A4": {
+      "result": "never",
+      "quote": "Please note that we do not \"sell\" Personal Information in the traditional sense.",
+      "finding": "The sentence is in the California section of the online policy. In the same section, Citizens says it does share data for cross-context behavioural advertising (see A3). The FACTS notice doesn't mention selling.",
+      "where": "California Consumer Privacy Act Notice: Selling and Sharing of CA Personal Information",
+      "sources": [
+        "ccpa",
+        "table"
+      ]
+    },
+    "A5": {
+      "result": "yes",
+      "finding": "The online policy says Citizens and its service providers may use and share anonymised, de-identified or combined (aggregated) data, for analysis and for other commercial purposes the law allows. It doesn't say who receives it, or whether it is sold.",
+      "where": "How we use your personal information",
+      "sources": [
+        "online"
+      ]
+    },
+    "C1": {
+      "result": "pending",
+      "finding": "Not measured yet. We count trackers in a real browser, and this check is still to be done."
+    },
+    "C2": {
+      "result": "pending",
+      "finding": "We couldn't find an Exodus Privacy report for the Citizens Bank Android app (com.citizensbank.androidapp), so its tracking tools aren't counted yet."
+    },
+    "C3": {
+      "result": "pending",
+      "finding": "Not checked yet. This is checked in a real browser together with the tracker count."
+    },
+    "C4": {
+      "result": "sms",
+      "finding": "Citizens checks each login for risk, and asks for a one-time password when it wants more proof that it's you. Its security page says these one-time passcodes come by text message from Citizens short codes. The help pages we read don't mention approving logins in the app, authenticator apps, passkeys or security keys.",
+      "sources": [
+        "faq",
+        "contacts"
+      ]
+    },
+    "D1": {
+      "result": "none",
+      "finding": "Neither notice gives a period. The California section says how long Citizens keeps each kind of data depends on several things, such as how long the law requires it to be kept.",
+      "where": "California Consumer Privacy Act Notice: Retention of Personal Information",
+      "sources": [
+        "ccpa"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "The online policy lists clear types of companies it shares with, including credit reporting agencies, payment companies, fraud prevention companies, data storage firms, technology suppliers, advertisers and marketers. The FACTS notice says its joint marketing partners include insurance companies.",
+      "where": "How we share your personal information; Definitions",
+      "sources": [
+        "online",
+        "table"
+      ]
+    },
+    "D3": {
+      "result": "one",
+      "finding": "The California section says California residents have the right, in some cases, to object to a significant decision based only on automated processing. Neither notice describes which decisions Citizens makes automatically.",
+      "where": "California Consumer Privacy Act Notice: Rights under the CCPA",
+      "sources": [
+        "ccpa"
+      ]
+    },
+    "D4": {
+      "result": "no",
+      "finding": "Both notices say Citizens uses artificial intelligence responsibly, but neither says whether your data is used to build or train AI models.",
+      "where": "Other important information: AI and Technology",
+      "sources": [
+        "table",
+        "online"
+      ]
+    },
+    "E1": {
+      "result": "offline",
+      "finding": "To limit marketing by post, phone and email, the online policy says to call Citizens on 1-800-922-9999. To stop other Citizens companies using your data to market to you, the FACTS notice says to call or post a form. Neither notice describes a way to do this online.",
+      "where": "General Marketing Practices; To limit our sharing",
+      "sources": [
+        "online",
+        "table"
+      ]
+    },
+    "E2": {
+      "result": "online",
+      "finding": "California residents can ask for their data with an online form, the CCPA Privacy Rights Portal, or by calling 1-888-999-1927. The notices don't describe a way for people in other states to ask for a copy.",
+      "where": "California Consumer Privacy Act Notice: How to Exercise Your Rights",
+      "sources": [
+        "ccpa"
+      ]
+    }
+  },
+  "sharing": [
+    {
+      "who": "Companies that help run your account, credit bureaus, courts and investigators",
+      "what": "Your personal information, such as transactions and balances. You can't limit this.",
+      "why": "Processing transactions, keeping your account, answering court orders and legal investigations, reporting to credit bureaus",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": "Everyday business purposes"
+    },
+    {
+      "who": "Citizens' own marketing",
+      "what": "Your personal information. You can't limit this.",
+      "why": "To offer you Citizens products and services",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Our marketing purposes"
+    },
+    {
+      "who": "Joint marketing partners: insurance companies and other financial companies that offer, endorse or sponsor products with Citizens",
+      "what": "Your personal information. You can't limit this.",
+      "why": "Marketing financial products together with Citizens",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Joint marketing with other financial companies"
+    },
+    {
+      "who": "Other Citizens companies",
+      "what": "Information about your transactions and experiences, which you can't limit. Information about your creditworthiness, which you can limit.",
+      "why": "Their everyday business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Affiliates' everyday business purposes"
+    },
+    {
+      "who": "Other Citizens companies",
+      "what": "Your personal information. You can limit this.",
+      "why": "So they can market to you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates to market to you"
+    },
+    {
+      "who": "Service providers and advisers: data storage, payment, technology, risk and fraud prevention companies, analysis firms, credit reporting agencies, auditors and law firms",
+      "what": "What each one needs for its job",
+      "why": "To provide and protect the service",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Online advertising networks, marketing companies and social media companies",
+      "what": "Identifiers and what you do on Citizens websites. You can opt out.",
+      "why": "Showing you ads on other websites and apps, and on social media",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Regulators, police, courts and other government bodies",
+      "what": "Whatever the request covers",
+      "why": "To meet legal duties",
+      "reasons": [
+        "legal"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Buyers of all or part of Citizens' business",
+      "what": "The customer records that go with it",
+      "why": "If Citizens sells or transfers a business or its assets",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    }
+  ],
+  "sharingSources": [
+    "table",
+    "online",
+    "ccpa"
+  ],
+  "incidents": [
+    {
+      "date": "2026-04-21",
+      "when": "April 2026",
+      "title": "Customer data taken from a supplier",
+      "summary": "Everest, a ransomware group (criminals who steal data and demand money), said it had taken 3.4 million Citizens records. That figure has not been confirmed. Citizens said the data came from one of its suppliers, which it didn't name, that most of it was masked test data, and that a limited set of information about a small number of customers was involved. It said there was no sign its own network was accessed. Customers then sued, saying names, Social Security numbers and account data were exposed.",
+      "level": 1,
+      "levelWhy": "Citizens says a small number of customers",
+      "sources": [
+        "cfg2026",
+        "ab2026a",
+        "ab2026b"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2024-09-26",
+      "when": "September 2024",
+      "what": "Citizens told about 100 customers that images holding their personal details may have been shared with an unauthorised person earlier in 2024.",
+      "why": "Filed with a regulator, but not reported by national news",
+      "sources": [
+        "vt2024"
+      ]
+    },
+    {
+      "date": "2024-12-06",
+      "when": "December 2024",
+      "what": "Citizens told Maine's attorney general that misuse by someone with inside access had exposed personal details of 8,358 people.",
+      "why": "Filed with a regulator, but not reported by national news",
+      "sources": [
+        "maine2024"
+      ]
+    },
+    {
+      "date": "2025-03-27",
+      "when": "March 2025",
+      "what": "Citizens told Maine's attorney general that personal details of 12 people had been disclosed by mistake.",
+      "why": "Filed with a regulator, but not reported by national news",
+      "sources": [
+        "maine2025"
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "when": "October 2026",
+      "what": "Citizens told the California and Texas attorneys general that an unauthorised person got into some customer data, including names and Social Security numbers. It hasn't said how many people were affected.",
+      "why": "Filed with a regulator, but not reported by national news",
+      "sources": [
+        "caag2026"
+      ]
+    },
+    {
+      "date": "2023-05-23",
+      "when": "May 2023",
+      "what": "The US Consumer Financial Protection Bureau ordered Citizens Bank to pay a 9 million dollar penalty over how it handled credit card billing disputes and fraud claims.",
+      "why": "About credit card dispute handling, not privacy",
+      "sources": [
+        "cfpb2023"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "table",
+      "publisher": "Citizens",
+      "title": "FACTS: What does Citizens Financial Group, Inc. do with your personal information?",
+      "date": "2026-08",
+      "dateLabel": "revised August 2026",
+      "url": "https://www.citizensbank.com/dam/3192ea60-4769-4ed6-a467-b4860130b94d/consumer-privacy-notice-original-file.pdf"
+    },
+    {
+      "id": "online",
+      "publisher": "Citizens",
+      "title": "Online Privacy Policy",
+      "date": "2025-08-14",
+      "dateLabel": "effective 14 August 2025",
+      "url": "https://www.citizensbank.com/account-safeguards/privacy.aspx"
+    },
+    {
+      "id": "ccpa",
+      "publisher": "Citizens",
+      "title": "California Consumer Privacy Act Notice",
+      "date": "2024-06-28",
+      "dateLabel": "effective 28 June 2024",
+      "url": "https://www.citizensbank.com/account-safeguards/privacy.aspx"
+    },
+    {
+      "id": "faq",
+      "publisher": "Citizens",
+      "title": "Online Banking & Bill Pay (FAQs)",
+      "url": "https://www.citizensbank.com/customer-service/FAQs/mobile-and-online-banking.aspx"
+    },
+    {
+      "id": "contacts",
+      "publisher": "Citizens",
+      "title": "How Citizens Contacts You",
+      "url": "https://www.citizensbank.com/account-safeguards/account-information-security.aspx"
+    },
+    {
+      "id": "vt2024",
+      "publisher": "Vermont Attorney General",
+      "title": "Citizens Bank Data Breach Notice to Consumers",
+      "date": "2024-09-26",
+      "url": "https://ago.vermont.gov/sites/ago/files/documents/2024-09-26%20Citizens%20Bank%20Data%20Breach%20Notice%20to%20Consumers.pdf"
+    },
+    {
+      "id": "maine2024",
+      "publisher": "Maine Attorney General",
+      "title": "Data Breach Notifications",
+      "date": "2024-12-06",
+      "url": "https://www.maine.gov/agviewer/content/ag/985235c7-cb95-4be2-8792-a1252b4f8318/add73b69-6932-4579-9659-eebc8a3f1cd1.html"
+    },
+    {
+      "id": "maine2025",
+      "publisher": "Maine Attorney General",
+      "title": "Data Breach Notifications",
+      "date": "2025-03-27",
+      "url": "https://www.maine.gov/agviewer/content/ag/985235c7-cb95-4be2-8792-a1252b4f8318/079a4a39-c338-4e8e-9afb-537d11e0c55b.html"
+    },
+    {
+      "id": "cfg2026",
+      "publisher": "Citizens Financial Group",
+      "title": "Citizens Offers Statement Regarding Third-Party Vendor Event",
+      "date": "2026-04-21",
+      "url": "https://investor.citizensbank.com/about-us/newsroom/latest-news/2026/2026-04-21.aspx"
+    },
+    {
+      "id": "ab2026a",
+      "publisher": "American Banker",
+      "title": "Citizens, Frost blame vendor after data breach claim",
+      "date": "2026-04-22",
+      "url": "https://www.americanbanker.com/news/citizens-frost-blame-vendor-after-data-breach-claim"
+    },
+    {
+      "id": "ab2026b",
+      "publisher": "American Banker",
+      "title": "Customers sue Citizens, Frost over third-party data breach",
+      "date": "2026-04-29",
+      "url": "https://www.americanbanker.com/news/customers-sue-citizens-frost-over-third-party-data-breach"
+    },
+    {
+      "id": "caag2026",
+      "publisher": "California Attorney General",
+      "title": "Notification of Data Breach from Citizens",
+      "date": "2026-10",
+      "url": "https://oag.ca.gov/system/files/Citizens%20Bank%20-%20Breach_Notice.pdf"
+    },
+    {
+      "id": "cfpb2023",
+      "publisher": "Consumer Financial Protection Bureau",
+      "title": "CFPB Action to Require Citizens Bank to Pay $9 Million Penalty for Unlawful Credit Card Servicing",
+      "date": "2023-05-23",
+      "url": "https://www.consumerfinance.gov/about-us/newsroom/cfpb-action-require-citizens-bank-pay-9-million-unlawful-credit-card-servicing/"
+    }
+  ]
+}

@@ -104,7 +104,7 @@ module.exports = {
       keyName: "serious incidents",
       max: 2.5,
       intro:
-        "An incident counts if customers' personal data was exposed, stolen or handed to the wrong people, or if a regulator or court fined or ordered the bank over privacy or data security. It also has to have been reported by a national news outlet or published by a regulator. Fines about other things, like money laundering, are listed but don't count.",
+        "An incident counts if customers' personal data was exposed, stolen or handed to the wrong people, or if a regulator or court fined or ordered the bank over privacy or data security. It also has to have made the news: reported by a national news outlet, or the subject of a fine, order or charges published by a regulator, court or prosecutor. A breach notice the bank filed with a regulator doesn't count on its own. Fines about other things, like money laundering, are listed but don't count.",
       incidents: {
         windowYears: 10,
         // incidents older than this count half
