@@ -1,0 +1,379 @@
+{
+  "slug": "lloyds-bank",
+  "name": "Lloyds Bank",
+  "region": "UK",
+  "country": "United Kingdom",
+  "type": "High street bank",
+  "checked": "2026-11-21",
+  "scope": "The privacy notice on Lloyds' personal banking website, which Lloyds Banking Group uses for its companies that provide products under the Lloyds name, including Bank of Scotland. Incidents count anywhere in the Lloyds Banking Group if they involve the Lloyds name.",
+  "policy": {
+    "title": "Data privacy notice",
+    "source": "notice"
+  },
+  "checks": {
+    "A1": {
+      "result": "no",
+      "finding": "The notice doesn't say that Lloyds gives your details to companies outside the group for their own marketing. None of the groups it says it shares data with is described as getting it for that.",
+      "where": "Who we share your personal information with",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A2": {
+      "result": "optout",
+      "finding": "Lloyds decides what marketing you get using what you tell it and the data it collects when you use its services, and it lists payment and transaction details among that data. The reasons it gives are your consent or its legitimate interests, and you can ask it to stop. Cashback offers from shops, picked from where you have shopped, only start after you register for Offers, and you can opt out of them in the app or online banking.",
+      "where": "How we work out what marketing you receive; Rewards FAQs",
+      "sources": [
+        "notice",
+        "offers"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "The notice lists advertisers and technology providers you use, such as websites and social media, among the companies it shares data with. It says this is so you see marketing that may interest you, and so it can find new customers who are like you. It doesn't say which details it sends or whether they are scrambled first. The reasons it gives for marketing are your consent or its legitimate interests, and it says you can ask it to stop.",
+      "where": "Who we share your personal information with; How we work out what marketing you receive",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A4": {
+      "result": "never",
+      "quote": "not to sell your personal information",
+      "finding": "This is one of the promises Lloyds lists at the start of the notice.",
+      "where": "Introduction",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A5": {
+      "result": "sells",
+      "finding": "The notice says Lloyds may share or sell information to organisations outside the group after it has removed personal details. Its examples are groups such as types of customers in one area who shop for clothes, and patterns of spending habits. It says this helps those organisations learn about the types of customers they have.",
+      "where": "Sharing information that doesn't reveal your identity",
+      "sources": [
+        "notice"
+      ]
+    },
+    "C1": {
+      "result": "pending",
+      "finding": "Not measured yet. We count trackers in a real browser, and this check is still to be done."
+    },
+    "C2": {
+      "count": 6,
+      "finding": "Exodus Privacy found six tracking tools in version 128.02 of the Android app: Adobe Experience Cloud, AppDynamics, Google Analytics, Google Firebase Analytics, Google Tag Manager and Qualtrics. None of them is a tool that only reports crashes, so all six count.",
+      "where": "Exodus report of 7 January 2024, the newest we could find",
+      "sources": [
+        "exodus"
+      ]
+    },
+    "C3": {
+      "result": "pending",
+      "finding": "Not checked yet. This is checked in a real browser together with the tracker count."
+    },
+    "C4": {
+      "result": "sms",
+      "finding": "To log in to online banking on the website you enter your user ID, your password and three characters of your memorable information. For the extra check, Lloyds texts you a passcode, or calls you and asks you to say a code shown on the screen. You can also mark a device you use often as trusted. The help pages don't mention approving the login in the app or using a card reader.",
+      "sources": [
+        "logon",
+        "security"
+      ]
+    },
+    "D1": {
+      "result": "specific",
+      "finding": "Lloyds says that in most cases it keeps your data for up to seven years after you stop having a product or service. It may keep it longer, for example where the law means it can't delete it. Fraud prevention agencies may keep data for up to six years.",
+      "where": "How long we keep your personal information",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "It lists the types of organisations it shares with, and names some of them: the credit reference agencies TransUnion, Equifax and Experian, and the card networks Visa and Mastercard.",
+      "where": "Who we share your personal information with",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D3": {
+      "result": "both",
+      "finding": "It explains the decisions it makes automatically, including credit scoring, fraud checks, opening accounts and pricing. It says you can object to an automated decision and ask for a person to review it.",
+      "where": "How we use your information to make automated decisions; Your data privacy rights",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D4": {
+      "result": "yes",
+      "finding": "It says some of its systems learn from your information so that its automated decisions stay accurate and fair. It also gives training systems that learn from data as one of the ways it uses your information.",
+      "where": "How we use your information to make automated decisions",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E1": {
+      "result": "online",
+      "finding": "The notice says you can manage your marketing choices in online banking or the mobile app, or at a branch, and that you can tell Lloyds to stop sending you marketing at any time.",
+      "where": "Your data privacy rights",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E2": {
+      "result": "online",
+      "finding": "You can ask for a copy of your data with an online form on the Lloyds website, or print a paper form and post it. Lloyds says it answers within one month, or up to three months for complex requests.",
+      "where": "How to contact us; What personal information do we have about you?",
+      "sources": [
+        "notice",
+        "dsar"
+      ]
+    }
+  },
+  "sharing": [
+    {
+      "who": "Fraud prevention agencies",
+      "what": "Name, date of birth, addresses, contact and financial details, product details and device details such as your IP address",
+      "why": "Checking who you are and stopping fraud and money laundering",
+      "reasons": [
+        "legal"
+      ],
+      "basis": "Legal duty or legitimate interests"
+    },
+    {
+      "who": "Police, courts, tax offices, regulators, government and the deposit guarantee scheme",
+      "what": "What each of them needs",
+      "why": "To obey the rules that apply to the bank",
+      "reasons": [
+        "legal"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Credit reference agencies: TransUnion, Equifax and Experian",
+      "what": "Identity details, credit applications, account balances and repayment records",
+      "why": "Checking who you are and what you can afford, stopping financial crime, managing accounts, collecting debts and making sure offers suit you",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Card networks such as Visa and Mastercard, and the Direct Debit scheme",
+      "what": "Card payment and Direct Debit details",
+      "why": "To make card payments and Direct Debits work",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Suppliers, agents, advisers, insurers and debt collectors",
+      "what": "What each needs for its job. Insurance claims go on registers shared with other insurers",
+      "why": "Running accounts, policies and services, handling claims, reducing fraud and collecting debts",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Joint account holders and others linked to a product you share",
+      "what": "Details of the shared product",
+      "why": "Running the product you share",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Other Lloyds Banking Group companies",
+      "what": "Information held across the group's brands",
+      "why": "Keeping records accurate, showing your products from different brands in one place and providing services",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Partners and introducers, such as shops, car dealers, brokers and price comparison sites",
+      "what": "The details needed for the deal or application",
+      "why": "Finance deals offered through them, and applications they send to the bank",
+      "reasons": [
+        "commercial",
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Loyalty schemes and benefit providers, for example for travel insurance or discounts",
+      "what": "What the scheme or benefit needs",
+      "why": "Giving you the rewards and benefits that come with a product",
+      "reasons": [
+        "commercial",
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Market researchers and analytics companies",
+      "what": "Your feedback, sometimes combined with other data, and reports on general patterns",
+      "why": "Understanding what customers think and improving the business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Advertisers and technology providers you use, such as websites and social media",
+      "what": "Not listed",
+      "why": "Showing you marketing that may interest you, and finding new customers who are like you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Consent or legitimate interests, the reasons the notice gives for marketing"
+    },
+    {
+      "who": "Organisations outside the group that get data with personal details removed",
+      "what": "Groups of customers and patterns of spending, which the notice says don't identify you",
+      "why": "Helping them learn about the types of customers they have",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Buyers in a merger, takeover or transfer of products",
+      "what": "The customer data that goes with it",
+      "why": "If part of the business or a product moves to another company",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Shops in Offers, the cashback service, and the companies that help run it",
+      "what": "Limited details of your purchase when you use an offer",
+      "why": "Cashback offers, only if you register for Offers",
+      "reasons": [
+        "choice",
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Open banking providers and payment apps you choose to use",
+      "what": "What you ask to share, and payment details for payments made through them",
+      "why": "Open banking and payments you ask for",
+      "reasons": [
+        "choice"
+      ],
+      "basis": ""
+    }
+  ],
+  "sharingSources": [
+    "notice",
+    "offers"
+  ],
+  "incidents": [
+    {
+      "date": "2026-03",
+      "when": "March 2026",
+      "title": "App glitch showed customers other people's transactions",
+      "summary": "On 12 March 2026, a fault in an overnight software update meant some Lloyds, Halifax and Bank of Scotland app users could see other people's transactions. Lloyds told Parliament's Treasury Committee that 446,915 customers were affected, after first giving a figure of 447,936. Of these, 107,937 clicked on other people's transactions and may have seen more, such as account details, National Insurance numbers and payment references. Lloyds later said another 80,508 joint account holders may have had their transactions seen. It paid compensation for distress and inconvenience, and said it had found no customer who lost money.",
+      "people": 446915,
+      "level": 2,
+      "levelWhy": "More than 10,000 people affected",
+      "sources": [
+        "stv2026a",
+        "stv2026b"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2020-06-11",
+      "when": "June 2020",
+      "what": "The Financial Conduct Authority fined Lloyds Bank, Bank of Scotland and The Mortgage Business a total of £64,046,800 for how they treated mortgage customers who had fallen behind on payments between 2011 and 2015.",
+      "why": "About how customers in mortgage arrears were treated, not privacy",
+      "sources": [
+        "fca2020"
+      ]
+    },
+    {
+      "date": "2021-07-08",
+      "when": "July 2021",
+      "what": "The Financial Conduct Authority fined four Lloyds Banking Group insurance companies, including Lloyds Bank General Insurance, a total of £90,688,400 over misleading wording in home insurance renewal letters.",
+      "why": "About misleading insurance letters, not privacy",
+      "sources": [
+        "fca2021"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "notice",
+      "publisher": "Lloyds Bank",
+      "title": "Data privacy notice",
+      "date": "2025-06",
+      "dateLabel": "last updated June 2025",
+      "url": "https://www.lloydsbank.com/help-guidance/legal-information/privacy/data-privacy-notice.html"
+    },
+    {
+      "id": "offers",
+      "publisher": "Lloyds Bank",
+      "title": "Rewards FAQs",
+      "url": "https://www.lloydsbank.com/help-guidance/everyday-banking/mobile-banking-app/rewards/faqs.html"
+    },
+    {
+      "id": "dsar",
+      "publisher": "Lloyds Bank",
+      "title": "What personal information do we have about you?",
+      "url": "https://www.lloydsbank.com/help-guidance/legal-information/privacy/personal-information-we-have.html"
+    },
+    {
+      "id": "exodus",
+      "publisher": "Exodus Privacy",
+      "title": "Report for com.grppl.android.shell.CMBlloydsTSB73 128.02",
+      "date": "2024-01-07",
+      "url": "https://reports.exodus-privacy.eu.org/en/reports/402148"
+    },
+    {
+      "id": "logon",
+      "publisher": "Lloyds Bank",
+      "title": "Log in",
+      "url": "https://lloydsbank.com/online-banking/log-on-guide.html"
+    },
+    {
+      "id": "security",
+      "publisher": "Lloyds Bank",
+      "title": "Extra security when you shop and bank online",
+      "url": "https://www.lloydsbank.com/help-guidance/everyday-banking/payments-and-transfers/security-checks.html"
+    },
+    {
+      "id": "stv2026a",
+      "publisher": "STV News, from PA Media",
+      "title": "Nearly half a million Lloyds customers hit by data breach after IT glitch",
+      "date": "2026-03-27",
+      "url": "https://news.stv.tv/world/nearly-half-a-million-lloyds-customers-hit-by-data-breach-after-it-glitch"
+    },
+    {
+      "id": "stv2026b",
+      "publisher": "STV News, from PA Media",
+      "title": "Lloyds reveals another 80,500 may have been impacted by IT glitch",
+      "date": "2026-04-28",
+      "url": "https://news.stv.tv/scotland/lloyds-reveals-another-80500-may-have-been-impacted-by-it-glitch"
+    },
+    {
+      "id": "fca2020",
+      "publisher": "Financial Conduct Authority",
+      "title": "FCA fines Lloyds Bank, Bank of Scotland and The Mortgage Business £64,046,800 for failures in mortgage arrears handling",
+      "date": "2020-06-11",
+      "url": "https://fca.org.uk/news/press-releases/fca-fines-lloyds-bank-bank-scotland-mortgage-business-failures-mortgage-arrears"
+    },
+    {
+      "id": "fca2021",
+      "publisher": "Financial Conduct Authority",
+      "title": "FCA fines LBGI £90 million for failures in communications for home insurance renewals between 2009 and 2017",
+      "date": "2021-07-08",
+      "url": "https://www.fca.org.uk/news/press-releases/fca-fines-lbgi-90-million-failures-communications-home-insurance-renewals-2009-2017"
+    }
+  ]
+}

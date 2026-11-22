@@ -39,7 +39,7 @@ module.exports = {
       keyName: "sharing and selling",
       max: 3,
       intro:
-        "Only sharing for commercial reasons can lose points. Sharing the law requires, or that is needed to run your account, is listed on each bank's page but costs nothing. Anonymous data counts too: selling it, or giving it to other companies for their business, loses points even when your name has been taken out.",
+        "Only sharing for commercial reasons can lose points. Sharing the law requires, or that is needed to run your account, is listed but costs nothing. Anonymous data counts too: selling it, or giving it to other companies for their business, loses points even when your name has been taken out.",
       checks: [
         {
           id: "A1",

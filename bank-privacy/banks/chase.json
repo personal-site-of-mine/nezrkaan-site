@@ -1,0 +1,444 @@
+{
+  "slug": "chase",
+  "name": "Chase",
+  "region": "US",
+  "country": "United States",
+  "type": "National bank",
+  "checked": "2026-11-21",
+  "scope": "Chase's U.S. Consumer Privacy Notice and Online Privacy Policy, plus its California privacy notice. Incidents count anywhere in the JPMorgan Chase group if they involve the Chase or JPMorgan name.",
+  "policy": {
+    "title": "U.S. Consumer Privacy Notice",
+    "source": "table"
+  },
+  "checks": {
+    "A1": {
+      "result": "optout",
+      "finding": "Chase shares your information with companies outside its group, such as retailers, car dealers, car makers and membership clubs, so they can market to you. You can limit this online at chase.com/privacypreferences or by phone. Accounts with a California or Vermont address are treated as if you had limited it.",
+      "where": "Reasons we can share your personal information; Other important information",
+      "sources": [
+        "table"
+      ]
+    },
+    "A2": {
+      "result": "yes",
+      "finding": "Chase says the ads you see in its online services, for its own products or other companies' products, are often based on the accounts you hold, your transactions and where you bank. The only opt-out it describes is for certain Chase ads on other websites, and it says you may still get ads from Chase after that. The U.S. notice says you can't limit sharing for Chase's own marketing.",
+      "where": "Online advertising; Opting out of OBA",
+      "sources": [
+        "online",
+        "table"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "Chase's California notice says it may share identifiers and internet activity with marketing partners for cross-context behavioural advertising, which means ads based on what you do on other websites and apps. California residents may opt out, and Chase honours the Global Privacy Control signal that some browsers send. The online policy says ad companies Chase works with may set cookies, and points to an industry opt-out.",
+      "where": "CCPA Disclosure; Online advertising",
+      "sources": [
+        "ccpa",
+        "online"
+      ]
+    },
+    "A4": {
+      "result": "never",
+      "quote": "we do not sell personal information as defined by the CCPA",
+      "finding": "This is in Chase's California notice, which adds that it has not sold personal information in the last 12 months. The online policy doesn't mention selling.",
+      "where": "CCPA Disclosure",
+      "sources": [
+        "ccpa",
+        "online"
+      ]
+    },
+    "A5": {
+      "result": "yes",
+      "finding": "The online policy says Chase may share anonymous or combined (aggregated) information with other companies, to tailor products, services and content for users of its online services, and for other purposes. It doesn't say whether Chase sells such data.",
+      "where": "Disclosure of Information",
+      "sources": [
+        "online"
+      ]
+    },
+    "C1": {
+      "result": "pending",
+      "finding": "Not measured yet. We count trackers in a real browser, and this check is still to be done."
+    },
+    "C2": {
+      "count": 1,
+      "finding": "Exodus Privacy found one tracking tool in version 4.572 of the Chase Android app: Split, which Exodus lists as an analytics tool. It counts.",
+      "where": "Exodus report of 28 October 2024, the newest we could find",
+      "sources": [
+        "exodus"
+      ]
+    },
+    "C3": {
+      "result": "pending",
+      "finding": "Not checked yet. This is checked in a real browser together with the tracker count."
+    },
+    "C4": {
+      "result": "strong",
+      "finding": "Chase says its website works with passkeys, which let you log in with your phone or computer instead of a password. When you sign in for the first time, or Chase sees unusual activity, it checks it's you with a notification in the Chase app or a one-time code.",
+      "sources": [
+        "security"
+      ]
+    },
+    "D1": {
+      "result": "none",
+      "finding": "The online policy doesn't say how long data is kept. The California notice says data is kept only for the minimum period necessary, judged by things like your ongoing relationship with Chase and legal time limits, but it gives no periods in years or months.",
+      "where": "CCPA Disclosure, retention",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "The U.S. notice names some Chase group companies, such as J.P. Morgan Securities and The Infatuation, and gives types of outside companies it shares with, such as retailers, car dealers and insurance companies. The California notice lists clear types, including credit reporting agencies, anti-fraud services and payment services providers.",
+      "where": "Definitions; CCPA Disclosure",
+      "sources": [
+        "table",
+        "ccpa"
+      ]
+    },
+    "D3": {
+      "result": "none",
+      "finding": "None of the notices describes decisions made about you automatically, or how to ask a person to look at one again. The California notice mentions profiles built from conclusions about your preferences, but not automated decisions.",
+      "sources": [
+        "table",
+        "online",
+        "ccpa"
+      ]
+    },
+    "D4": {
+      "result": "no",
+      "finding": "The online policy and the California notice don't mention artificial intelligence, machine learning or models.",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "E1": {
+      "result": "online",
+      "finding": "Chase's promotional emails include instructions for stopping them. Signed-in customers can stop Chase group companies and outside companies using their information to market to them at chase.com/privacypreferences, or by phone. The Nevada section of the U.S. notice explains how to join Chase's do-not-call list by phone, post or email.",
+      "where": "General policy information FAQs; To limit our sharing",
+      "sources": [
+        "faq",
+        "table"
+      ]
+    },
+    "E2": {
+      "result": "online",
+      "finding": "California residents can ask for the personal information Chase holds about them with an online request form or by phone. The online policy doesn't describe a way for other customers to get a copy of their data. It says signed-in customers can review and update some account details.",
+      "where": "CCPA Disclosure; Updating Your Information",
+      "sources": [
+        "ccpa",
+        "online"
+      ]
+    }
+  },
+  "context": [
+    {
+      "text": "In April 2024, Chase launched Chase Media Solutions, a business that lets brands target Chase customers with ads and offers, using Chase's own data on what its customers buy.",
+      "sources": [
+        "cms2024"
+      ]
+    }
+  ],
+  "sharing": [
+    {
+      "who": "Government, legal and regulatory authorities, and others where the law requires",
+      "what": "Whatever the law or request requires",
+      "why": "To comply with the law",
+      "reasons": [
+        "legal"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Payment companies, credit bureaus, courts and investigators",
+      "what": "Your personal information, as needed. You can't limit this.",
+      "why": "Processing your transactions, running your accounts, answering court orders and legal investigations, and reporting to credit bureaus",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": "For our everyday business purposes"
+    },
+    {
+      "who": "Service providers, such as payment services, shipping companies, anti-fraud services, data aggregation services, accountants, auditors and lawyers",
+      "what": "What each needs for its job",
+      "why": "To provide services to Chase",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Chase's own marketing to you",
+      "what": "Your personal information. You can't limit this.",
+      "why": "To offer you Chase products and services",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our marketing purposes"
+    },
+    {
+      "who": "Other financial companies Chase markets with, such as insurance companies",
+      "what": "Your personal information. You can't limit this. With a Vermont address, only your name, contact details and transaction information.",
+      "why": "Marketing financial products together",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For joint marketing with other financial companies"
+    },
+    {
+      "who": "Chase and J.P. Morgan group companies, such as J.P. Morgan Securities, The Infatuation and the Frosch travel companies",
+      "what": "Information about your transactions and experiences, which you can't limit, and about your creditworthiness, which you can limit",
+      "why": "The group companies' everyday business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates' everyday business purposes"
+    },
+    {
+      "who": "Chase and J.P. Morgan group companies",
+      "what": "Your personal information. You can limit this.",
+      "why": "So they can market to you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates to market to you"
+    },
+    {
+      "who": "Companies outside the group, such as retailers, car dealers, car makers and membership clubs",
+      "what": "Your personal information. You can limit this. Accounts with a California or Vermont address are treated as limited.",
+      "why": "So they can market to you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For nonaffiliates to market to you"
+    },
+    {
+      "who": "Marketing partners and ad companies",
+      "what": "Identifiers and internet activity, partly collected with cookies. California residents can opt out.",
+      "why": "Ads based on what you do on other websites and apps",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Other companies",
+      "what": "Anonymous or combined (aggregated) information",
+      "why": "To tailor products, services and content for users of Chase's online services, and for other purposes",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Buyers in a sale, transfer or reorganisation of a business",
+      "what": "The customer records that go with it",
+      "why": "If Chase sells or reorganises a business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Companies behind co-branded products you ask for, and anyone you tell Chase to share with",
+      "what": "What the product or request needs",
+      "why": "When you ask for it or agree",
+      "reasons": [
+        "choice"
+      ],
+      "basis": "Your request or consent"
+    }
+  ],
+  "sharingSources": [
+    "table",
+    "online",
+    "ccpa"
+  ],
+  "incidents": [
+    {
+      "date": "2018-02-22",
+      "when": "February 2018",
+      "title": "Glitch showed customers other people's accounts",
+      "summary": "On the evening of 21 February 2018, some customers who logged in to Chase.com or the Chase app saw details of another customer's accounts, such as balances. Chase said it was its own error, not a hack, and that a limited number of customers were affected. It did not give a number.",
+      "level": 1,
+      "levelWhy": "Account details shown to others, no number given",
+      "sources": [
+        "bloomberg2018",
+        "krebs2018"
+      ]
+    },
+    {
+      "date": "2021-08",
+      "when": "August 2021",
+      "title": "Glitch showed customers other people's account records",
+      "summary": "Chase wrote to customers that a technical problem in its app and website may have let some of them see other customers' account information between 24 May and 14 July 2021. The information may have included names, account numbers, balances and transactions. Chase's letter was posted on the Montana attorney general's website. Chase did not say how many people were affected, and offered a free year of credit monitoring.",
+      "level": 2,
+      "levelWhy": "Full account records shown to others",
+      "sources": [
+        "dive2021"
+      ]
+    },
+    {
+      "date": "2024-05",
+      "when": "May 2024",
+      "title": "Software problem exposed retirement plan records",
+      "summary": "A software problem at JPMorgan, running since August 2021, let three system administrators who worked for its business clients, or their agents, see retirement plan records they were not entitled to see. 451,809 people were affected. The records included names, addresses, Social Security numbers, bank routing and account numbers and payment amounts. JPMorgan said it fixed the problem, reported it to the Maine attorney general and offered two years of identity protection.",
+      "people": 451809,
+      "level": 2,
+      "levelWhy": "More than 10,000 people affected",
+      "sources": [
+        "entre2024",
+        "plansponsor2024"
+      ]
+    },
+    {
+      "date": "2026-11-19",
+      "when": "November 2026",
+      "title": "Hackers took customer data from Chase's suppliers",
+      "summary": "Chase said attackers hit outside companies that provide services to it and took marketing data that may include some customers' names and email addresses. News reports said phone numbers were also leaked in some cases, and that a criminal group called n0n published the data online. Researchers at Cybernews counted about 16,000 customer email addresses and Chase account IDs in the published file, which appears to relate to Chase's invitation-only Reserve card. Chase said the data did not include card details or other highly sensitive information, and that it would offer affected customers free credit monitoring.",
+      "people": 16000,
+      "level": 2,
+      "levelWhy": "About 16,000 customers, by researchers' count",
+      "sources": [
+        "globe2026",
+        "tnw2026"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2020-09-29",
+      "when": "September 2020",
+      "what": "JPMorgan Chase agreed to pay a record 920 million dollars to settle US investigations into its traders' practices in the metals and US government bond markets.",
+      "why": "About market manipulation, not privacy",
+      "sources": [
+        "cnbc2020"
+      ]
+    },
+    {
+      "date": "2024-03-14",
+      "when": "March 2024",
+      "what": "The Federal Reserve and the Office of the Comptroller of the Currency, two US bank regulators, fined JPMorgan Chase a total of 348.2 million dollars for weak oversight of trading by the firm and its clients from 2014 to 2023.",
+      "why": "About oversight of trading, not privacy",
+      "sources": [
+        "cnbc2024"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "table",
+      "publisher": "Chase",
+      "title": "U.S. Consumer Privacy Notice",
+      "date": "2026-11",
+      "dateLabel": "last updated November 2026",
+      "url": "https://www.chase.com/digital/resources/privacy-security/privacy/consumer-privacy-notice"
+    },
+    {
+      "id": "online",
+      "publisher": "Chase",
+      "title": "Online Privacy Policy",
+      "date": "2023-09",
+      "dateLabel": "last updated September 2023",
+      "url": "https://chase.com/digital/resources/privacy-security/privacy/online-privacy-policy"
+    },
+    {
+      "id": "ccpa",
+      "publisher": "Chase",
+      "title": "California Consumer Privacy Act (CCPA) Disclosure and Notice at Collection",
+      "date": "2025-12",
+      "dateLabel": "last updated December 2025",
+      "url": "https://www.chase.com/digital/resources/privacy-security/privacy/ca-consumer-privacy-act"
+    },
+    {
+      "id": "faq",
+      "publisher": "Chase",
+      "title": "General policy information FAQs",
+      "url": "https://www.chase.com/digital/resources/privacy-security/questions/"
+    },
+    {
+      "id": "exodus",
+      "publisher": "Exodus Privacy",
+      "title": "Report for com.chase.sig.android 4.572",
+      "date": "2024-10-28",
+      "url": "https://reports.exodus-privacy.eu.org/en/reports/517957"
+    },
+    {
+      "id": "security",
+      "publisher": "Chase",
+      "title": "How we protect you",
+      "url": "https://chase.com/digital/resources/privacy-security/security/how-we-protect-you"
+    },
+    {
+      "id": "bloomberg2018",
+      "publisher": "Bloomberg",
+      "title": "JPMorgan Glitch Gave Customers Access to Others' Online Accounts",
+      "date": "2018-02-22",
+      "url": "https://www.bloomberg.com/news/articles/2018-02-22/jpmorgan-glitch-gave-customers-access-to-others-online-accounts"
+    },
+    {
+      "id": "krebs2018",
+      "publisher": "KrebsOnSecurity",
+      "title": "Chase 'Glitch' Exposed Customer Accounts",
+      "date": "2018-02-22",
+      "url": "https://krebsonsecurity.com/2018/02/chase-glitch-exposed-customer-accounts/"
+    },
+    {
+      "id": "dive2021",
+      "publisher": "Banking Dive",
+      "title": "JPMorgan Chase glitch let customers see other users' data",
+      "date": "2021-08-23",
+      "url": "https://www.bankingdive.com/news/jpmorgan-chase-glitch-let-customers-see-other-users-data/605383/"
+    },
+    {
+      "id": "entre2024",
+      "publisher": "Entrepreneur",
+      "title": "The Largest Bank in the U.S. Recently Disclosed a Massive Security Flaw, Affecting Nearly Half a Million Retirement Customers",
+      "date": "2024-05-06",
+      "url": "https://www.entrepreneur.com/business-news/jpmorgan-fixes-security-flaw-affects-450k-retirement-plans/473739"
+    },
+    {
+      "id": "plansponsor2024",
+      "publisher": "PlanSponsor",
+      "title": "J.P. Morgan Data Breach Exposes 451,000 Plan Participants' Information",
+      "url": "https://plansponsor.com/j-p-morgan-data-breach-exposes-451000-plan-participants-information"
+    },
+    {
+      "id": "globe2026",
+      "publisher": "The Boston Globe",
+      "title": "A cyberattack leaks thousands of Chase customer emails and some phone numbers",
+      "date": "2026-11-19",
+      "url": "https://www.bostonglobe.com/2026/11/19/business/chase-cyberattack-leaks-emails-phone-numbers/"
+    },
+    {
+      "id": "tnw2026",
+      "publisher": "The Next Web",
+      "title": "Chase, Visa and Mastercard confirm vendor hacks as n0n leaks customer data",
+      "date": "2026-11-19",
+      "url": "https://thenextweb.com/news/jpmorgan-chase-visa-mastercard-vendor-breach-n0n-leak"
+    },
+    {
+      "id": "cms2024",
+      "publisher": "Chase",
+      "title": "Chase Launches Chase Media Solutions, a New Digital Media Business, Connecting 80 Million U.S. Consumers with the Brands They Love",
+      "date": "2024-04-03",
+      "url": "https://media.chase.com/news/chase-launches-chase-media-solutions"
+    },
+    {
+      "id": "cnbc2020",
+      "publisher": "CNBC",
+      "title": "JPMorgan Chase to pay record $920 million to resolve U.S. investigations into trading practices",
+      "date": "2020-09-29",
+      "url": "https://www.cnbc.com/amp/2020/09/29/jpmorgan-chase-to-pay-920-million-to-resolve-us-investigations-into-trading-practices-.html"
+    },
+    {
+      "id": "cnbc2024",
+      "publisher": "CNBC",
+      "title": "JPMorgan to pay nearly $350 million in penalties for inadequate trade reporting",
+      "date": "2024-03-14",
+      "url": "https://www.cnbc.com/2024/03/14/jpmorgan-to-pay-nearly-350-million-in-penalties-for-inadequate-trade-reporting-.html"
+    }
+  ]
+}

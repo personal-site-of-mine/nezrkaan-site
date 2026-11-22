@@ -1,0 +1,342 @@
+{
+  "slug": "metro-bank",
+  "name": "Metro Bank",
+  "region": "UK",
+  "country": "United Kingdom",
+  "type": "High street bank",
+  "checked": "2026-11-21",
+  "scope": "Metro Bank's privacy notice for personal customers in the UK. Incidents count anywhere in the Metro Bank group if they involve the Metro Bank name.",
+  "policy": {
+    "title": "Privacy Notice",
+    "source": "notice"
+  },
+  "checks": {
+    "A1": {
+      "result": "consent",
+      "finding": "If you have agreed, Metro may share your information with carefully chosen organisations so they can tell you about their own products and services. The notice gives no such sharing without your agreement.",
+      "where": "Section 3",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A2": {
+      "result": "no",
+      "finding": "The notice doesn't say Metro uses your transactions or account activity to choose the marketing or offers you see. It says Metro analyses customer preferences and transactions to improve its products and services, and sends marketing in line with your preferences.",
+      "where": "Sections 3 and 14",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "Metro may give some of your details, such as your email address, to advertising partners and social media companies in a scrambled (hashed) form. They use it to show you Metro's marketing, to find new customers like you, and to stop showing ads to existing customers. The reason given is Metro's legitimate interests, and the notice says you can tell Metro not to.",
+      "where": "Sections 3, 11 and 14",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A4": {
+      "result": "sells",
+      "quote": "Where you have consented we may also sell or exchange your data",
+      "finding": "The notice says Metro may sell or exchange your data, but only if you have agreed. It doesn't say it never sells personal data.",
+      "where": "Section 3",
+      "sources": [
+        "notice"
+      ]
+    },
+    "A5": {
+      "result": "silent",
+      "finding": "The notice doesn't mention anonymous, aggregated or de-identified data. It only says Metro uses personal data for research and statistics to improve its services.",
+      "where": "Section 3",
+      "sources": [
+        "notice"
+      ]
+    },
+    "C1": {
+      "result": "pending",
+      "finding": "Not measured yet. We count trackers in a real browser, and this check is still to be done."
+    },
+    "C2": {
+      "result": "pending",
+      "finding": "We couldn't find an Exodus Privacy report for the Metro Bank Android app (uk.co.metrobankonline.mobile.android.production), so the tracking tools in the app are not counted yet.",
+      "sources": [
+        "mobile"
+      ]
+    },
+    "C3": {
+      "result": "pending",
+      "finding": "Not checked yet. This is checked in a real browser together with the tracker count."
+    },
+    "C4": {
+      "result": "sms",
+      "finding": "Personal customers log in to Online Banking with an 8-digit security number and a password. For some actions, such as first payments and changes to the account, Metro sends a one-time passcode by text message. The Metro Bank Authenticator app and the security device are only for business customers.",
+      "where": "Strong Customer Authentication help page; Mobile banking page",
+      "sources": [
+        "sca",
+        "mobile"
+      ]
+    },
+    "D1": {
+      "result": "partial",
+      "finding": "The notice doesn't say how long Metro keeps your main records after you leave, only that it keeps them as long as the law and regulators require. Where it keeps data for other reasons, the limit is seven years. Recordings of calls, video calls and messages are kept for up to three years, and CCTV for up to 90 days.",
+      "where": "Sections 2, 16 and 17",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "It lists clear types of recipients, such as credit reference agencies, fraud prevention agencies, payment processors, debt collectors and social media platforms. It links to the notices of the credit reference agencies Equifax, Experian and TransUnion, and the fraud prevention agency Cifas.",
+      "where": "Sections 11 and 13",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D3": {
+      "result": "both",
+      "finding": "It describes decisions made automatically about pricing, fraud checks, opening accounts and approving credit. It says you can ask for a person to review an automated decision and challenge it.",
+      "where": "Sections 9 and 14",
+      "sources": [
+        "notice"
+      ]
+    },
+    "D4": {
+      "result": "no",
+      "finding": "The notice doesn't mention artificial intelligence or machine learning. It only refers to automated decisions and credit scoring.",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E1": {
+      "result": "offline",
+      "finding": "The notice says you can always opt out of marketing and object to direct marketing. The ways it gives are calling 0345 08 08 500, writing to Metro, or visiting a store. It doesn't describe a setting in the app or online banking.",
+      "where": "Sections 3 and 9",
+      "sources": [
+        "notice"
+      ]
+    },
+    "E2": {
+      "result": "offline",
+      "finding": "You ask for a copy of your data by calling Metro, writing to its Data Protection Officer by post or email, or visiting a store. Metro has one calendar month to answer. The notice doesn't describe an online form.",
+      "where": "Sections 1 and 9",
+      "sources": [
+        "notice"
+      ]
+    }
+  },
+  "sharing": [
+    {
+      "who": "Fraud prevention agencies, such as Cifas",
+      "what": "The personal information Metro has collected from you",
+      "why": "Stopping fraud and money laundering, and checking who you are",
+      "reasons": [
+        "legal"
+      ],
+      "basis": "Legal obligations, public interest and legitimate interests"
+    },
+    {
+      "who": "Tax offices, regulators, government bodies, the Insolvency Service and law enforcement",
+      "what": "Not listed",
+      "why": "Meeting legal and regulatory duties and stopping crime",
+      "reasons": [
+        "legal"
+      ],
+      "basis": "Legal obligations, public interest and legitimate interests"
+    },
+    {
+      "who": "Credit reference agencies: Equifax, Experian and TransUnion",
+      "what": "Not listed",
+      "why": "Checking who you are and deciding on credit",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": "Legal obligations and legitimate interests"
+    },
+    {
+      "who": "Service providers and subcontractors, including Metro Bank group companies: payment processors, debt collectors, IT, email and web analytics",
+      "what": "Not listed",
+      "why": "To provide services to you or to Metro",
+      "reasons": [
+        "account"
+      ],
+      "basis": "Contract"
+    },
+    {
+      "who": "Other people on your account, such as joint account holders",
+      "what": "Not listed",
+      "why": "Running a shared account",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Other banks and financial institutions",
+      "what": "Not listed",
+      "why": "When you ask, or to confirm who you are when they are stopping or looking into financial crime",
+      "reasons": [
+        "account",
+        "choice"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Insurers, lawyers, auditors, consultants and other advisers",
+      "what": "Not listed",
+      "why": "Not stated",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Advertisers, technology providers, social media platforms, and makers of apps and smart devices",
+      "what": "Some details, such as your email address, hashed",
+      "why": "Showing you Metro's marketing, finding new customers like you, and not showing ads to existing customers",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "Legitimate interests, which the notice says are telling people about Metro's products and services"
+    },
+    {
+      "who": "Carefully chosen organisations, if you agree",
+      "what": "Your information. The notice says Metro may sell or exchange your data with your consent",
+      "why": "So they can tell you about their products and services",
+      "reasons": [
+        "commercial",
+        "choice"
+      ],
+      "basis": "Consent"
+    },
+    {
+      "who": "Possible buyers of the company",
+      "what": "Relevant information",
+      "why": "If Metro Bank may be sold",
+      "reasons": [
+        "commercial",
+        "legal"
+      ],
+      "basis": "Legal obligations and legitimate interests"
+    },
+    {
+      "who": "Selected companies in Metro's referral scheme",
+      "what": "Not listed",
+      "why": "If you use Metro's referral to get discounts on their services",
+      "reasons": [
+        "choice"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Apps and services you move your banking data to or from",
+      "what": "Your banking data",
+      "why": "When you use Metro's feature to import or export your banking data",
+      "reasons": [
+        "choice"
+      ],
+      "basis": ""
+    }
+  ],
+  "sharingSources": [
+    "notice"
+  ],
+  "incidents": [
+    {
+      "date": "2019-01-31",
+      "when": "January 2019",
+      "title": "Criminals intercepted security codes sent by text",
+      "summary": "Criminals used a weakness in the global phone network, known as SS7, to read the text messages banks send with one-time security codes. With these codes they could get into online bank accounts, usually after getting the customer's login details another way, for example by a fake email. Metro Bank confirmed that a very small number of the people hit were its customers, and said none of them ended up losing money. The UK's National Cyber Security Centre confirmed the weakness was being used to target bank accounts.",
+      "level": 1,
+      "levelWhy": "No number of people, fine or lost money reported",
+      "sources": [
+        "vice2019",
+        "itpro2019"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2024-11-12",
+      "when": "November 2024",
+      "what": "The Financial Conduct Authority fined Metro Bank £16.7 million because, from 2016 to 2020, its system failed to check more than 60 million transactions, worth over £51 billion, for money laundering.",
+      "why": "About money laundering controls, not privacy",
+      "sources": [
+        "fca2024"
+      ]
+    },
+    {
+      "date": "2022-12-12",
+      "when": "December 2022",
+      "what": "The Financial Conduct Authority fined Metro Bank £10 million for giving investors a wrong figure in October 2018 for its risk-weighted assets, a measure of how risky its lending is.",
+      "why": "About wrong information given to investors, not privacy",
+      "sources": [
+        "fca2022"
+      ]
+    },
+    {
+      "date": "2021-12",
+      "when": "December 2021",
+      "what": "The Prudential Regulation Authority, part of the Bank of England, fined Metro Bank £5.4 million over weak controls on its reports to regulators.",
+      "why": "About reporting to regulators, not privacy",
+      "sources": [
+        "pra2021"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "notice",
+      "publisher": "Metro Bank",
+      "title": "Privacy Notice",
+      "url": "https://www.metrobankonline.co.uk/about-us/privacy/"
+    },
+    {
+      "id": "mobile",
+      "publisher": "Metro Bank",
+      "title": "Mobile banking",
+      "url": "https://www.metrobankonline.co.uk/ways-to-bank/products/mobile-banking/"
+    },
+    {
+      "id": "sca",
+      "publisher": "Metro Bank",
+      "title": "Strong Customer Authentication",
+      "url": "https://www.metrobankonline.co.uk/help-and-support/what-is-sca/"
+    },
+    {
+      "id": "vice2019",
+      "publisher": "Vice (Motherboard)",
+      "title": "Criminals Are Tapping into the Phone Network Backbone to Empty Bank Accounts",
+      "date": "2019-01-31",
+      "url": "https://www.vice.com/en/article/criminals-hackers-ss7-uk-banks-metro-bank/"
+    },
+    {
+      "id": "itpro2019",
+      "publisher": "IT Pro",
+      "title": "Metro Bank targeted with 2FA-bypassing SS7 attacks",
+      "date": "2019-02-01",
+      "url": "https://www.itpro.com/security/32898/metro-bank-targeted-with-2fa-bypassing-ss7-attacks"
+    },
+    {
+      "id": "fca2024",
+      "publisher": "Financial Conduct Authority",
+      "title": "FCA fines Metro Bank £16m for financial crime failings",
+      "date": "2024-11-12",
+      "url": "https://www.fca.org.uk/news/press-releases/fca-fines-metro-bank-16m-financial-crime-failings"
+    },
+    {
+      "id": "fca2022",
+      "publisher": "Financial Conduct Authority",
+      "title": "FCA fines Metro Bank PLC £10 million and publishes Decision Notices for two of its former executive directors",
+      "date": "2022-12-12",
+      "url": "https://fca.org.uk/news/press-releases/fca-fines-metro-bank-plc-decision-notices-two-former-executives"
+    },
+    {
+      "id": "pra2021",
+      "publisher": "Bank of England",
+      "title": "PRA fines Metro Bank £5,376,000 for failing in its regulatory reporting governance and controls",
+      "date": "2021-12",
+      "url": "https://www.bankofengland.co.uk/news/2021/december/pra-fines-metro-bank-5376000-for-failing-in-its-regulatory-reporting-governance-and-controls"
+    }
+  ]
+}

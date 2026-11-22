@@ -1,0 +1,345 @@
+{
+  "slug": "regions",
+  "name": "Regions",
+  "region": "US",
+  "country": "United States",
+  "type": "Regional bank",
+  "checked": "2026-11-21",
+  "scope": "Regions Bank's US consumer privacy notice, called the Privacy Pledge, read with its Online Privacy Notice and its California privacy disclosure. Incidents count anywhere in the Regions group if they involve the Regions name.",
+  "policy": {
+    "title": "Privacy Pledge",
+    "source": "table"
+  },
+  "checks": {
+    "A1": {
+      "result": "no",
+      "finding": "In its sharing table, Regions says it doesn't share your personal information with companies outside the Regions group so they can market to you.",
+      "where": "Sharing table, row \"For nonaffiliates to market to you\"",
+      "sources": [
+        "table"
+      ]
+    },
+    "A2": {
+      "result": "optout",
+      "finding": "Regions Offers, a cash back scheme with offers from shops, is personalised to your spending habits, and eligible Regions cards are enrolled in it automatically. You can opt out in online banking or the app, and the online notice says you can opt out of rewards programmes and the targeted ads that go with them. Regions says it doesn't give your account, card or other personal information to the shops.",
+      "where": "Online Privacy Notice, \"Use of Information for Advertising\"; Regions Offers pages",
+      "sources": [
+        "online",
+        "offers",
+        "optout"
+      ]
+    },
+    "A3": {
+      "result": "optout",
+      "finding": "The online notice says Regions may share personal information with advertising companies it has contracts with, to support its targeted ads, promotions and rewards programmes. You can opt out of the rewards programmes and the targeted ads linked to them. The notice doesn't name social media companies, and Regions' California disclosure says it doesn't share personal information for cross-context behavioural advertising, meaning ads based on what you do on other companies' sites and apps.",
+      "where": "Online Privacy Notice, \"Use of Information for Advertising; Online Behavioral Advertising\"",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "A4": {
+      "result": "never",
+      "quote": "We do not and will not sell or share your personal information.",
+      "finding": "The promise is in Regions' California privacy disclosure, which also says it hasn't sold or shared personal information covered by California's law in the past 12 months.",
+      "where": "California Consumer Privacy Act Disclosure",
+      "sources": [
+        "ccpa"
+      ]
+    },
+    "A5": {
+      "result": "yes",
+      "quote": "Although we may share aggregate information that does not contain personal identifiers.",
+      "finding": "This is in the sharing table's row about companies outside the Regions group marketing to you. Regions says it doesn't share personal information for that purpose, but it may share this combined, anonymous information. It doesn't say it sells it.",
+      "where": "Sharing table, row \"For nonaffiliates to market to you\"",
+      "sources": [
+        "table"
+      ]
+    },
+    "C1": {
+      "result": "pending",
+      "finding": "Not measured yet. We count trackers in a real browser, and this check is still to be done."
+    },
+    "C2": {
+      "result": "pending",
+      "finding": "We couldn't find an Exodus Privacy report for the Regions Android app, com.regions.mobbanking, so this check is still to be done."
+    },
+    "C3": {
+      "result": "pending",
+      "finding": "Not checked yet. This is checked in a real browser together with the tracker count."
+    },
+    "C4": {
+      "result": "sms",
+      "finding": "Regions says it uses multi-factor authentication when you log in. If it sees a new device or an unusual login, it sends a one-time code to an email address or phone number it has on file, and you can choose to get a code at every login. Regions has a help page about passkeys, but it doesn't say whether they work for logging in on the website.",
+      "sources": [
+        "security",
+        "mfa",
+        "passkey"
+      ]
+    },
+    "D1": {
+      "result": "none",
+      "finding": "The online notice says Regions keeps your information as long as it needs it to do business with you, for the purposes in the notice, or to meet legal duties, settle disputes and enforce agreements. The California disclosure also gives no periods.",
+      "where": "Online Privacy Notice, \"Security\"",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "D2": {
+      "result": "yes",
+      "finding": "The sharing table and the California disclosure list clear types: other Regions companies, joint marketing partners such as insurance companies, credit bureaus, service providers for things like website hosting and data analysis, payment and communication partners, and government agencies.",
+      "where": "Sharing table; California disclosure",
+      "sources": [
+        "table",
+        "ccpa"
+      ]
+    },
+    "D3": {
+      "result": "none",
+      "finding": "Neither the online notice nor the California disclosure explains decisions made about you automatically, such as credit or fraud decisions, or how to ask a person to look again. The California disclosure says Regions may draw conclusions from your information to build a profile of you.",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "D4": {
+      "result": "no",
+      "finding": "The online notice and the California disclosure don't mention artificial intelligence or machine learning, so they don't say whether your data is used to build or train AI models.",
+      "sources": [
+        "online",
+        "ccpa"
+      ]
+    },
+    "E1": {
+      "result": "offline",
+      "finding": "To limit direct marketing, the sharing table says to call Regions on 1-800-734-4667, visit a branch or talk to your financial adviser. It gives no online way. You can opt out of the Regions Offers cash back scheme in online banking or the app, but that only covers that scheme.",
+      "where": "Sharing table, \"To limit direct marketing contact\"",
+      "sources": [
+        "table",
+        "optout"
+      ]
+    },
+    "E2": {
+      "result": "online",
+      "finding": "California residents can ask for a copy of their data with an online Data Request Form or by calling 1-800-986-2462. For other customers, the online notice says you can review and correct some information through your banker or by calling 1-800-240-2948, but it doesn't explain how to get a copy.",
+      "where": "California disclosure; Online Privacy Notice, \"Updating Personal Information You Provide to Us Directly\"",
+      "sources": [
+        "ccpa",
+        "online"
+      ]
+    }
+  },
+  "context": [],
+  "sharing": [
+    {
+      "who": "Companies that help run your accounts, courts, investigators and credit bureaus",
+      "what": "Personal information such as your transactions and balances. You can't limit this.",
+      "why": "Processing your transactions, running your accounts, answering court orders and legal investigations, and reporting to credit bureaus",
+      "reasons": [
+        "account",
+        "legal"
+      ],
+      "basis": "For our everyday business purposes"
+    },
+    {
+      "who": "Service providers, for example for website hosting, data analysis, marketing and market research",
+      "what": "What each provider needs for its job",
+      "why": "To provide services to Regions",
+      "reasons": [
+        "account",
+        "commercial"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Payment, banking and communication networks, and companies that let you bank online and on your phone",
+      "what": "What the service needs",
+      "why": "Making payments and providing online and mobile banking",
+      "reasons": [
+        "account"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Government agencies",
+      "what": "What the law requires",
+      "why": "When laws and regulations require it",
+      "reasons": [
+        "legal"
+      ],
+      "basis": ""
+    },
+    {
+      "who": "Companies that help Regions market to you",
+      "what": "Your personal information. You can't limit this.",
+      "why": "To offer you Regions' own products and services",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our marketing purposes"
+    },
+    {
+      "who": "Other financial companies Regions markets with, such as insurance companies",
+      "what": "Your personal information. You can't limit this, but accounts with a California or Vermont address are treated as opted out.",
+      "why": "Marketing financial products together",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For joint marketing with other financial companies"
+    },
+    {
+      "who": "Other Regions companies",
+      "what": "Information about your transactions and experiences with Regions. You can't limit this.",
+      "why": "Their everyday business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates' everyday business purposes"
+    },
+    {
+      "who": "Other Regions companies",
+      "what": "Information about your creditworthiness. You can limit this.",
+      "why": "Their everyday business",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates' everyday business purposes"
+    },
+    {
+      "who": "Other Regions companies",
+      "what": "Your personal information. You can limit this.",
+      "why": "To market their products to you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For our affiliates to market to you"
+    },
+    {
+      "who": "Companies outside the Regions group",
+      "what": "Combined information that doesn't contain personal identifiers. Regions says it doesn't share personal information for this.",
+      "why": "For them to market to you",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": "For nonaffiliates to market to you"
+    },
+    {
+      "who": "Advertising companies Regions has contracts with",
+      "what": "Personal information, and information about what you do online",
+      "why": "Showing Regions' ads on its own and other sites and apps, and running targeted promotions and rewards programmes",
+      "reasons": [
+        "commercial"
+      ],
+      "basis": ""
+    }
+  ],
+  "sharingSources": [
+    "table",
+    "online",
+    "ccpa"
+  ],
+  "incidents": [
+    {
+      "date": "2023-02-24",
+      "when": "February 2023",
+      "title": "Bank employee sold customers' details to fraudsters",
+      "summary": "A Regions Bank employee sold customers' names, ID card numbers and account numbers to a group of criminals. Members of the group used fake IDs to pose as customers and withdraw money at Regions branches in Florida, Alabama, Iowa and Missouri in December 2019. Prosecutors said more than 125,000 dollars was stolen, and at least 18 Regions customers were victims of identity theft. Members of the group were sent to prison in February 2023, and the employee pleaded guilty.",
+      "people": 18,
+      "level": 3,
+      "levelWhy": "Money taken from customers' accounts",
+      "sources": [
+        "doj2023",
+        "herald2023"
+      ]
+    }
+  ],
+  "notCounted": [
+    {
+      "date": "2022-09-28",
+      "when": "September 2022",
+      "what": "The Consumer Financial Protection Bureau ordered Regions Bank to pay 191 million dollars over surprise overdraft fees: at least 141 million dollars in refunds and a 50 million dollar penalty.",
+      "why": "About overdraft fees, not privacy",
+      "sources": [
+        "cfpb2022"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "table",
+      "publisher": "Regions",
+      "title": "Privacy Pledge",
+      "date": "2021-11",
+      "dateLabel": "revised November 2021",
+      "url": "https://www.regions.com/about-regions/privacy-security/privacy-pledge"
+    },
+    {
+      "id": "online",
+      "publisher": "Regions",
+      "title": "Online Privacy Notice",
+      "date": "2020-12-16",
+      "dateLabel": "revised 16 December 2020",
+      "url": "https://www.regions.com/about-regions/privacy-security/online-privacy-notice"
+    },
+    {
+      "id": "ccpa",
+      "publisher": "Regions",
+      "title": "California Consumer Privacy Act Disclosure",
+      "date": "2026-08-17",
+      "dateLabel": "revised 17 August 2026",
+      "url": "https://www.regions.com/about-regions/privacy-security/ccpa-disclosure"
+    },
+    {
+      "id": "offers",
+      "publisher": "Regions",
+      "title": "Regions Offers",
+      "url": "https://regions.com/personal-banking/rewards/merchant-offers"
+    },
+    {
+      "id": "optout",
+      "publisher": "Regions Help & Support",
+      "title": "How do I stop getting offers or opt out?",
+      "url": "https://regions.com/help/products-services/merchant-offers/how-do-i-opt-out"
+    },
+    {
+      "id": "security",
+      "publisher": "Regions",
+      "title": "Online and mobile banking security",
+      "url": "https://regions.com/digital-banking/online-and-mobile-banking-security"
+    },
+    {
+      "id": "mfa",
+      "publisher": "Regions Help & Support",
+      "title": "What are my MFA options for login?",
+      "url": "https://www.regions.com/help/online-banking-help/login-and-security/multifactor-authentication/what-are-my-MFA-options-for-login"
+    },
+    {
+      "id": "passkey",
+      "publisher": "Regions Help & Support",
+      "title": "What is a passkey and how do I remove it?",
+      "url": "https://www.regions.com/help/online-banking-help/login-and-security/multifactor-authentication/what-is-a-passkey-and-how-to-remove"
+    },
+    {
+      "id": "doj2023",
+      "publisher": "US Attorney's Office, Northern District of Florida",
+      "title": "Bank And Identity Fraud Conspiracy Members Sentenced To Federal Prison",
+      "date": "2023-02-24",
+      "url": "https://www.justice.gov/usao-ndfl/pr/bank-and-identity-fraud-conspiracy-members-sentenced-federal-prison"
+    },
+    {
+      "id": "herald2023",
+      "publisher": "Miami Herald, via AOL",
+      "title": "Bank worker gave up customer identities in plot to steal thousands from banks, feds say",
+      "date": "2023-02-26",
+      "url": "https://www.aol.com/bank-worker-gave-customer-identities-165743083.html"
+    },
+    {
+      "id": "cfpb2022",
+      "publisher": "Consumer Financial Protection Bureau",
+      "title": "CFPB Orders Regions Bank to Pay $191 Million for Illegal Surprise Overdraft Fees",
+      "date": "2022-09-28",
+      "url": "https://consumerfinance.gov/about-us/newsroom/cfpb-orders-regions-bank-pay-191-million-for-illegal-surprise-overdraft-fees"
+    }
+  ]
+}
